@@ -1,0 +1,31 @@
+{
+  "total_images": 500,
+  "accuracy": 0.988,
+  "per_class": {
+    "ALGAL_LEAF_SPOT": {
+      "total": 100,
+      "correct": 100,
+      "accuracy": 1.0
+    },
+    "ALLOCARIDARA_ATTACK": {
+      "total": 100,
+      "correct": 98,
+      "accuracy": 0.98
+    },
+    "HEALTHY_LEAF": {
+      "total": 100,
+      "correct": 100,
+      "accuracy": 1.0
+    },
+    "LEAF_BLIGHT": {
+      "total": 100,
+      "correct": 99,
+      "accuracy": 0.99
+    },
+    "PHOMOPSIS_LEAF_SPOT": {
+      "total": 100,
+      "correct": 97,
+      "accuracy": 0.97
+    }
+  }
+}

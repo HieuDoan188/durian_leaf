@@ -1,0 +1,6 @@
+*.jpg
+*.png
+*_metadata_*
+*.pyc
+*.pth
+*log*

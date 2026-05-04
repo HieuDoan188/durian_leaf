@@ -1,0 +1,4002 @@
+[
+  {
+    "filename": "to_label_40.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9998565912246704,
+    "correct": true
+  },
+  {
+    "filename": "to_label_383.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9996637105941772,
+    "correct": true
+  },
+  {
+    "filename": "to_label_549.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9997686743736267,
+    "correct": true
+  },
+  {
+    "filename": "to_label_267.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9997796416282654,
+    "correct": true
+  },
+  {
+    "filename": "to_label_83.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9996237754821777,
+    "correct": true
+  },
+  {
+    "filename": "to_label_226.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9920409321784973,
+    "correct": true
+  },
+  {
+    "filename": "to_label_699.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9997687935829163,
+    "correct": true
+  },
+  {
+    "filename": "to_label_343.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9997997879981995,
+    "correct": true
+  },
+  {
+    "filename": "to_label_365.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9914150834083557,
+    "correct": true
+  },
+  {
+    "filename": "to_label_424.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9976744055747986,
+    "correct": true
+  },
+  {
+    "filename": "to_label_498.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9994426369667053,
+    "correct": true
+  },
+  {
+    "filename": "to_label_679.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999291896820068,
+    "correct": true
+  },
+  {
+    "filename": "to_label_227.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9968959093093872,
+    "correct": true
+  },
+  {
+    "filename": "to_label_295.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9996730089187622,
+    "correct": true
+  },
+  {
+    "filename": "to_label_402.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9992117881774902,
+    "correct": true
+  },
+  {
+    "filename": "to_label_138.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9987543821334839,
+    "correct": true
+  },
+  {
+    "filename": "to_label_109.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9949760437011719,
+    "correct": true
+  },
+  {
+    "filename": "to_label_259.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9770430326461792,
+    "correct": true
+  },
+  {
+    "filename": "to_label_626.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9982933402061462,
+    "correct": true
+  },
+  {
+    "filename": "to_label_317.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.997822642326355,
+    "correct": true
+  },
+  {
+    "filename": "to_label_471.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9996932744979858,
+    "correct": true
+  },
+  {
+    "filename": "to_label_430.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9993003606796265,
+    "correct": true
+  },
+  {
+    "filename": "to_label_659.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.989585816860199,
+    "correct": true
+  },
+  {
+    "filename": "to_label_160.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9784623384475708,
+    "correct": true
+  },
+  {
+    "filename": "to_label_717.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9990847110748291,
+    "correct": true
+  },
+  {
+    "filename": "to_label_359.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9069363474845886,
+    "correct": true
+  },
+  {
+    "filename": "to_label_146.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999380111694336,
+    "correct": true
+  },
+  {
+    "filename": "to_label_380.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9990224838256836,
+    "correct": true
+  },
+  {
+    "filename": "to_label_107.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9996174573898315,
+    "correct": true
+  },
+  {
+    "filename": "to_label_640.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.8514348864555359,
+    "correct": true
+  },
+  {
+    "filename": "to_label_418.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999324083328247,
+    "correct": true
+  },
+  {
+    "filename": "to_label_313.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9951045513153076,
+    "correct": true
+  },
+  {
+    "filename": "to_label_57.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9795932769775391,
+    "correct": true
+  },
+  {
+    "filename": "to_label_655.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999737739562988,
+    "correct": true
+  },
+  {
+    "filename": "to_label_305.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9951273202896118,
+    "correct": true
+  },
+  {
+    "filename": "to_label_698.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9976891279220581,
+    "correct": true
+  },
+  {
+    "filename": "to_label_80.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9959523677825928,
+    "correct": true
+  },
+  {
+    "filename": "to_label_152.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9977129697799683,
+    "correct": true
+  },
+  {
+    "filename": "to_label_123.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9928585290908813,
+    "correct": true
+  },
+  {
+    "filename": "to_label_660.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9993764758110046,
+    "correct": true
+  },
+  {
+    "filename": "to_label_202.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9894054532051086,
+    "correct": true
+  },
+  {
+    "filename": "to_label_195.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.975393533706665,
+    "correct": true
+  },
+  {
+    "filename": "to_label_271.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9887592792510986,
+    "correct": true
+  },
+  {
+    "filename": "to_label_311.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9994503855705261,
+    "correct": true
+  },
+  {
+    "filename": "to_label_179.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.999715268611908,
+    "correct": true
+  },
+  {
+    "filename": "to_label_334.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9992285966873169,
+    "correct": true
+  },
+  {
+    "filename": "to_label_602.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9584027528762817,
+    "correct": true
+  },
+  {
+    "filename": "to_label_368.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999454021453857,
+    "correct": true
+  },
+  {
+    "filename": "to_label_423.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.996337890625,
+    "correct": true
+  },
+  {
+    "filename": "to_label_682.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9904058575630188,
+    "correct": true
+  },
+  {
+    "filename": "to_label_459.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9983975291252136,
+    "correct": true
+  },
+  {
+    "filename": "to_label_541.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9997914433479309,
+    "correct": true
+  },
+  {
+    "filename": "to_label_438.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9949467778205872,
+    "correct": true
+  },
+  {
+    "filename": "to_label_648.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9998989105224609,
+    "correct": true
+  },
+  {
+    "filename": "to_label_667.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.6100535988807678,
+    "correct": true
+  },
+  {
+    "filename": "to_label_308.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9993019104003906,
+    "correct": true
+  },
+  {
+    "filename": "to_label_684.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9958037734031677,
+    "correct": true
+  },
+  {
+    "filename": "to_label_515.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.999858021736145,
+    "correct": true
+  },
+  {
+    "filename": "to_label_301.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9970320463180542,
+    "correct": true
+  },
+  {
+    "filename": "to_label_171.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999164342880249,
+    "correct": true
+  },
+  {
+    "filename": "to_label_185.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9994655251502991,
+    "correct": true
+  },
+  {
+    "filename": "to_label_513.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9935033917427063,
+    "correct": true
+  },
+  {
+    "filename": "to_label_381.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999794960021973,
+    "correct": true
+  },
+  {
+    "filename": "to_label_35.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9996134638786316,
+    "correct": true
+  },
+  {
+    "filename": "to_label_620.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9990849494934082,
+    "correct": true
+  },
+  {
+    "filename": "to_label_567.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9791412949562073,
+    "correct": true
+  },
+  {
+    "filename": "to_label_512.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999868869781494,
+    "correct": true
+  },
+  {
+    "filename": "to_label_412.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9973884224891663,
+    "correct": true
+  },
+  {
+    "filename": "to_label_484.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.98512864112854,
+    "correct": true
+  },
+  {
+    "filename": "to_label_103.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9955163598060608,
+    "correct": true
+  },
+  {
+    "filename": "to_label_649.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.99739670753479,
+    "correct": true
+  },
+  {
+    "filename": "to_label_677.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.995621383190155,
+    "correct": true
+  },
+  {
+    "filename": "to_label_514.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9997256398200989,
+    "correct": true
+  },
+  {
+    "filename": "to_label_557.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999698400497437,
+    "correct": true
+  },
+  {
+    "filename": "to_label_281.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999470710754395,
+    "correct": true
+  },
+  {
+    "filename": "to_label_404.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999595880508423,
+    "correct": true
+  },
+  {
+    "filename": "to_label_230.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9996920824050903,
+    "correct": true
+  },
+  {
+    "filename": "to_label_571.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9936145544052124,
+    "correct": true
+  },
+  {
+    "filename": "to_label_85.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.999981164932251,
+    "correct": true
+  },
+  {
+    "filename": "to_label_634.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999779462814331,
+    "correct": true
+  },
+  {
+    "filename": "to_label_544.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999551773071289,
+    "correct": true
+  },
+  {
+    "filename": "to_label_22.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9977134466171265,
+    "correct": true
+  },
+  {
+    "filename": "to_label_519.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9990562796592712,
+    "correct": true
+  },
+  {
+    "filename": "to_label_599.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9931614398956299,
+    "correct": true
+  },
+  {
+    "filename": "to_label_367.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9992576241493225,
+    "correct": true
+  },
+  {
+    "filename": "to_label_55.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9943991303443909,
+    "correct": true
+  },
+  {
+    "filename": "to_label_62.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9992890357971191,
+    "correct": true
+  },
+  {
+    "filename": "to_label_547.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9995282888412476,
+    "correct": true
+  },
+  {
+    "filename": "to_label_630.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9976759552955627,
+    "correct": true
+  },
+  {
+    "filename": "to_label_111.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.8572224974632263,
+    "correct": true
+  },
+  {
+    "filename": "to_label_106.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9903123378753662,
+    "correct": true
+  },
+  {
+    "filename": "to_label_580.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9948293566703796,
+    "correct": true
+  },
+  {
+    "filename": "to_label_329.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9780281186103821,
+    "correct": true
+  },
+  {
+    "filename": "to_label_714.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.983643114566803,
+    "correct": true
+  },
+  {
+    "filename": "to_label_481.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9983863830566406,
+    "correct": true
+  },
+  {
+    "filename": "to_label_705.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9995381832122803,
+    "correct": true
+  },
+  {
+    "filename": "to_label_633.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9993796348571777,
+    "correct": true
+  },
+  {
+    "filename": "to_label_235.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999217987060547,
+    "correct": true
+  },
+  {
+    "filename": "to_label_617.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9999120235443115,
+    "correct": true
+  },
+  {
+    "filename": "to_label_710.jpg",
+    "class_name": "ALGAL_LEAF_SPOT",
+    "class_idx": 0,
+    "predicted_class": 0,
+    "confidence": 0.9994389414787292,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1003.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9766693115234375,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1306.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9988870024681091,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1550.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998643398284912,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1029.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9980064034461975,
+    "correct": true
+  },
+  {
+    "filename": "to_label_920.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999382495880127,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1465.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999005794525146,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1039.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.997163712978363,
+    "correct": true
+  },
+  {
+    "filename": "to_label_953.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9975044131278992,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1054.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999881982803345,
+    "correct": true
+  },
+  {
+    "filename": "to_label_796.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9995172023773193,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1287.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9343695044517517,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1162.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9799423217773438,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1059.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9996802806854248,
+    "correct": true
+  },
+  {
+    "filename": "to_label_987.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998020529747009,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1676.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9997881054878235,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1678.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998985528945923,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1570.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992989301681519,
+    "correct": true
+  },
+  {
+    "filename": "to_label_939.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9996473789215088,
+    "correct": true
+  },
+  {
+    "filename": "to_label_915.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9994462132453918,
+    "correct": true
+  },
+  {
+    "filename": "to_label_775.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9744274020195007,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1138.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.999993085861206,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1080.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998632669448853,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1230.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9233236908912659,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1508.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9890263676643372,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1194.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999819993972778,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1489.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9968563318252563,
+    "correct": true
+  },
+  {
+    "filename": "to_label_965.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998264908790588,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1479.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9982476234436035,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1268.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9942071437835693,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1275.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998506307601929,
+    "correct": true
+  },
+  {
+    "filename": "to_label_794.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992930889129639,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1313.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9843878746032715,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1661.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999817609786987,
+    "correct": true
+  },
+  {
+    "filename": "to_label_802.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999474287033081,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1148.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998518228530884,
+    "correct": true
+  },
+  {
+    "filename": "to_label_837.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998552799224854,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1078.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9996281862258911,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1017.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9997634291648865,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1417.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992813467979431,
+    "correct": true
+  },
+  {
+    "filename": "to_label_928.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9984843134880066,
+    "correct": true
+  },
+  {
+    "filename": "to_label_864.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998859167098999,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1213.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992959499359131,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1640.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.6357332468032837,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1576.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9979919195175171,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1126.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9784334301948547,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1264.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9958904981613159,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1022.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9987952709197998,
+    "correct": true
+  },
+  {
+    "filename": "to_label_828.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9996331930160522,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1141.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9995811581611633,
+    "correct": true
+  },
+  {
+    "filename": "to_label_976.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998939037322998,
+    "correct": true
+  },
+  {
+    "filename": "to_label_973.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9995136260986328,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1328.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.986620306968689,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1642.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999856948852539,
+    "correct": true
+  },
+  {
+    "filename": "to_label_908.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9980424642562866,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1388.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999505281448364,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1304.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998716115951538,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1238.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9018585085868835,
+    "correct": true
+  },
+  {
+    "filename": "to_label_781.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999120235443115,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1274.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9912832975387573,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1516.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9848179221153259,
+    "correct": true
+  },
+  {
+    "filename": "to_label_945.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999068975448608,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1121.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.7514469027519226,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1180.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9994803071022034,
+    "correct": true
+  },
+  {
+    "filename": "to_label_971.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998975992202759,
+    "correct": true
+  },
+  {
+    "filename": "to_label_999.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999525547027588,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1302.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998636245727539,
+    "correct": true
+  },
+  {
+    "filename": "to_label_766.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.999183714389801,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1450.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9961624145507812,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1224.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9986863732337952,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1427.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9997887015342712,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1478.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9991769194602966,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1569.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9996240139007568,
+    "correct": true
+  },
+  {
+    "filename": "to_label_767.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9813984036445618,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1543.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999637603759766,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1055.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9997856020927429,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1359.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.865999698638916,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1195.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.999139666557312,
+    "correct": true
+  },
+  {
+    "filename": "to_label_947.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999052286148071,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1333.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9991779923439026,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1073.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992469549179077,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1331.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9916438460350037,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1035.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999823570251465,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1293.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9996252059936523,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1243.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992576241493225,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1560.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9973829388618469,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1472.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999916553497314,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1154.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9985620379447937,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1371.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999699592590332,
+    "correct": true
+  },
+  {
+    "filename": "to_label_779.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992408752441406,
+    "correct": true
+  },
+  {
+    "filename": "to_label_812.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999594688415527,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1484.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998003840446472,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1294.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9882829785346985,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1456.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992411136627197,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1630.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9953092932701111,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1629.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9992572665214539,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1593.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9987260699272156,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1006.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9999963045120239,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1113.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9998284578323364,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1571.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9971255660057068,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1396.jpg",
+    "class_name": "ALLOCARIDARA_ATTACK",
+    "class_idx": 1,
+    "predicted_class": 1,
+    "confidence": 0.9996716976165771,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1911.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999905824661255,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2053.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9975728392601013,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2519.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9997705817222595,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2606.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9989731311798096,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2558.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.982812225818634,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2126.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9998351335525513,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1710.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999470710754395,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2577.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999624490737915,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1995.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999427795410156,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2422.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9764857292175293,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2524.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9989228844642639,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1812.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999985694885254,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2522.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9964786171913147,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2307.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9975467324256897,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1842.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.999800980091095,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2090.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9996446371078491,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1927.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.992954671382904,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1829.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999301433563232,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2310.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9998525381088257,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1999.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9047762155532837,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2463.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9934420585632324,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2221.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9989209175109863,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2532.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9987708926200867,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1713.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.8529078364372253,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2432.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9990379810333252,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2047.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999464750289917,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2306.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.961772084236145,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2626.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9966469407081604,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2101.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9080800414085388,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2283.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9996182918548584,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2013.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9998693466186523,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2265.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9957414865493774,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1953.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999668598175049,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2122.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9837834239006042,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1850.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9997672438621521,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1802.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999995231628418,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2151.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9988420605659485,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1742.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9874420762062073,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2600.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.997769832611084,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2093.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999420642852783,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2270.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.999921441078186,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2194.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9979584217071533,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1784.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999873638153076,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1737.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9868457317352295,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2063.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9996583461761475,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2644.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999567270278931,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2023.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9994020462036133,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1860.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9998205304145813,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2049.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9982660412788391,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2484.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9393764138221741,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1897.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.997432291507721,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2076.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.999138355255127,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2212.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999794960021973,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2471.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9992846846580505,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2305.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.999915599822998,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2443.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9942299127578735,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2266.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9895364046096802,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1836.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9996864795684814,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1997.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.996488094329834,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2333.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9875439405441284,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1804.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999240636825562,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2369.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9996848106384277,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2303.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999147653579712,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2064.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9998809099197388,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1844.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9998266100883484,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2284.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9990770816802979,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2077.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999268054962158,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2234.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9929030537605286,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1726.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999918937683105,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1815.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999984502792358,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2302.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9993844032287598,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1767.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999995231628418,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1719.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9960527420043945,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1840.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9997615218162537,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2078.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9979211688041687,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1946.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9987351298332214,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2406.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9935482144355774,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1879.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9993237257003784,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2100.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999338388442993,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2518.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999366998672485,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2324.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9897363185882568,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2166.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9985540509223938,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2452.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9993913173675537,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1833.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9994694590568542,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2236.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9994787573814392,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2285.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9974709749221802,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2619.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9849298596382141,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1955.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9998818635940552,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2667.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999990463256836,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1845.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999778270721436,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1984.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9981108903884888,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1933.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9996967315673828,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2117.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9997971653938293,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1857.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999809265136719,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1880.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999051094055176,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1905.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9997432827949524,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1896.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.999961256980896,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1916.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999995231628418,
+    "correct": true
+  },
+  {
+    "filename": "to_label_1891.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9999922513961792,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2275.jpg",
+    "class_name": "HEALTHY_LEAF",
+    "class_idx": 2,
+    "predicted_class": 2,
+    "confidence": 0.9996902942657471,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3451.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9977516531944275,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3117.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9992853999137878,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2843.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9963944554328918,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3406.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.7231515049934387,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2968.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9995535016059875,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3070.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9996235370635986,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2800.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9994344115257263,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3357.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9991763234138489,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3253.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9897276759147644,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3184.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9997454285621643,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3299.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999220371246338,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3488.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9433584809303284,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2989.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9993745684623718,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3293.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9350879192352295,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3359.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9970134496688843,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3543.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999631643295288,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2686.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.999213457107544,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3566.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.994722843170166,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3425.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9998018145561218,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3501.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9997430443763733,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2910.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999715089797974,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3510.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9991829991340637,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2690.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9938820600509644,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3334.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9934957027435303,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2816.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9997697472572327,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3471.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999876022338867,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3280.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9978571534156799,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3027.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9844725728034973,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3175.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9930325746536255,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3485.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9371649026870728,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3114.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.999940037727356,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3231.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9912464022636414,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3121.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9990611672401428,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2698.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 4,
+    "confidence": 0.2751557528972626,
+    "correct": false
+  },
+  {
+    "filename": "to_label_3035.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9988871216773987,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2839.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9985265731811523,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2760.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9997009038925171,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3177.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999363422393799,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3167.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9990212917327881,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2929.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9821127653121948,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3376.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9962857961654663,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2941.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9988462924957275,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3138.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9996248483657837,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3340.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9968691468238831,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2774.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9998871088027954,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3249.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9549784660339355,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2990.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9986170530319214,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2934.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9927200078964233,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3159.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999810457229614,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2721.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.999946117401123,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3611.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9990665316581726,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2964.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9986280202865601,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3407.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999803304672241,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3363.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9937828183174133,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2824.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999498128890991,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2852.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9851749539375305,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3307.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999927282333374,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2750.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999455213546753,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2918.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9985145926475525,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2826.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9816084504127502,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2776.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999858140945435,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2981.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.98117595911026,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3317.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9921966791152954,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2798.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9981112480163574,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3449.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.996494710445404,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3200.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9983420372009277,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2924.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9720506072044373,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3031.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.99244624376297,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3326.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9863868951797485,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3099.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9994103908538818,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3216.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9997789263725281,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2845.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999018907546997,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3362.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.994998574256897,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2938.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999474287033081,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2965.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999622106552124,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3289.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9991074204444885,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3229.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9989569187164307,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3479.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9952988028526306,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3619.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999668598175049,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2744.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999649524688721,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3195.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.8172358274459839,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2881.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9985798597335815,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2714.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9924312829971313,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3437.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.974274218082428,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3016.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999667406082153,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3467.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.992038369178772,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3381.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9993651509284973,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3413.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9990575909614563,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3089.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999071359634399,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3576.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999860525131226,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3595.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999967813491821,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3424.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9994733929634094,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3311.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9979098439216614,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2987.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999678134918213,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2697.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9977042078971863,
+    "correct": true
+  },
+  {
+    "filename": "to_label_2920.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9997122883796692,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3209.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999204874038696,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3254.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.7147512435913086,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3252.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.997687578201294,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3415.jpg",
+    "class_name": "LEAF_BLIGHT",
+    "class_idx": 3,
+    "predicted_class": 3,
+    "confidence": 0.9999852180480957,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4092.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9977695941925049,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4189.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9821486473083496,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4320.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9991812109947205,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3993.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9920851588249207,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3932.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9995421171188354,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4483.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.7937358021736145,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4399.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9986579418182373,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4259.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9982945322990417,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4430.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9960391521453857,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4302.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9995915293693542,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4196.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9578254818916321,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4352.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9987339377403259,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3777.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9372818470001221,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4083.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9993775486946106,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4392.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.995019793510437,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4440.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9996293783187866,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3896.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9880799651145935,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3970.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9580971598625183,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4173.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9982763528823853,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4145.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.99886155128479,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4318.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9995775818824768,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3722.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9995412826538086,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3971.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.996727705001831,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4428.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.6504863500595093,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4098.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9978860020637512,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4182.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9966723918914795,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4066.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9997575879096985,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3892.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9971120357513428,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4372.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.992280900478363,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4082.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.999468982219696,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4479.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9979463219642639,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3731.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9992007613182068,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3740.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9705285429954529,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4415.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9867904782295227,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3861.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.715064525604248,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3843.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.8035275936126709,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3680.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9761462807655334,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4470.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9984158277511597,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4451.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9977413415908813,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4306.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9997313618659973,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4458.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9998995065689087,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3872.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9933661818504333,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3682.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9623059630393982,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4150.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9979566335678101,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4491.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9897393584251404,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3824.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9150229096412659,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4002.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9960401058197021,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4021.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9923619031906128,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4237.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9994572997093201,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3987.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9989377856254578,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3668.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9995885491371155,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3825.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9742156863212585,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4138.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9446056485176086,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4075.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9940183162689209,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3820.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9972724318504333,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3631.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9989175796508789,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3803.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9932760000228882,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4091.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9948506951332092,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4086.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.7147364020347595,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3645.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9977637529373169,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4378.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9619008302688599,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3846.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9993935823440552,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4144.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9996970891952515,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3785.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9814344644546509,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3721.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9996482133865356,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4194.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9936754107475281,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4386.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9984266757965088,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3880.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9264121055603027,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3938.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9970123767852783,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3697.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9947872161865234,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4262.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.998688280582428,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3728.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9993683695793152,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4253.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9987039566040039,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4468.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 1,
+    "confidence": 0.3252893090248108,
+    "correct": false
+  },
+  {
+    "filename": "to_label_3772.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9950771927833557,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4069.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9992152452468872,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4140.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9981022477149963,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4227.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9999390840530396,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3745.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9936400055885315,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4360.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9995911717414856,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3992.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9998927116394043,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4357.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9983224272727966,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3675.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9999738931655884,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3623.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9996546506881714,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4167.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9996194839477539,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3998.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9998973608016968,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3685.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9984082579612732,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4461.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9851996898651123,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4367.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9704693555831909,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4304.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9935271739959717,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3948.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9417518973350525,
+    "correct": true
+  },
+  {
+    "filename": "to_label_3766.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9997678399085999,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4450.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9990276098251343,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4116.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9963589310646057,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4436.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9964724779129028,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4484.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9996739625930786,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4268.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9991171956062317,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4286.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9836704730987549,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4400.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9913833141326904,
+    "correct": true
+  },
+  {
+    "filename": "to_label_4233.jpg",
+    "class_name": "PHOMOPSIS_LEAF_SPOT",
+    "class_idx": 4,
+    "predicted_class": 4,
+    "confidence": 0.9972027540206909,
+    "correct": true
+  }
+]

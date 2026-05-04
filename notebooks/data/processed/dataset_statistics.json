@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-04-08T23:19:32.204363",
+  "total_images": 4437,
+  "split_counts": {
+    "train": 3104,
+    "val": 443,
+    "test": 890
+  },
+  "class_distribution": {
+    "0": 733,
+    "1": 913,
+    "2": 976,
+    "3": 937,
+    "4": 878
+  },
+  "image_statistics": {
+    "widths": {
+      "mean": 224.0,
+      "std": 0.0,
+      "min": "224",
+      "max": "224",
+      "median": 224.0
+    },
+    "heights": {
+      "mean": 224.0,
+      "std": 0.0,
+      "min": "224",
+      "max": "224",
+      "median": 224.0
+    },
+    "aspect_ratios": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "median": 1.0
+    },
+    "file_sizes": {
+      "mean": 10.87216796875,
+      "std": 1.0070412078199367,
+      "min": 8.5078125,
+      "max": 14.3037109375,
+      "median": 10.82861328125
+    }
+  },
+  "data_loader_config": {
+    "batch_size": 32,
+    "image_size": [
+      224,
+      224
+    ],
+    "random_seed": 42
+  }
+}
