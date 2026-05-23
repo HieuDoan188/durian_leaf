@@ -1,0 +1,37 @@
+{
+  "ALGAL_LEAF_SPOT": {
+    "n_samples": 513,
+    "accuracy": 0.9902534113060428,
+    "mean_confidence": 0.971013091722427,
+    "min_confidence": 0.16454309225082397,
+    "max_confidence": 0.9999810457229614
+  },
+  "ALLOCARIDARA_ATTACK": {
+    "n_samples": 639,
+    "accuracy": 0.9921752738654147,
+    "mean_confidence": 0.9809619744012427,
+    "min_confidence": 0.21962794661521912,
+    "max_confidence": 0.9999984502792358
+  },
+  "HEALTHY_LEAF": {
+    "n_samples": 683,
+    "accuracy": 0.9956076134699854,
+    "mean_confidence": 0.9789696972637191,
+    "min_confidence": 0.2039327472448349,
+    "max_confidence": 0.9999972581863403
+  },
+  "LEAF_BLIGHT": {
+    "n_samples": 655,
+    "accuracy": 0.9984732824427481,
+    "mean_confidence": 0.9875332916965921,
+    "min_confidence": 0.3541691303253174,
+    "max_confidence": 0.9999991655349731
+  },
+  "PHOMOPSIS_LEAF_SPOT": {
+    "n_samples": 614,
+    "accuracy": 0.998371335504886,
+    "mean_confidence": 0.9906415530641226,
+    "min_confidence": 0.4150550365447998,
+    "max_confidence": 0.9999938011169434
+  }
+}
