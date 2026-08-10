@@ -1,0 +1,280 @@
+% !TeX root = ../main.tex
+\chapter{MỞ ĐẦU}
+\label{chap:modau}
+
+\section{Bối cảnh nghiên cứu}
+\label{sec:boicanh}
+
+Sầu riêng (\textit{Durio zibethinus}) là một trong những cây ăn quả nhiệt đới có
+giá trị kinh tế cao nhất khu vực Đông Nam Á. Tại Việt Nam, cây sầu riêng được
+canh tác tập trung ở Tây Nguyên, Đông Nam Bộ và đồng bằng sông Cửu Long, đóng vai
+trò quan trọng trong cơ cấu thu nhập của nhiều hộ nông dân. Đặc điểm của loại cây
+này là chu kỳ kiến thiết cơ bản dài --- thường phải mất từ bốn đến sáu năm kể từ
+khi trồng mới cho thu hoạch ổn định --- nên mỗi tổn thất do sâu bệnh gây ra đều
+kéo theo hệ quả kinh tế lâu dài, không thể khắc phục trong một vụ.
+
+Trong các nhóm bệnh hại trên cây sầu riêng, bệnh trên lá chiếm vị trí đặc biệt vì
+hai lý do. Thứ nhất, lá là cơ quan quang hợp; diện tích lá bị tổn thương giảm
+trực tiếp làm suy giảm khả năng tích luỹ chất khô, ảnh hưởng đến năng suất và
+chất lượng quả. Thứ hai, triệu chứng trên lá thường xuất hiện \emph{sớm hơn}
+triệu chứng trên thân và quả, nên lá đóng vai trò chỉ báo cho phép can thiệp kịp
+thời. Việc phát hiện chính xác loại bệnh và xác định được phạm vi tổn thương ngay
+từ giai đoạn đầu vì thế có ý nghĩa quyết định đối với hiệu quả phòng trừ.
+
+\subsection{Nguồn gốc bộ dữ liệu}
+\label{subsec:nguongoc}
+
+Bộ dữ liệu được sử dụng trong luận văn gồm \num{4437} ảnh lá sầu riêng thuộc năm
+lớp: bốn lớp bệnh và một lớp lá khoẻ. Chi tiết về phân bố lớp, đặc trưng màu sắc
+và cách phân chia tập dữ liệu được trình bày trong \cref{sec:dulieu}.
+
+Ảnh được thu thập trực tiếp tại các vườn trồng sầu riêng ở khu vực Đông Nam Á.
+Nhãn ở mức ảnh --- tức việc xác định mỗi ảnh thuộc lớp bệnh nào --- do cán bộ
+chuyên môn nông nghiệp thực hiện và thẩm định; nhóm nghiên cứu không tự gán nhãn
+dựa trên quan sát của người không có chuyên môn bệnh học thực vật. Đây là cơ sở
+để xem nhãn mức ảnh của bộ dữ liệu là đáng tin cậy, và cũng là tiền đề cho toàn
+bộ quy trình học giám sát yếu được đề xuất: nếu nhãn mức ảnh sai thì bản đồ chú ý
+sinh ra từ nó, và do đó cả nhãn giả lẫn mô hình phân đoạn, đều mất giá trị.
+
+Bộ dữ liệu và trọng số mô hình được chia sẻ theo yêu cầu hợp lý gửi tới tác giả
+liên hệ; luận văn không công bố công khai dữ liệu thô.
+
+Cần lưu ý ba đặc điểm về trạng thái của dữ liệu khi được đưa vào nghiên cứu này,
+vì chúng ảnh hưởng trực tiếp đến phạm vi kết luận có thể rút ra:
+
+\begin{itemize}
+    \item \textbf{Ảnh đã được tiền xử lý trước.} Toàn bộ \num{4437} ảnh đều ở
+          đúng kích thước $224 \times 224$ điểm ảnh với tỉ lệ khung hình bằng 1
+          và độ lệch chuẩn bằng 0 --- nghĩa là việc cắt và co giãn đã được thực
+          hiện ở khâu trước. Hệ quả là luận văn không thể khảo sát ảnh hưởng của
+          độ phân giải đầu vào lên chất lượng phân đoạn.
+    \item \textbf{Siêu dữ liệu EXIF đã bị loại bỏ.} Kiểm tra trực tiếp các tệp
+          ảnh cho thấy không còn thông tin về thời điểm chụp, thiết bị chụp hay
+          toạ độ định vị. Vì vậy không thể phân tích ảnh hưởng của điều kiện chụp
+          --- ánh sáng, thiết bị, mùa vụ --- lên hiệu năng mô hình.
+    \item \textbf{Cấu trúc tên tệp phản ánh quy trình gán nhãn.} Các tệp được đặt
+          tên theo dạng \texttt{to\_\allowbreak label\_\allowbreak N.\allowbreak jpg} với chỉ số $N$ đánh liên tục
+          xuyên suốt các lớp, cho thấy dữ liệu ban đầu tồn tại dưới dạng một kho
+          ảnh chung chờ gán nhãn, sau đó mới được phân vào các thư mục theo lớp.
+\end{itemize}
+
+\TODO{Bổ sung nếu lấy được từ nhóm thu thập dữ liệu gốc: (1) địa phương cụ thể
+và thời gian thu thập; (2) thiết bị chụp và độ phân giải ảnh gốc trước khi co về
+$224\times224$; (3) số lượng chuyên gia tham gia gán nhãn và mức độ đồng thuận
+giữa họ nếu có nhiều hơn một người; (4) giấy phép sử dụng dữ liệu. Bốn thông tin
+này không tồn tại trong kho mã nguồn và cũng không được ghi trong công bố liên
+quan của nhóm.}
+
+Phương pháp chẩn đoán truyền thống dựa hoàn toàn vào quan sát trực tiếp của cán
+bộ kỹ thuật nông nghiệp. Cách làm này bộc lộ ba hạn chế cố hữu: tốn nhiều công
+lao động khi diện tích canh tác lớn; kết quả mang tính chủ quan và thiếu nhất
+quán giữa những người quan sát khác nhau; và đặc biệt khó phân biệt các bệnh có
+biểu hiện hình thái tương tự nhau. Những hạn chế này tạo ra nhu cầu thực tế về
+một công cụ chẩn đoán tự động, khách quan và có khả năng triển khai ở quy mô lớn.
+
+Học sâu (\en{deep learning}) đã chứng minh hiệu quả trong bài toán nhận dạng bệnh
+cây trồng qua nhiều nghiên cứu, từ công trình nền tảng của Mohanty và cộng
+sự~\cite{mohanty2016plantdisease} trên bộ dữ liệu PlantVillage, đến các khảo sát
+tổng quan của Kamilaris và Prenafeta-Boldú~\cite{kamilaris2018survey} hay
+Ferentinos~\cite{ferentinos2018plantdisease}. Tuy nhiên, phần lớn các nghiên cứu
+này dừng lại ở mức \emph{phân loại ảnh}: mô hình trả lời câu hỏi ``ảnh này thuộc
+bệnh nào'' nhưng không trả lời được câu hỏi ``vùng bệnh nằm ở đâu và rộng bao
+nhiêu''. Đây chính là khoảng trống mà luận văn hướng tới.
+
+\section{Phát biểu vấn đề}
+\label{sec:vande}
+
+Luận văn giải quyết ba vấn đề gắn bó chặt chẽ với nhau.
+
+\subsection{Chi phí gán nhãn ở mức điểm ảnh}
+
+Để huấn luyện một mô hình phân đoạn (\en{segmentation}) theo cách giám sát đầy đủ,
+mỗi ảnh cần một mặt nạ nhị phân (\en{binary mask}) chỉ rõ từng điểm ảnh thuộc vùng
+bệnh hay vùng lành. Công việc khoanh vùng thủ công này đòi hỏi chuyên gia bệnh
+học thực vật, tốn khoảng vài phút cho mỗi ảnh, và với bộ dữ liệu \num{4437} ảnh
+thì tổng chi phí trở nên khó chấp nhận trong điều kiện nghiên cứu thông thường.
+Trong khi đó, nhãn ở \emph{mức ảnh} --- tức chỉ ghi nhãn ``ảnh này bị bệnh
+Phomopsis'' --- lại rẻ hơn nhiều bậc và thường đã có sẵn.
+
+Bài toán đặt ra là: \emph{liệu có thể tận dụng nhãn mức ảnh vốn rẻ để tạo ra
+nhãn mức điểm ảnh mà không cần khoanh vùng thủ công hay không?} Đây là phạm trù
+của học giám sát yếu (\en{weakly-supervised learning}).
+
+\subsection{Tính khả diễn giải của mô hình}
+
+Mạng nơ-ron tích chập vận hành như một hộp đen: người dùng nhận được nhãn dự đoán
+kèm độ tin cậy nhưng không biết mô hình căn cứ vào đặc trưng nào. Trong bối cảnh
+nông nghiệp, nơi một khuyến cáo phun thuốc sai có thể gây thiệt hại trực tiếp,
+sự thiếu minh bạch này là rào cản thực sự đối với việc chấp nhận công nghệ. Cán
+bộ kỹ thuật cần nhìn thấy mô hình ``đang nhìn vào đâu'' để đối chiếu với kinh
+nghiệm chuyên môn trước khi tin vào kết luận của nó.
+
+\subsection{Nhu cầu định vị chính xác vùng tổn thương}
+
+Nhãn phân loại cho biết \emph{có} bệnh, nhưng quyết định canh tác lại cần biết
+\emph{mức độ} bệnh. Tỉ lệ diện tích lá bị tổn thương là căn cứ để lựa chọn giữa
+theo dõi tiếp, phun thuốc cục bộ hay cắt tỉa. Chỉ mô hình phân đoạn mới cung cấp
+được đại lượng này.
+
+Ba vấn đề trên gợi ý một hướng tiếp cận thống nhất: nếu bản đồ chú ý của mô hình
+phân loại có thể được trực quan hoá để giải quyết vấn đề thứ hai, thì chính bản
+đồ đó cũng có thể được chuyển hoá thành mặt nạ phân đoạn để giải quyết vấn đề thứ
+nhất và thứ ba. Đây là ý tưởng trung tâm của luận văn.
+
+\section{Mục tiêu và câu hỏi nghiên cứu}
+\label{sec:muctieu}
+
+\subsection{Mục tiêu tổng quát}
+
+Xây dựng và đánh giá một quy trình học giám sát yếu hoàn chỉnh cho bài toán phát
+hiện bệnh lá sầu riêng, đi từ phân loại ảnh, qua giải thích bằng bản đồ kích
+hoạt, đến sinh nhãn giả và huấn luyện mô hình phân đoạn --- toàn bộ mà không sử
+dụng bất kỳ nhãn thủ công nào ở mức điểm ảnh.
+
+\subsection{Mục tiêu cụ thể}
+
+\begin{enumerate}
+    \item Huấn luyện mô hình phân loại \EffNet{} cho năm lớp bệnh lá sầu riêng và
+          đánh giá đầy đủ trên tập kiểm thử độc lập.
+    \item Áp dụng \GradCAM{} và \GradCAMpp{} đa tỉ lệ để trực quan hoá vùng chú ý
+          của mô hình phân loại, đồng thời kiểm chứng rằng mô hình học đặc trưng
+          bệnh học có ý nghĩa chứ không phải học nhiễu nền.
+    \item Thiết kế quy trình chuyển hoá bản đồ nhiệt thành mặt nạ nhị phân, với
+          cơ chế kiểm soát độ phủ theo từng lớp bệnh.
+    \item Khảo sát mô hình nền tảng \SAM{} trong vai trò bộ tinh chỉnh biên
+          (\en{label refiner}) cho nhãn giả.
+    \item Huấn luyện và so sánh ba phiên bản mô hình phân đoạn tương ứng với ba
+          thế hệ nhãn giả, phân tích tách bạch ảnh hưởng của từng yếu tố.
+    \item Chỉ rõ giới hạn phương pháp luận của việc đánh giá phân đoạn khi không
+          có nhãn chuẩn (\en{ground truth}) ở mức điểm ảnh.
+\end{enumerate}
+
+\subsection{Câu hỏi nghiên cứu}
+
+\begin{itemize}
+    \item[\textbf{CH1.}] Mô hình phân loại \EffNet{} đạt độ chính xác bao nhiêu
+          trên năm lớp bệnh lá sầu riêng, và những cặp lớp nào dễ bị nhầm lẫn
+          nhất?
+    \item[\textbf{CH2.}] Bản đồ chú ý sinh ra từ mô hình phân loại có tập trung
+          vào vùng tổn thương thực sự hay không, và mức độ tin cậy của chúng khác
+          nhau thế nào giữa các lớp bệnh?
+    \item[\textbf{CH3.}] Việc tinh chỉnh biên bằng \SAM{} có cải thiện chất lượng
+          nhãn giả, và qua đó cải thiện mô hình phân đoạn, hay không?
+    \item[\textbf{CH4.}] Trong điều kiện không có nhãn chuẩn ở mức điểm ảnh, các
+          chỉ số IoU và Dice giữa những phiên bản khác nhau của quy trình có so
+          sánh trực tiếp được với nhau không? Nếu không thì phép so sánh nào là
+          hợp lệ?
+\end{itemize}
+
+Câu hỏi CH4 là câu hỏi mang tính phương pháp luận và, như sẽ thấy ở
+\cref{chap:thucnghiem}, câu trả lời cho nó làm thay đổi hoàn toàn cách diễn giải
+các con số của ba câu hỏi còn lại.
+
+\section{Đối tượng, phạm vi và giới hạn}
+\label{sec:phamvi}
+
+\subsection{Đối tượng nghiên cứu}
+
+Đối tượng là ảnh lá sầu riêng đơn lẻ ở độ phân giải $224 \times 224$ điểm ảnh,
+thuộc năm lớp: Algal Leaf Spot (đốm tảo), Allocaridara Attack (rầy phấn tấn
+công), Healthy Leaf (lá khoẻ), Leaf Blight (cháy lá) và Phomopsis Leaf Spot (đốm
+lá Phomopsis).
+
+\subsection{Phạm vi}
+
+\begin{itemize}
+    \item \textbf{Bài toán phân loại}: đa lớp, năm lớp, một nhãn trên mỗi ảnh.
+    \item \textbf{Bài toán phân đoạn}: nhị phân --- phân biệt vùng bệnh với phần
+          còn lại. Luận văn \emph{không} thực hiện phân đoạn đa lớp, tức không
+          phân biệt loại bệnh ở mức điểm ảnh.
+    \item \textbf{Dữ liệu}: chỉ sử dụng bộ dữ liệu \num{4437} ảnh nêu trên; không
+          thu thập bổ sung và không sử dụng dữ liệu ngoài.
+    \item \textbf{Mô hình}: các kiến trúc có kích thước vừa phải, huấn luyện được
+          trên một GPU đơn.
+\end{itemize}
+
+\subsection{Giới hạn cần lưu ý trước khi đọc kết quả}
+\label{subsec:gioihan-quantrong}
+
+Có một giới hạn mang tính bản chất cần được nêu ngay từ đầu, vì nó chi phối cách
+diễn giải toàn bộ kết quả phân đoạn trong luận văn:
+
+\begin{quote}
+\textbf{Bộ dữ liệu không có nhãn chuẩn ở mức điểm ảnh.} Vì vậy, mọi chỉ số IoU và
+Dice được báo cáo trong \cref{chap:thucnghiem} đo mức độ mô hình phân đoạn
+\emph{tái tạo lại được bộ nhãn giả} mà chính nó được huấn luyện trên đó --- chứ
+\emph{không} đo độ chính xác so với vùng bệnh thật.
+\end{quote}
+
+Hệ quả trực tiếp của giới hạn này là: các phiên bản sử dụng bộ nhãn giả khác nhau
+sẽ được đánh giá trên những mốc tham chiếu khác nhau, nên giá trị IoU của chúng
+\emph{không so sánh trực tiếp được với nhau}. Luận văn không né tránh mà phân
+tích thẳng vào vấn đề này ở \cref{sec:caveat}, đồng thời chỉ rõ phép so sánh nào
+vẫn giữ được tính hợp lệ nội tại.
+
+Ngoài ra, luận văn có ba giới hạn thứ cấp: (i) các hạn chế bắt nguồn từ trạng
+thái dữ liệu đầu vào đã nêu ở \cref{subsec:nguongoc} --- ảnh đã được co về
+$224 \times 224$ và siêu dữ liệu EXIF đã bị loại bỏ --- khiến không thể khảo sát
+ảnh hưởng của độ phân giải cũng như điều kiện chụp; (ii) các ngưỡng độ phủ theo
+lớp được chọn theo suy luận bệnh học chứ chưa được hiệu chỉnh dựa trên nhãn
+chuẩn; (iii) hệ thống được đánh giá trên ảnh chụp lá đơn lẻ, chưa kiểm chứng
+trên ảnh chụp toàn tán trong điều kiện đồng ruộng.
+
+\section{Đóng góp của luận văn}
+\label{sec:donggop}
+
+\begin{enumerate}
+    \item \textbf{Một quy trình học giám sát yếu bốn giai đoạn hoàn chỉnh} cho
+          bệnh lá sầu riêng: phân loại $\rightarrow$ giải thích bằng \GradCAMpp{}
+          $\rightarrow$ tinh chỉnh biên bằng \SAM{} $\rightarrow$ phân đoạn bằng
+          \UNetpp{}, được cài đặt đầy đủ và có thể tái tạo.
+
+    \item \textbf{Cơ chế ngưỡng phân vị theo lớp} (\en{per-class percentile
+          thresholding}) cho phép kiểm soát trực tiếp độ phủ của mặt nạ theo đặc
+          điểm từng bệnh, thay cho ngưỡng Otsu vốn giả định phân bố hai đỉnh và
+          gây phân đoạn thừa khi bản đồ nhiệt được hợp nhất đa tỉ lệ. Cơ chế này
+          đạt độ phủ mục tiêu với sai lệch dưới 0,4\% cho mọi lớp.
+
+    \item \textbf{Phân tích định lượng về \SAM{} trong vai trò bộ tinh chỉnh
+          nhãn}, bao gồm việc chỉ ra và giải thích một chế độ thất bại chưa được
+          nhấn mạnh trong tài liệu: cơ chế bảo vệ dựa trên IoU chỉ chặn được
+          trường hợp \SAM{} \emph{trôi} sang vùng khác, mà không chặn được trường
+          hợp \SAM{} \emph{nở} mặt nạ ra bao trọn cả chiếc lá. Hiện tượng nở mặt
+          nạ được đo cụ thể: độ phủ trung bình tăng từ 15,04\% lên 25,43\%.
+
+    \item \textbf{Một phân tích tách bạch (\en{ablation}) trung thực} về khả năng
+          so sánh của các chỉ số phân đoạn khi thiếu nhãn chuẩn. Luận văn chỉ ra
+          rằng phiên bản có chỉ số cao nhất về mặt số học lại không phải phiên bản
+          định vị bệnh tốt nhất, và giải thích tại sao --- một kết luận có giá trị
+          cảnh báo cho các nghiên cứu học giám sát yếu tương tự.
+
+    \item \textbf{Bộ tài liệu kiểm kê số liệu} (\texttt{INVENTORY.md}) truy vết
+          mọi con số trong luận văn về đúng notebook và ô lệnh đã sinh ra nó, kèm
+          danh sách các điểm chưa đủ bằng chứng. Cách làm này bảo đảm tính minh
+          bạch và tái lập của kết quả.
+\end{enumerate}
+
+\section{Bố cục luận văn}
+\label{sec:bocuc}
+
+Phần còn lại của luận văn được tổ chức như sau.
+
+\textbf{\Cref{chap:cosolythuyet}} trình bày cơ sở lý thuyết: mạng nơ-ron tích
+chập và học chuyển giao, kiến trúc U-Net cùng biến thể \UNetpp{}, các hàm mất mát
+cho dữ liệu mất cân bằng, họ phương pháp \GradCAM{}, khung học giám sát yếu, mô
+hình nền tảng \SAM{}, và các kỹ thuật xử lý ảnh cổ điển được sử dụng.
+
+\textbf{\Cref{chap:phuongphap}} mô tả phương pháp đề xuất: tổng quan quy trình
+bốn giai đoạn, phân tích khám phá bộ dữ liệu, thiết kế mô hình phân loại, và ba
+thế hệ nhãn giả V1--V3 cùng lý do kỹ thuật của từng cải tiến.
+
+\textbf{\Cref{chap:thucnghiem}} trình bày kết quả thực nghiệm: hiệu năng phân
+loại, phân tích định tính bản đồ chú ý, chất lượng nhãn giả qua các phiên bản,
+hiện tượng nở mặt nạ của \SAM{}, kết quả phân đoạn, phân tích tách bạch và phân
+tích lỗi.
+
+\textbf{\Cref{chap:ketluan}} tổng kết đóng góp, trả lời trực tiếp bốn câu hỏi
+nghiên cứu, thảo luận hạn chế và đề xuất hướng phát triển.
+
+Bốn phụ lục cung cấp bảng siêu tham số đầy đủ, nhật ký huấn luyện chi tiết, mô tả
+ứng dụng minh hoạ và hướng dẫn tái tạo toàn bộ kết quả.

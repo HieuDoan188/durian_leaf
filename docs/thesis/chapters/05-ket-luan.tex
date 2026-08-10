@@ -1,0 +1,309 @@
+% !TeX root = ../main.tex
+\chapter{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+\label{chap:ketluan}
+
+\section{Tổng kết}
+
+Luận văn đã xây dựng và đánh giá một quy trình học giám sát yếu hoàn chỉnh cho bài
+toán phát hiện và phân đoạn bệnh lá sầu riêng, đi từ phân loại ảnh qua giải thích
+bằng bản đồ kích hoạt, sinh nhãn giả, tinh chỉnh biên bằng mô hình nền tảng, đến
+huấn luyện mô hình phân đoạn --- toàn bộ mà không sử dụng bất kỳ nhãn thủ công nào
+ở mức điểm ảnh.
+
+Kết quả chính được tóm tắt ở \cref{tab:tongket}.
+
+\begin{table}[H]
+\centering
+\caption{Tổng hợp kết quả chính của luận văn}
+\label{tab:tongket}
+\small
+\begin{tabular}{L{5.2cm} L{8.0cm}}
+\toprule
+\textbf{Hạng mục} & \textbf{Kết quả} \\
+\midrule
+Phân loại năm lớp bệnh & Accuracy 97,30\%, $F_1$ 97,31\% trên 890 ảnh kiểm thử \\
+Độ chính xác kiểm định tốt nhất & 98,19\% tại epoch 11 \\
+Sinh nhãn giả & 3.104 mặt nạ, không dùng nhãn thủ công nào \\
+Kiểm soát độ phủ (V2) & Sai lệch dưới 0,4 điểm phần trăm mọi lớp \\
+Loại nhãn nhiễu lớp lá khoẻ & 683 mặt nạ dương tính giả bị loại bỏ \\
+Hiệu quả tinh chỉnh bằng SAM & IoU tăng 21,5\% (cận trên), hội tụ sớm hơn 8 epoch \\
+Phát hiện về cơ chế bảo vệ IoU & Chứng minh không thể phát hiện hiện tượng nở mặt nạ \\
+Phát hiện về tiêu chí dừng sớm & Mất 0,048--0,050 IoU khi dùng FocalDice \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Trả lời các câu hỏi nghiên cứu}
+
+\subsection{CH1 --- Hiệu năng phân loại và các cặp lớp dễ nhầm}
+
+\emph{Câu hỏi: Mô hình \EffNet{} đạt độ chính xác bao nhiêu trên năm lớp bệnh lá
+sầu riêng, và những cặp lớp nào dễ bị nhầm lẫn nhất?}
+
+Mô hình đạt \textbf{97,30\% độ chính xác} trên tập kiểm thử 890 ảnh, với $F_1$ có
+trọng số 97,31\%. Độ chính xác kiểm định tốt nhất là 98,19\% tại epoch 11; khoảng
+cách 0,89 điểm phần trăm giữa hai giá trị cho thấy mô hình khái quát tốt. Cả năm
+lớp đều đạt $F_1$ trên 95\%, biên độ giữa lớp cao nhất và thấp nhất chỉ 2,66 điểm
+phần trăm.
+
+Cặp nhầm lẫn chính là \textbf{Algal Leaf Spot và Phomopsis Leaf Spot}, chiếm 5
+trên tổng số 24 lỗi. Kết quả này đã được dự báo từ giai đoạn phân tích khám phá dữ
+liệu, dựa trên hai bằng chứng độc lập: quan sát hình thái cho thấy cả hai bệnh đều
+tạo đốm nhỏ trên nền lá xanh, và phân tích màu cho thấy hai lớp có phân bố kênh
+màu chồng lấn nhiều nhất.
+
+Đáng chú ý về mặt ứng dụng, tỉ lệ bỏ sót bệnh --- ảnh bệnh bị phân loại thành lá
+khoẻ --- chỉ là 6 trên 694 ảnh, tức 0,86\%.
+
+\subsection{CH2 --- Chất lượng của bản đồ chú ý}
+
+\emph{Câu hỏi: Bản đồ chú ý sinh ra từ mô hình phân loại có tập trung vào vùng tổn
+thương thực sự hay không, và mức độ tin cậy của chúng khác nhau thế nào giữa các
+lớp bệnh?}
+
+Câu trả lời phân hoá rõ rệt theo lớp, và chính sự phân hoá này là kết quả có giá
+trị nhất.
+
+Với \textbf{bốn lớp bệnh}, bản đồ chú ý tập trung đúng vào vùng tổn thương: kích
+hoạt bám vào các đốm với Algal và Phomopsis, bám vào vết cắn với Allocaridara, và
+trải theo mảng hoại tử với Leaf Blight. Độ tin cậy trung bình trên tập huấn luyện
+đạt 0,971--0,991.
+
+Với \textbf{lớp lá khoẻ}, bản đồ chú ý \emph{khuếch tán khắp phiến lá}, không có
+vùng trọng tâm. Hệ quả định lượng là mặt nạ sinh ra từ nhãn giả V1 cho lớp này có
+độ phủ trung bình 26,4\% --- cao gần gấp đôi lớp bệnh lan rộng nhất --- với trường
+hợp cực đoan lên tới 59,1\% trên một chiếc lá hoàn toàn khoẻ mạnh.
+
+Đây là bằng chứng thực nghiệm trực tiếp cho luận điểm lý thuyết trung tâm của luận
+văn: \textbf{bản đồ chú ý trả lời câu hỏi ``mô hình nhìn vào đâu để phân loại'',
+không phải câu hỏi ``vùng bệnh nằm ở đâu''}. Với lá khoẻ, mô hình nhận diện qua sự
+\emph{vắng mặt} của dấu hiệu bệnh --- một hành vi hoàn toàn hợp lý cho nhiệm vụ
+phân loại nhưng vô nghĩa khi chuyển thành mặt nạ tổn thương.
+
+Nhận thức này dẫn tới biện pháp ép mặt nạ lớp lá khoẻ về không, loại bỏ 683 mặt nạ
+nhiễu và cung cấp cho mô hình phân đoạn các mẫu âm sạch.
+
+\subsection{CH3 --- Hiệu quả của việc tinh chỉnh biên bằng SAM}
+
+\emph{Câu hỏi: Việc tinh chỉnh biên bằng \SAM{} có cải thiện chất lượng nhãn giả,
+và qua đó cải thiện mô hình phân đoạn, hay không?}
+
+Câu trả lời có hai vế đối lập nhau và cả hai đều đúng.
+
+\textbf{Xét theo tiêu chí bệnh học, \SAM{} làm nhãn xấu đi.} Thay vì chỉ tinh chỉnh
+biên như kỳ vọng, \SAM{} mở rộng độ phủ mặt nạ trung bình từ 15,04\% lên 25,43\%
+--- tăng 69,1\%, với mức tăng theo lớp từ 41,5\% đến 95,7\%. Có 200 trên 3.104 mặt
+nạ vượt quá 50\% diện tích ảnh, điều bất khả thi với bệnh đốm lá. Nguyên nhân là
+\SAM{} được huấn luyện để phân đoạn đơn vị ngữ nghĩa tự nhiên, mà đơn vị đó với
+gợi ý điểm đặt trên đốm bệnh thường là \emph{cả chiếc lá}.
+
+\textbf{Xét theo hiệu quả huấn luyện, \SAM{} cải thiện rõ rệt.} Với kiến trúc, hàm
+mất mát và tập kiểm thử giống hệt nhau, phiên bản V3 vượt V2 trên toàn bộ bốn chỉ
+số. Bằng chứng thuyết phục nhất không phải con số IoU mà là tốc độ hội tụ: V3 đạt
+val\_loss 0,4478 tại epoch 12, trong khi V2 phải tới epoch 20 mới đạt 0,5957.
+
+Hai vế này không mâu thuẫn vì chúng đo hai thứ khác nhau. Nhãn \SAM{} \emph{sai về
+phạm vi} nhưng \emph{đúng về cấu trúc} --- biên bám theo ranh giới thực trong ảnh
+và nhất quán giữa các ảnh. Mô hình học được từ tính nhất quán cấu trúc đó.
+
+Về mức độ cải thiện, luận văn không kết luận toàn bộ 21,5\% là do \SAM{}. Ba yếu
+tố gây nhiễu --- V2 bị dừng sớm khi còn đang cải thiện, thiên lệch của IoU theo
+kích thước mục tiêu, và khác biệt kích thước lô --- đều tác động cùng chiều làm
+phóng đại lợi thế của V3. Con số 21,5\% vì vậy là \textbf{cận trên} chứ không phải
+giá trị thực.
+
+\subsection{CH4 --- Khả năng so sánh của các chỉ số khi thiếu nhãn chuẩn}
+
+\emph{Câu hỏi: Trong điều kiện không có nhãn chuẩn ở mức điểm ảnh, các chỉ số IoU
+và Dice giữa những phiên bản khác nhau có so sánh trực tiếp được với nhau không?
+Nếu không thì phép so sánh nào là hợp lệ?}
+
+\textbf{Câu trả lời là không}, và đây là kết luận phương pháp luận quan trọng nhất
+của luận văn.
+
+Mỗi phiên bản được đánh giá trên mốc tham chiếu của chính nó: V1 so với nhãn V1,
+V2 so với nhãn V2, V3 so với nhãn đã qua tinh chỉnh. Ba mốc tham chiếu khác nhau về
+hình dạng, độ phủ lẫn độ biến thiên. So sánh trực tiếp các con số IoU giữa chúng
+tương đương với việc so điểm của ba học sinh làm ba đề thi có độ khó khác nhau.
+
+Minh hoạ rõ nhất là phiên bản V1 với IoU 0,7671 --- cao nhất trong ba phiên bản.
+Con số này \emph{không} có nghĩa V1 định vị bệnh tốt nhất. Nó phản ánh việc mục
+tiêu của V1 dễ hơn: nhãn V1 là các khối tròn lớn và trơn, hệ quả của việc phóng
+bản đồ $7 \times 7$ lên $224 \times 224$, nên dễ tái tạo hơn nhiều so với các biên
+sắc và phức tạp của nhãn \SAM{}.
+
+Ngoài khác biệt về mốc tham chiếu, luận văn còn xác định thêm hai lý do kỹ thuật
+khiến V1 không thể so sánh với V2 và V3: hai nhóm dùng \emph{hai tập kiểm thử khác
+nhau} do khác bộ sinh số ngẫu nhiên dù cùng hạt giống, và cài đặt của V1 vô tình
+áp dụng tăng cường dữ liệu lên cả tập kiểm định và kiểm thử. Tổng cộng cặp V1--V2
+khác nhau ở \textbf{tám biến} cùng lúc.
+
+\textbf{Phép so sánh hợp lệ duy nhất là V2 với V3}, vì hai phiên bản này dùng chung
+kiến trúc, hàm mất mát, bộ tối ưu, bộ tăng cường và cùng một tập kiểm thử. Ngay cả
+với cặp này, ba yếu tố gây nhiễu còn lại vẫn cần được trừ hao khi diễn giải.
+
+Kết luận tổng quát: \textbf{trong khung học giám sát yếu không có nhãn chuẩn, chỉ
+số IoU và Dice chỉ đo được mức độ mô hình tái tạo lại bộ nhãn giả của chính nó,
+không đo được độ chính xác định vị bệnh tuyệt đối.} Mọi so sánh giữa các phiên bản
+dùng bộ nhãn khác nhau đều cần được đặt trong ngữ cảnh này.
+
+\section{Đóng góp của luận văn}
+
+\subsection{Đóng góp về phương pháp}
+
+\textbf{Cơ chế ngưỡng phân vị theo lớp.} Thay vì cố định giá trị ngưỡng và để độ
+phủ trở thành kết quả không kiểm soát được, luận văn cố định tỉ lệ độ phủ và suy
+ngược ra ngưỡng cho từng ảnh. Cơ chế này đạt độ phủ mục tiêu với sai lệch dưới 0,4
+điểm phần trăm ở mọi lớp, đồng thời tránh được hiện tượng phân đoạn thừa của ngưỡng
+Otsu khi bản đồ nhiệt hợp nhất đa tỉ lệ trở nên trơn và đơn đỉnh.
+
+\textbf{Đưa tri thức tiên nghiệm vào quy trình sinh nhãn.} Việc ép mặt nạ lớp lá
+khoẻ về không là một can thiệp đơn giản nhưng hiệu quả, loại bỏ 683 mặt nạ dương
+tính giả mà bản thân bản đồ kích hoạt không bao giờ tự loại được.
+
+\subsection{Đóng góp về phát hiện thực nghiệm}
+
+\textbf{Chứng minh cơ chế bảo vệ dựa trên IoU không thể phát hiện hiện tượng nở
+mặt nạ.} Khi mặt nạ mới chứa trọn mặt nạ gốc, IoU giữa chúng bằng đúng tỉ số hai
+độ phủ. Do đó cơ chế bảo vệ với ngưỡng $\theta$ chỉ kích hoạt khi độ phủ mới vượt
+$1/\theta$ lần độ phủ gốc. Với $\theta = 0{,}15$ và độ phủ thực tế 17,6--21,7\%,
+ngưỡng cần thiết là 117--145\% diện tích ảnh --- bất khả thi về mặt vật lý. Đây là
+khiếm khuyết thiết kế mang tính hệ thống, không phải lỗi cài đặt, và bắt nguồn từ
+tính đối xứng của IoU: nó không phân biệt được ``lệch vị trí'' với ``đúng vị trí
+nhưng quá rộng''. Luận văn đề xuất bổ sung một ràng buộc bất đối xứng về tỉ lệ độ
+phủ để khắc phục.
+
+\textbf{Xác định hệ quả của việc chọn điểm kiểm tra theo hàm mất mát khi dùng
+FocalDice.} Với phiên bản V1 dùng BCE + Dice, tổn thất do chọn theo hàm mất mát
+thay vì theo IoU chỉ là 0,0016 --- không đáng kể. Với hai phiên bản dùng FocalDice,
+tổn thất lớn gấp ba mươi lần: 0,0478 và 0,0502. Nguyên nhân là thành phần Focal
+thu nhỏ đóng góp của các điểm ảnh dễ, khiến giá trị hàm mất mát bị chi phối bởi
+một nhóm nhỏ điểm ảnh biên trong khi IoU tính trên toàn vùng. Khuyến nghị rút ra
+có thể áp dụng trực tiếp cho các nghiên cứu tương tự.
+
+\subsection{Đóng góp về phương pháp luận}
+
+\textbf{Khung phân tích tách bạch cho học giám sát yếu.} Luận văn đề xuất và áp
+dụng cách tiếp cận đếm số biến khác nhau giữa các cặp cấu hình trước khi diễn giải
+chênh lệch hiệu năng. Cách làm này cho thấy cặp V1--V2 khác nhau ở tám biến nên
+không thể diễn giải, còn cặp V2--V3 khác ba biến nên diễn giải được với điều kiện
+trừ hao. Đồng thời luận văn cũng đánh giá \emph{chiều tác động} của từng yếu tố
+gây nhiễu để xác định con số quan sát được là cận trên hay cận dưới.
+
+\textbf{Tài liệu kiểm kê số liệu.} Toàn bộ con số trong luận văn được truy vết về
+đúng notebook và ô lệnh sinh ra nó, kèm danh sách các điểm chưa đủ bằng chứng.
+Cách làm này bảo đảm tính minh bạch và cho phép kiểm chứng độc lập.
+
+\section{Hạn chế}
+
+\subsection{Hạn chế cốt lõi --- thiếu nhãn chuẩn}
+
+Hạn chế bao trùm và quyết định phạm vi mọi kết luận là bộ dữ liệu không có nhãn
+thủ công ở mức điểm ảnh. Hệ quả là:
+
+\begin{itemize}
+    \item Không thể xác lập hiệu năng định vị bệnh \emph{tuyệt đối} của bất kỳ
+          phiên bản nào.
+    \item Không thể hiệu chỉnh các tỉ lệ độ phủ mục tiêu 18--22\%, vốn hiện được
+          chọn theo suy luận bệnh học.
+    \item Không thể kiểm chứng liệu hiện tượng \SAM{} mở rộng mặt nạ có thực sự
+          làm nhãn xa rời tổn thương thật hay không --- kết luận hiện tại dựa trên
+          quan sát định tính và lập luận về diện tích hợp lý.
+\end{itemize}
+
+\subsection{Hạn chế về thiết kế thực nghiệm}
+
+Các phiên bản không được thiết kế như một thí nghiệm có kiểm soát ngay từ đầu.
+Cặp V1--V2 khác nhau ở tám biến; ngay cả cặp V2--V3 vẫn còn hai khác biệt ngoài ý
+muốn về kích thước lô và patience. Ràng buộc bộ nhớ đồ hoạ 2,15 GB là nguyên nhân
+trực tiếp của một số khác biệt này.
+
+Ngoài ra, mỗi cấu hình chỉ được chạy \emph{một lần} với một hạt giống ngẫu nhiên
+duy nhất. Không có ước lượng phương sai, nên không thể khẳng định chênh lệch quan
+sát được vượt ngưỡng dao động ngẫu nhiên giữa các lần chạy.
+
+\subsection{Hạn chế về dữ liệu}
+
+Toàn bộ ảnh đã được co về $224 \times 224$ và bị xoá siêu dữ liệu EXIF trước khi
+đến với nghiên cứu, nên không thể khảo sát ảnh hưởng của độ phân giải đầu vào hay
+điều kiện chụp. Hệ thống cũng chỉ được đánh giá trên ảnh chụp lá đơn lẻ, chưa kiểm
+chứng trên ảnh chụp toàn tán trong điều kiện đồng ruộng --- nơi có nền phức tạp,
+nhiều lá chồng lấn và điều kiện ánh sáng biến thiên.
+
+\subsection{Hạn chế về phạm vi bài toán}
+
+Bài toán phân đoạn được đặt ở dạng nhị phân --- bệnh so với nền --- nên mô hình
+phân đoạn không phân biệt được loại bệnh ở mức điểm ảnh. Với ảnh có nhiều loại
+bệnh cùng lúc, hệ thống hiện chỉ cho một mặt nạ chung.
+
+\section{Hướng phát triển}
+
+\subsection{Ưu tiên cao}
+
+\textbf{Xây dựng tập kiểm thử có nhãn chuẩn.} Đây là việc cần làm trước tiên vì nó
+gỡ bỏ hạn chế cốt lõi. Chỉ cần một tập nhỏ 50--100 ảnh được chuyên gia khoanh vùng
+thủ công là đủ để: đo hiệu năng định vị bệnh tuyệt đối, so sánh công bằng ba phiên
+bản trên cùng một mốc tham chiếu, và hiệu chỉnh các tỉ lệ độ phủ mục tiêu. Chi phí
+cho quy mô này hoàn toàn khả thi.
+
+\textbf{Sửa cơ chế bảo vệ và chạy lại giai đoạn tinh chỉnh.} Bổ sung ràng buộc bất
+đối xứng về tỉ lệ độ phủ như đã đề xuất, với hệ số $\kappa = 2{,}0$, rồi sinh lại
+nhãn và huấn luyện lại. Đây là thí nghiệm rẻ nhưng cho phép kiểm chứng trực tiếp
+liệu việc ngăn hiện tượng nở có cải thiện chất lượng nhãn hay không.
+
+\textbf{Chuyển tiêu chí chọn điểm kiểm tra sang val\_IoU.} Chỉ là thay đổi vài
+dòng mã nhưng theo số liệu đã đo sẽ thu hồi được khoảng 0,05 IoU cho phiên bản V3.
+
+\subsection{Ưu tiên trung bình}
+
+\textbf{Thiết kế lại thí nghiệm có kiểm soát chặt.} Cố định toàn bộ siêu tham số
+giữa các phiên bản và chỉ thay đúng một biến mỗi lần, đồng thời chạy nhiều hạt
+giống ngẫu nhiên để có ước lượng phương sai.
+
+\textbf{So sánh \SAM{} với Dense CRF.} Dense CRF là hướng tinh chỉnh nhãn thay thế,
+không cần mô hình nền tảng nặng và bám theo biên màu sắc thực. Hướng này đã được
+thử nhưng không triển khai được do thư viện không tương thích với phiên bản Python
+sử dụng; việc so sánh vẫn là câu hỏi bỏ ngỏ.
+
+\textbf{Khảo sát cường độ tăng cường dữ liệu.} Kiểm chứng giả thuyết rằng các phép
+biến dạng đàn hồi làm nhiễu tín hiệu huấn luyện khi nhãn vốn đã không chắc chắn về
+biên.
+
+\textbf{Thử \SAM{}2.} Phiên bản kế tiếp của \SAM{} có chất lượng biên tốt hơn và
+có thể giảm mức độ nở mặt nạ.
+
+\subsection{Hướng mở rộng dài hạn}
+
+\textbf{Phân đoạn đa lớp.} Mở rộng từ nhị phân sang phân đoạn theo từng loại bệnh,
+cho phép xử lý ảnh có nhiều bệnh đồng thời.
+
+\textbf{Ước lượng mức độ bệnh.} Khắc phục hạn chế đã nêu rằng nhãn giả V2 không mã
+hoá được mức độ nặng nhẹ, hướng tới đầu ra là tỉ lệ diện tích lá bị bệnh có hiệu
+chỉnh --- đại lượng trực tiếp phục vụ quyết định canh tác.
+
+\textbf{Kiểm chứng trong điều kiện đồng ruộng.} Đánh giá trên ảnh chụp toàn tán với
+nền phức tạp và điều kiện ánh sáng biến thiên, đối chiếu với bài học từ bộ dữ liệu
+PlantVillage về khoảng cách giữa dữ liệu chuẩn hoá và dữ liệu thực
+tế~\cite{mohanty2016plantdisease}.
+
+\textbf{Triển khai trên thiết bị biên.} Lượng tử hoá và cắt tỉa mô hình để chạy
+trực tiếp trên điện thoại, phục vụ chẩn đoán tại vườn không cần kết nối mạng.
+
+\section{Lời kết}
+
+Luận văn cho thấy một quy trình học giám sát yếu hoàn toàn có thể chuyển nhãn mức
+ảnh --- vốn rẻ và sẵn có --- thành mặt nạ phân đoạn ở mức điểm ảnh mà không cần bất
+kỳ công khoanh vùng thủ công nào. Mô hình phân loại đạt 97,30\% độ chính xác, và
+toàn bộ 3.104 mặt nạ giả được sinh tự động.
+
+Nhưng đóng góp mà luận văn coi trọng nhất không nằm ở các con số hiệu năng. Đó là
+việc chỉ ra rằng \emph{trong khung học giám sát yếu, chính các con số ấy cần được
+đọc một cách thận trọng}. Phiên bản có IoU cao nhất không phải phiên bản định vị
+bệnh tốt nhất. Một mô hình nền tảng có thể vừa làm hỏng nhãn theo tiêu chí bệnh học
+vừa cải thiện kết quả huấn luyện. Và một cơ chế bảo vệ tưởng như hợp lý lại có thể
+bất lực về mặt toán học trước đúng vấn đề mà nó được thiết kế để ngăn chặn.
+
+Những phát hiện này chỉ lộ ra khi đối chiếu kỹ số liệu thực tế với kỳ vọng thiết
+kế, thay vì dừng lại ở con số tốt nhất đạt được. Đó cũng là tinh thần mà luận văn
+mong muốn đóng góp cho các nghiên cứu học giám sát yếu tiếp theo trong lĩnh vực
+nông nghiệp.

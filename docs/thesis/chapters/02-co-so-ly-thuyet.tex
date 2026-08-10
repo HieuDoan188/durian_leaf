@@ -1,0 +1,694 @@
+% !TeX root = ../main.tex
+\chapter{CƠ SỞ LÝ THUYẾT VÀ NGHIÊN CỨU LIÊN QUAN}
+\label{chap:cosolythuyet}
+
+Chương này trình bày nền tảng lý thuyết của các thành phần được sử dụng trong quy
+trình đề xuất. Thứ tự trình bày bám theo trình tự của chính quy trình: từ mạng
+phân loại (\cref{sec:cnn}), qua kiến trúc phân đoạn (\cref{sec:unet}) và hàm mất
+mát (\cref{sec:loss}), đến các phương pháp giải thích (\cref{sec:xai}), khung học
+giám sát yếu (\cref{sec:weaksup}), mô hình nền tảng \SAM{} (\cref{sec:sam}), các
+kỹ thuật xử lý ảnh cổ điển (\cref{sec:xulyanh}) và cuối cùng là hệ chỉ số đánh
+giá (\cref{sec:metrics}).
+
+\section{Mạng nơ-ron tích chập và học chuyển giao}
+\label{sec:cnn}
+
+\subsection{Mạng nơ-ron tích chập}
+
+Mạng nơ-ron tích chập (\en{Convolutional Neural Network}, CNN) là kiến trúc chủ
+đạo trong thị giác máy tính hiện đại. Khác với mạng kết nối đầy đủ, CNN khai thác
+hai giả định cấu trúc phù hợp với dữ liệu ảnh: \emph{tính cục bộ} --- một điểm
+ảnh liên quan mật thiết nhất với các điểm lân cận --- và \emph{tính bất biến tịnh
+tiến} --- một đặc trưng như cạnh hay góc mang cùng ý nghĩa dù xuất hiện ở vị trí
+nào trong ảnh.
+
+Phép tích chập hai chiều giữa ảnh đầu vào $X$ và nhân tích chập $K$ kích thước
+$m \times n$ được định nghĩa:
+
+\begin{equation}
+    (X * K)(i, j) = \sum_{a=0}^{m-1} \sum_{b=0}^{n-1} X(i + a,\, j + b) \cdot K(a, b)
+    \label{eq:convolution}
+\end{equation}
+
+Trọng số của nhân $K$ được chia sẻ trên toàn bộ ảnh, làm giảm mạnh số tham số so
+với mạng kết nối đầy đủ và đồng thời áp đặt tính bất biến tịnh tiến vào chính kiến
+trúc. Một khối tích chập điển hình gồm phép tích chập, chuẩn hoá theo lô
+(\en{batch normalization}) và hàm kích hoạt phi tuyến. Chồng nhiều khối như vậy
+tạo ra một phân cấp đặc trưng: các tầng nông học cạnh và kết cấu, các tầng sâu học
+các bộ phận và khái niệm ngữ nghĩa. Trong bài toán của luận văn, phân cấp này
+tương ứng với việc mạng học từ kết cấu bề mặt lá ở tầng nông đến hình thái đốm
+bệnh ở tầng sâu.
+
+\subsection{Học chuyển giao}
+
+Bộ dữ liệu của luận văn có \num{3104} ảnh huấn luyện --- một con số nhỏ so với
+quy mô cần thiết để huấn luyện CNN từ đầu. Huấn luyện từ trạng thái khởi tạo ngẫu
+nhiên trên tập nhỏ như vậy hầu như chắc chắn dẫn tới quá khớp (\en{overfitting}):
+mạng ghi nhớ tập huấn luyện thay vì học quy luật khái quát.
+
+Học chuyển giao (\en{transfer learning}) giải quyết vấn đề này bằng cách khởi tạo
+mạng từ trọng số đã được huấn luyện trên một tập dữ liệu lớn, phổ biến nhất là
+ImageNet với hơn 1,2 triệu ảnh thuộc 1000 lớp~\cite{deng2009imagenet}. Cơ sở của
+cách làm là các đặc trưng ở tầng nông --- cạnh, góc, kết cấu, chuyển sắc màu ---
+mang tính tổng quát và hữu ích cho hầu hết bài toán thị giác, bất kể miền dữ liệu.
+
+Có hai chiến lược chính:
+
+\begin{itemize}
+    \item \textbf{Trích xuất đặc trưng} (\en{feature extraction}): đóng băng toàn
+          bộ phần trích đặc trưng, chỉ huấn luyện tầng phân loại cuối. Phù hợp khi
+          dữ liệu đích rất nhỏ hoặc rất giống miền nguồn.
+    \item \textbf{Tinh chỉnh toàn bộ} (\en{full fine-tuning}): cập nhật mọi trọng
+          số với tốc độ học nhỏ. Phù hợp khi dữ liệu đích đủ lớn và khác biệt đáng
+          kể so với miền nguồn.
+\end{itemize}
+
+Ảnh lá bệnh khác xa phân bố ảnh ImageNet về cả nội dung lẫn kết cấu, trong khi
+\num{3104} ảnh là đủ để tránh quên thảm hoạ (\en{catastrophic forgetting}) nếu
+dùng tốc độ học đủ nhỏ. Vì vậy luận văn chọn tinh chỉnh toàn bộ với tốc độ học
+$10^{-4}$; lý do lựa chọn được biện luận chi tiết ở \cref{chap:phuongphap}.
+
+\subsection{Kiến trúc EfficientNet}
+
+Trước EfficientNet, việc mở rộng CNN để tăng độ chính xác thường được thực hiện
+theo một chiều đơn lẻ: tăng độ sâu (số tầng), tăng độ rộng (số kênh), hoặc tăng độ
+phân giải ảnh đầu vào. Tan và Le~\cite{tan2019efficientnet} chỉ ra rằng ba chiều
+này không độc lập --- mạng sâu hơn cần độ phân giải cao hơn để tận dụng vùng tiếp
+nhận lớn, và cần nhiều kênh hơn để biểu diễn các mẫu tinh vi hơn --- và đề xuất
+\emph{mở rộng hợp thành} (\en{compound scaling}), mở rộng đồng thời ba chiều theo
+một hệ số duy nhất $\phi$:
+
+\begin{equation}
+    \text{độ sâu: } d = \alpha^{\phi}, \qquad
+    \text{độ rộng: } w = \beta^{\phi}, \qquad
+    \text{độ phân giải: } r = \gamma^{\phi}
+    \label{eq:compound_scaling}
+\end{equation}
+
+với ràng buộc $\alpha \cdot \beta^{2} \cdot \gamma^{2} \approx 2$ và
+$\alpha, \beta, \gamma \geq 1$. Ràng buộc này bảo đảm chi phí tính toán tăng xấp
+xỉ $2^{\phi}$ lần khi hệ số hợp thành tăng $\phi$ đơn vị --- một cách kiểm soát
+ngân sách tính toán rõ ràng. Các hệ số $\alpha, \beta, \gamma$ được xác định bằng
+tìm kiếm lưới trên mạng cơ sở.
+
+Mạng cơ sở EfficientNet-B0 được tìm ra bằng tìm kiếm kiến trúc tự động
+(\en{neural architecture search}), với khối xây dựng chính là MBConv --- khối
+tích chập nghịch đảo có nút cổ chai (\en{inverted residual bottleneck}) kết hợp
+cơ chế \en{squeeze-and-excitation} để hiệu chỉnh trọng số giữa các kênh. Nhờ tích
+chập tách theo chiều sâu (\en{depthwise separable convolution}), EfficientNet-B0
+chỉ có khoảng \num{5.3} triệu tham số nhưng đạt độ chính xác cao hơn nhiều mạng
+lớn hơn nó vài lần, chẳng hạn ResNet-50~\cite{he2016resnet} với khoảng
+\num{25} triệu tham số.
+
+Trong luận văn, EfficientNet-B0 giữ vai trò kép, và đây là một lựa chọn thiết kế
+có chủ đích chứ không phải sự trùng hợp:
+
+\begin{enumerate}
+    \item Làm \textbf{mạng phân loại} ở Giai đoạn 1. Sau khi thay tầng phân loại
+          1000 lớp bằng tầng 5 lớp, mô hình có \num{4013953} tham số.
+    \item Làm \textbf{bộ mã hoá} (\en{encoder}) cho mạng phân đoạn ở Giai đoạn 4,
+          với phần trích đặc trưng gồm \num{4007548} tham số.
+\end{enumerate}
+
+Việc dùng chung một kiến trúc xương sống cho cả hai giai đoạn bảo đảm bản đồ chú
+ý sinh ra ở Giai đoạn 2 và đặc trưng mà mạng phân đoạn khai thác ở Giai đoạn 4
+đến từ cùng một không gian biểu diễn, giúp quy trình nhất quán về mặt khái niệm.
+
+\section{Kiến trúc phân đoạn ảnh}
+\label{sec:unet}
+
+\subsection{Từ phân loại đến phân đoạn}
+
+Phân loại ảnh gán một nhãn cho toàn ảnh; phân đoạn ngữ nghĩa
+(\en{semantic segmentation}) gán một nhãn cho \emph{từng điểm ảnh}. Chuyển từ bài
+toán thứ nhất sang bài toán thứ hai đặt ra một mâu thuẫn cốt lõi: mạng phân loại
+liên tục giảm độ phân giải không gian để mở rộng vùng tiếp nhận và trích xuất ngữ
+nghĩa, nhưng phân đoạn lại đòi hỏi đầu ra có độ phân giải bằng đúng ảnh gốc. Với
+đầu vào $224 \times 224$, bản đồ đặc trưng ở tầng cuối của EfficientNet-B0 chỉ
+còn $7 \times 7$ --- mất mát thông tin không gian tới 1024 lần về diện tích.
+
+\subsection{U-Net}
+
+U-Net~\cite{ronneberger2015unet} giải quyết mâu thuẫn trên bằng kiến trúc mã
+hoá--giải mã đối xứng hình chữ U. Nhánh mã hoá giảm dần độ phân giải để thu ngữ
+nghĩa; nhánh giải mã tăng dần độ phân giải để khôi phục chi tiết không gian. Đóng
+góp quyết định là các \emph{kết nối tắt} (\en{skip connection}) nối trực tiếp mỗi
+tầng mã hoá với tầng giải mã tương ứng:
+
+\begin{equation}
+    x^{i}_{\text{dec}} = \mathcal{F}\big(\,[\,\mathcal{U}(x^{i+1}_{\text{dec}}) \;;\; x^{i}_{\text{enc}}\,]\,\big)
+    \label{eq:unet_skip}
+\end{equation}
+
+trong đó $\mathcal{U}(\cdot)$ là phép tăng mẫu, $[\,\cdot\,;\,\cdot\,]$ là phép
+nối theo chiều kênh và $\mathcal{F}(\cdot)$ là khối tích chập. Nhờ kết nối tắt,
+thông tin không gian độ phân giải cao ở nhánh mã hoá được đưa thẳng sang nhánh
+giải mã mà không phải đi qua nút cổ chai, cho phép khôi phục biên chính xác. U-Net
+ban đầu được thiết kế cho ảnh y sinh --- bài toán cũng có đặc điểm dữ liệu huấn
+luyện ít, tương tự bối cảnh của luận văn.
+
+\subsection{UNet++}
+
+Zhou và cộng sự~\cite{zhou2018unetpp} chỉ ra một điểm yếu của U-Net: kết nối tắt
+nối trực tiếp đặc trưng \emph{nông} của bộ mã hoá với đặc trưng \emph{sâu} của bộ
+giải mã, tạo ra \emph{khoảng cách ngữ nghĩa} (\en{semantic gap}) giữa hai luồng
+thông tin có mức trừu tượng rất khác nhau. Việc nối trực tiếp buộc bộ giải mã phải
+tự dung hoà hai nguồn không đồng nhất.
+
+\UNetpp{} thu hẹp khoảng cách này bằng các kết nối tắt \emph{lồng nhau, dày đặc}:
+thay vì một đường nối thẳng, đặc trưng của bộ mã hoá đi qua một chuỗi khối tích
+chập trung gian trước khi tới bộ giải mã. Node $x^{i,j}$ ($i$ là chỉ số tầng, $j$
+là chỉ số dọc theo đường nối) được tính:
+
+\begin{equation}
+    x^{i,j} =
+    \begin{cases}
+        \mathcal{F}\big(x^{i-1,j}\big) & \text{nếu } j = 0 \\[6pt]
+        \mathcal{F}\Big(\big[\,[x^{i,k}]_{k=0}^{j-1},\; \mathcal{U}(x^{i+1,j-1})\,\big]\Big) & \text{nếu } j > 0
+    \end{cases}
+    \label{eq:unetpp}
+\end{equation}
+
+Mỗi node nhận toàn bộ các node trước đó cùng tầng cộng với đặc trưng đã tăng mẫu
+từ tầng dưới. Kết quả là đặc trưng được tinh chỉnh dần qua nhiều bước trung gian
+thay vì nhảy một bước, và bộ giải mã nhận được biểu diễn ở nhiều mức trừu tượng
+khác nhau.
+
+Đặc điểm này đặc biệt phù hợp với bài toán của luận văn. Bệnh đốm lá tạo ra các
+tổn thương \emph{nhiều kích thước khác nhau trong cùng một ảnh}: đốm nhỏ vài chục
+điểm ảnh nằm cạnh mảng hoại tử lớn. Kiến trúc lồng nhau cho phép mô hình kết hợp
+thông tin đa tỉ lệ tự nhiên hơn so với kết nối tắt đơn.
+
+Chi phí của \UNetpp{} là khiêm tốn. Với cùng bộ mã hoá EfficientNet-B0, mô hình
+\UNetpp{} có \num{6569581} tham số so với \num{6251469} tham số của U-Net thường
+--- chỉ tăng \num{318112} tham số, tương đương 5,1\%. Trong đó bộ mã hoá chiếm
+\num{4007548} tham số và bộ giải mã chiếm \num{2561888} tham số. Mức tăng nhỏ này
+là lý do luận văn chọn \UNetpp{} mà không lo ngại về ngân sách tính toán.
+
+\section{Hàm mất mát cho dữ liệu mất cân bằng}
+\label{sec:loss}
+
+\subsection{Bản chất của mất cân bằng trong phân đoạn tổn thương}
+
+Trong bài toán phân đoạn nhị phân vùng bệnh, số điểm ảnh thuộc lớp nền lớn hơn
+nhiều lần số điểm ảnh thuộc lớp tổn thương. Với độ phủ mục tiêu 18--22\% như
+thiết kế ở \cref{chap:phuongphap}, tỉ lệ nền trên tổn thương xấp xỉ 4:1; với các
+ảnh bệnh nhẹ, tỉ lệ này còn cao hơn nhiều. Mất cân bằng dẫn tới một nghiệm suy
+biến nguy hiểm: mô hình dự đoán toàn bộ ảnh là nền vẫn đạt độ chính xác theo điểm
+ảnh rất cao nhưng hoàn toàn vô dụng.
+
+\subsection{Binary Cross-Entropy}
+
+Hàm mất mát cơ bản cho phân loại nhị phân theo từng điểm ảnh:
+
+\begin{equation}
+    \mathcal{L}_{\text{BCE}} = -\frac{1}{N}\sum_{i=1}^{N}
+        \Big[ y_i \log(p_i) + (1 - y_i)\log(1 - p_i) \Big]
+    \label{eq:bce}
+\end{equation}
+
+trong đó $y_i \in \{0,1\}$ là nhãn và $p_i \in (0,1)$ là xác suất dự đoán của
+điểm ảnh thứ $i$. Hạn chế của BCE là xử lý mọi điểm ảnh với trọng số như nhau:
+khi lớp nền áp đảo, tổng đóng góp của các điểm nền lấn át tín hiệu từ vùng tổn
+thương.
+
+\subsection{Dice Loss}
+
+Milletari và cộng sự~\cite{milletari2016vnet} đề xuất tối ưu trực tiếp hệ số Dice
+--- một đại lượng đo độ chồng lấp, không phụ thuộc vào số điểm ảnh nền:
+
+\begin{equation}
+    \mathcal{L}_{\text{Dice}} = 1 - \frac{2\sum_{i} p_i y_i + \epsilon}
+                                         {\sum_{i} p_i + \sum_{i} y_i + \epsilon}
+    \label{eq:dice}
+\end{equation}
+
+Hằng số $\epsilon$ giữ cho biểu thức xác định khi cả dự đoán lẫn nhãn đều rỗng
+--- trường hợp thực sự xảy ra trong luận văn, vì \num{683} ảnh lá khoẻ được gán
+mặt nạ toàn số không (\cref{chap:phuongphap}). Ưu điểm của Dice là tối ưu trực
+tiếp đại lượng dùng để đánh giá; nhược điểm là gradient kém ổn định khi vùng đích
+rất nhỏ.
+
+\subsection{Focal Loss}
+
+Lin và cộng sự~\cite{lin2017focal} tiếp cận mất cân bằng theo hướng khác: thay vì
+đổi đại lượng tối ưu, họ \emph{giảm trọng số} của các mẫu đã được phân loại tốt:
+
+\begin{equation}
+    \mathcal{L}_{\text{Focal}} = -\alpha \,(1 - p_t)^{\gamma} \log(p_t),
+    \qquad
+    p_t = \begin{cases} p & \text{nếu } y = 1 \\ 1 - p & \text{nếu } y = 0 \end{cases}
+    \label{eq:focal}
+\end{equation}
+
+Hệ số điều biến $(1-p_t)^{\gamma}$ là mấu chốt. Với một điểm ảnh nền dễ, mô hình
+dự đoán $p_t = 0{,}95$, hệ số bằng $0{,}05^{2} = 0{,}0025$ khi $\gamma = 2$ ---
+đóng góp của nó bị giảm 400 lần. Ngược lại, một điểm ảnh khó với $p_t = 0{,}5$
+chỉ bị giảm 4 lần. Nhờ vậy gradient tập trung vào vùng biên tổn thương --- chính
+là nơi mô hình cần học nhất. Tham số $\alpha$ cân bằng thêm giữa hai lớp. Luận văn
+dùng $\alpha = 0{,}25$ và $\gamma = 2{,}0$ theo giá trị khuyến nghị của tác giả
+gốc.
+
+\subsection{Hàm mất mát kết hợp FocalDice}
+
+Hai hàm trên bổ khuyết cho nhau: Focal Loss hoạt động ở mức \emph{từng điểm ảnh},
+điều tiết đóng góp theo độ khó; Dice Loss hoạt động ở mức \emph{toàn vùng}, tối
+ưu độ chồng lấp tổng thể. Luận văn sử dụng tổ hợp:
+
+\begin{equation}
+    \mathcal{L}_{\text{FocalDice}} = \mathcal{L}_{\text{Focal}} + \mathcal{L}_{\text{Dice}}
+    \label{eq:focaldice}
+\end{equation}
+
+Cần lưu ý một hệ quả thực nghiệm quan trọng: do thành phần Focal chủ động thu nhỏ
+gradient của phần lớn điểm ảnh, giá trị mất mát tổng thể giảm chậm hơn nhiều so
+với BCE + Dice. Điều này khiến \emph{tốc độ giảm của hàm mất mát không còn là chỉ
+báo đáng tin cậy cho tiến bộ của mô hình} --- một quan sát dẫn tới hệ quả trực
+tiếp về tiêu chí dừng sớm, được phân tích ở \cref{chap:thucnghiem}.
+
+\subsection{Thuật toán tối ưu}
+
+Luận văn sử dụng hai bộ tối ưu. Adam~\cite{kingma2015adam} ước lượng thích nghi
+mô-men bậc một và bậc hai của gradient, cho tốc độ hội tụ nhanh mà ít cần điều
+chỉnh tốc độ học. AdamW~\cite{loshchilov2019adamw} sửa một khiếm khuyết của Adam:
+trong Adam, suy giảm trọng số (\en{weight decay}) được cộng vào gradient nên bị
+chia cho ước lượng mô-men bậc hai, làm cường độ chính quy hoá thay đổi không kiểm
+soát giữa các tham số. AdamW tách suy giảm trọng số khỏi bước cập nhật gradient,
+khôi phục đúng ý nghĩa chính quy hoá.
+
+Về lịch tốc độ học, luận văn dùng hai chiến lược khác nhau cho hai nhóm thực
+nghiệm. \en{ReduceLROnPlateau} giảm tốc độ học khi chỉ số theo dõi ngừng cải
+thiện --- đơn giản và không cần biết trước tổng số bước. \en{CosineAnnealingLR},
+xuất phát từ công trình của Loshchilov và Hutter~\cite{loshchilov2017sgdr}, giảm
+tốc độ học theo quy luật cô-sin:
+
+\begin{equation}
+    \eta_t = \eta_{\min} + \tfrac{1}{2}\big(\eta_{\max} - \eta_{\min}\big)
+             \left(1 + \cos\!\Big(\frac{T_{\text{cur}}}{T_{\max}}\pi\Big)\right)
+    \label{eq:cosine}
+\end{equation}
+
+Lịch cô-sin giảm chậm ở đầu để mô hình khám phá không gian nghiệm, rồi giảm nhanh
+về cuối để tinh chỉnh --- và quan trọng là không bao giờ bị kẹt như
+\en{ReduceLROnPlateau} khi chỉ số theo dõi dao động.
+
+\section{Trí tuệ nhân tạo khả diễn giải}
+\label{sec:xai}
+
+\subsection{Class Activation Map}
+
+Zhou và cộng sự~\cite{zhou2016cam} đề xuất CAM, phương pháp đầu tiên định vị được
+vùng ảnh mà mạng phân loại dựa vào để ra quyết định. Với mạng kết thúc bằng gộp
+trung bình toàn cục (\en{global average pooling}) rồi tới một tầng tuyến tính,
+điểm số của lớp $c$ là $y^{c} = \sum_{k} w^{c}_{k} \cdot \frac{1}{Z}\sum_{i,j} A^{k}_{ij}$.
+Hoán đổi thứ tự hai phép tổng cho ra bản đồ định vị:
+
+\begin{equation}
+    M^{c}(i, j) = \sum_{k} w^{c}_{k} \, A^{k}_{ij}
+    \label{eq:cam}
+\end{equation}
+
+Hạn chế nghiêm trọng của CAM là nó \emph{đòi hỏi kiến trúc cụ thể}: mạng bắt buộc
+phải có gộp trung bình toàn cục ngay trước tầng phân loại. Mạng nào không thoả
+mãn phải sửa kiến trúc rồi huấn luyện lại.
+
+\subsection{Grad-CAM}
+
+Selvaraju và cộng sự~\cite{selvaraju2017gradcam} tổng quát hoá CAM bằng nhận xét
+rằng trọng số $w^{c}_{k}$ trong \cref{eq:cam} có thể được thay bằng gradient trung
+bình --- một đại lượng tính được ở \emph{bất kỳ} tầng tích chập nào của
+\emph{bất kỳ} kiến trúc nào, không cần huấn luyện lại:
+
+\begin{equation}
+    \alpha^{c}_{k} = \frac{1}{Z}\sum_{i}\sum_{j} \frac{\partial y^{c}}{\partial A^{k}_{ij}}
+    \label{eq:gradcam_alpha}
+\end{equation}
+
+\begin{equation}
+    L^{c}_{\GradCAM} = \operatorname{ReLU}\!\left(\sum_{k} \alpha^{c}_{k} A^{k}\right)
+    \label{eq:gradcam}
+\end{equation}
+
+Hàm ReLU ở \cref{eq:gradcam} giữ lại chỉ những vùng có ảnh hưởng \emph{dương} tới
+điểm số của lớp quan tâm; vùng có ảnh hưởng âm là bằng chứng chống lại lớp đó nên
+bị loại. Tính tổng quát về kiến trúc khiến \GradCAM{} trở thành phương pháp giải
+thích được dùng rộng rãi nhất cho CNN.
+
+\subsection{Grad-CAM++}
+
+\GradCAM{} bộc lộ điểm yếu khi một ảnh chứa \emph{nhiều thể hiện} của cùng một
+lớp. Do \cref{eq:gradcam_alpha} lấy trung bình gradient trên toàn bản đồ đặc
+trưng, một vùng có gradient lớn sẽ chi phối giá trị trung bình và làm các vùng
+khác bị san phẳng. Hệ quả là bản đồ nhiệt có xu hướng chỉ làm nổi bật thể hiện rõ
+nhất và bỏ sót các thể hiện còn lại.
+
+Đây chính xác là tình huống của bệnh đốm lá: một chiếc lá thường mang hàng chục
+đốm bệnh phân tán, mỗi đốm là một thể hiện riêng của cùng lớp bệnh.
+
+Chattopadhay và cộng sự~\cite{chattopadhay2018gradcampp} khắc phục bằng cách thay
+trọng số trung bình đồng đều bằng trọng số riêng cho từng vị trí không gian, dựa
+trên đạo hàm bậc hai và bậc ba:
+
+\begin{equation}
+    \alpha^{kc}_{ij} = \frac{\dfrac{\partial^{2} y^{c}}{\partial (A^{k}_{ij})^{2}}}
+    {2\dfrac{\partial^{2} y^{c}}{\partial (A^{k}_{ij})^{2}}
+     + \displaystyle\sum_{a}\sum_{b} A^{k}_{ab} \dfrac{\partial^{3} y^{c}}{\partial (A^{k}_{ij})^{3}}}
+    \label{eq:gradcampp_alpha}
+\end{equation}
+
+\begin{equation}
+    w^{c}_{k} = \sum_{i}\sum_{j} \alpha^{kc}_{ij} \cdot
+                \operatorname{ReLU}\!\left(\frac{\partial y^{c}}{\partial A^{k}_{ij}}\right)
+    \label{eq:gradcampp_w}
+\end{equation}
+
+Mỗi vị trí $(i,j)$ nay có trọng số riêng $\alpha^{kc}_{ij}$, nên nhiều vùng kích
+hoạt cùng tồn tại trong bản đồ kết quả thay vì bị một vùng lấn át. Đó là lý do
+luận văn chuyển từ \GradCAM{} sang \GradCAMpp{} khi nâng cấp nhãn giả từ V1 lên
+V2.
+
+\subsection{Hợp nhất đa tỉ lệ}
+
+Bản đồ kích hoạt kế thừa độ phân giải của tầng được chọn, kéo theo một sự đánh
+đổi trực tiếp:
+
+\begin{itemize}
+    \item Tầng \textbf{sâu} (với đầu vào $224 \times 224$, EfficientNet-B0 cho
+          bản đồ $7 \times 7$): giàu ngữ nghĩa, biết chắc ``đây là vùng bệnh'',
+          nhưng khi phóng lên $224 \times 224$ thì mỗi ô tương ứng một khối
+          $32 \times 32$ điểm ảnh --- biên trở nên rất thô.
+    \item Tầng \textbf{nông hơn} ($14 \times 14$): định vị chi tiết hơn gấp bốn
+          lần về diện tích, nhưng ngữ nghĩa yếu hơn nên dễ kích hoạt nhầm trên
+          kết cấu nền.
+\end{itemize}
+
+Cách dung hoà là hợp nhất tuyến tính bản đồ từ hai tầng:
+
+\begin{equation}
+    H_{\text{final}} = \lambda \, H_{\text{fine}} + (1 - \lambda) \, H_{\text{coarse}}
+    \label{eq:multiscale}
+\end{equation}
+
+Luận văn dùng $\lambda = 0{,}6$, thiên về tầng tinh để mặt nạ sắc nét hơn nhưng
+vẫn giữ đủ ngữ cảnh ngữ nghĩa từ tầng thô. Lựa chọn cụ thể của các tầng được trình
+bày ở \cref{chap:phuongphap}.
+
+\section{Học giám sát yếu và gán nhãn giả}
+\label{sec:weaksup}
+
+\subsection{Phân loại các mức giám sát}
+
+Theo mức độ chi tiết của nhãn có sẵn, các bài toán phân đoạn được chia thành:
+
+\begin{itemize}
+    \item \textbf{Giám sát đầy đủ}: mỗi ảnh có mặt nạ ở mức điểm ảnh. Cho kết quả
+          tốt nhất nhưng chi phí gán nhãn cao nhất.
+    \item \textbf{Giám sát yếu} (\en{weakly-supervised}): chỉ có nhãn thô hơn ---
+          nhãn mức ảnh, hộp bao, nét vẽ nguệch ngoạc hoặc điểm đánh dấu.
+    \item \textbf{Giám sát bán phần} (\en{semi-supervised}): một phần nhỏ có mặt
+          nạ đầy đủ, phần lớn không có nhãn.
+    \item \textbf{Không giám sát}: hoàn toàn không có nhãn.
+\end{itemize}
+
+Luận văn thuộc nhóm thứ hai, ở dạng khó nhất: chỉ có nhãn \emph{mức ảnh}.
+
+\subsection{Gán nhãn giả}
+
+Gán nhãn giả (\en{pseudo-labeling}), được Lee~\cite{lee2013pseudolabel} giới thiệu
+cho học bán giám sát, là kỹ thuật dùng chính dự đoán của mô hình làm nhãn huấn
+luyện cho vòng học tiếp theo. Trong bối cảnh chuyển từ phân loại sang phân đoạn,
+ý tưởng được vận dụng như sau: bản đồ kích hoạt của mạng phân loại được nhị phân
+hoá thành mặt nạ, và mặt nạ đó đóng vai trò nhãn giả để huấn luyện mạng phân đoạn.
+
+Chuỗi suy luận có thể tóm tắt: \emph{nhãn mức ảnh $\rightarrow$ mạng phân loại
+$\rightarrow$ bản đồ kích hoạt $\rightarrow$ ngưỡng hoá $\rightarrow$ mặt nạ giả
+$\rightarrow$ mạng phân đoạn}. Barbedo~\cite{barbedo2019lesions} đã chứng minh
+tính khả thi của hướng tiếp cận dựa trên tổn thương này trong lĩnh vực bệnh cây
+trồng.
+
+\subsection{Hạn chế cố hữu cần ghi nhận}
+
+Khung phương pháp trên mang một hạn chế bản chất, không thể khắc phục bằng kỹ
+thuật, và luận văn coi việc nêu rõ nó là một phần của đóng góp:
+
+\begin{quote}
+Bản đồ kích hoạt trả lời câu hỏi \emph{``mô hình nhìn vào đâu để phân loại''}, chứ
+không trả lời câu hỏi \emph{``vùng bệnh nằm ở đâu''}. Hai câu hỏi này tương quan
+với nhau nhưng không đồng nhất.
+\end{quote}
+
+Mạng phân loại chỉ cần \emph{đủ} bằng chứng để phân biệt các lớp, nên nó có thể
+tập trung vào một vài đốm điển hình nhất mà bỏ qua phần còn lại --- vẫn phân loại
+đúng. Vì vậy nhãn giả sinh ra từ bản đồ kích hoạt thường chưa phủ hết vùng bệnh
+thực. Hệ quả kéo theo là mọi chỉ số đánh giá tính trên nhãn giả đều đo mức tái
+tạo nhãn giả chứ không đo độ chính xác bệnh học --- vấn đề được phân tích trọn vẹn
+ở \cref{sec:caveat}.
+
+\section{Mô hình nền tảng Segment Anything}
+\label{sec:sam}
+
+\subsection{Kiến trúc và khả năng}
+
+\SAM{}~\cite{kirillov2023sam} là mô hình nền tảng (\en{foundation model}) cho bài
+toán phân đoạn, được Meta AI huấn luyện trên bộ dữ liệu SA-1B gồm khoảng 11 triệu
+ảnh và hơn 1 tỉ mặt nạ. Kiến trúc gồm ba thành phần:
+
+\begin{itemize}
+    \item \textbf{Bộ mã hoá ảnh}: một Vision Transformer, chạy một lần cho mỗi
+          ảnh và cho ra biểu diễn nhúng dùng lại được.
+    \item \textbf{Bộ mã hoá gợi ý}: mã hoá gợi ý đầu vào dưới dạng điểm, hộp bao,
+          mặt nạ thô hoặc văn bản.
+    \item \textbf{Bộ giải mã mặt nạ}: kết hợp hai nguồn nhúng trên để sinh mặt nạ,
+          rất nhẹ nên cho phép thử nhiều gợi ý khác nhau với chi phí thấp.
+\end{itemize}
+
+Luận văn dùng biến thể ViT-B --- bản nhỏ nhất trong ba biến thể ViT-B/ViT-L/ViT-H,
+với tệp trọng số khoảng 375 MB.
+
+\subsection{Vai trò bộ tinh chỉnh nhãn}
+
+Điểm mạnh của \SAM{} là khả năng khái quát không cần huấn luyện lại
+(\en{zero-shot}) và chất lượng biên rất cao. Điều này gợi ý một cách dùng khác với
+mục đích ban đầu: thay vì dùng \SAM{} để phân đoạn trực tiếp, ta dùng mặt nạ giả
+thô làm gợi ý và để \SAM{} tinh chỉnh lại biên. Về nguyên tắc, cách làm này kết
+hợp được ưu điểm của cả hai nguồn --- tri thức về \emph{vị trí} bệnh từ bản đồ
+kích hoạt, và tri thức về \emph{biên} vật thể từ \SAM{}.
+
+Tuy nhiên, cách dùng này chứa một rủi ro then chốt. \SAM{} được huấn luyện để phân
+đoạn \emph{đơn vị ngữ nghĩa tự nhiên} của cảnh. Khi nhận gợi ý là vài điểm nằm
+trên một đốm bệnh, đơn vị ngữ nghĩa mà \SAM{} nhận diện có thể không phải là đốm
+bệnh mà là \emph{cả chiếc lá} chứa đốm đó. Cơ chế bảo vệ dựa trên IoU thường được
+dùng để phát hiện sai lệch, nhưng như phân tích ở \cref{chap:thucnghiem}, cơ chế
+này chỉ chặn được trường hợp mặt nạ \emph{trôi} sang vùng khác chứ không chặn được
+trường hợp mặt nạ \emph{nở} ra bao trọn mặt nạ ban đầu. Đây là một trong những
+phát hiện thực nghiệm chính của luận văn.
+
+\section{Kỹ thuật xử lý ảnh cổ điển}
+\label{sec:xulyanh}
+
+Bản đồ kích hoạt là ảnh xám liên tục, trong khi nhãn phân đoạn phải là mặt nạ nhị
+phân sạch. Khoảng cách giữa hai dạng biểu diễn được lấp bằng các kỹ thuật xử lý
+ảnh cổ điển dưới đây.
+
+\subsection{Ngưỡng hoá Otsu}
+
+Phương pháp Otsu~\cite{otsu1979threshold} chọn ngưỡng tự động bằng cách cực đại
+hoá phương sai giữa hai lớp:
+
+\begin{equation}
+    \sigma_b^{2}(t) = \omega_0(t)\,\omega_1(t)\,\big[\mu_0(t) - \mu_1(t)\big]^{2}
+    \label{eq:otsu}
+\end{equation}
+
+với $\omega_0, \omega_1$ là tỉ lệ điểm ảnh và $\mu_0, \mu_1$ là giá trị trung bình
+của hai lớp khi cắt tại ngưỡng $t$. Otsu hoạt động tốt khi biểu đồ mức xám có
+\emph{hai đỉnh} tách bạch. Giả định này bị vi phạm khi bản đồ nhiệt được hợp nhất
+đa tỉ lệ theo \cref{eq:multiscale}: phép hợp nhất làm phân bố trở nên trơn và đơn
+đỉnh, khiến Otsu chọn ngưỡng quá thấp và gây phân đoạn thừa. Đây là lý do trực
+tiếp khiến luận văn thay Otsu bằng ngưỡng phân vị theo lớp, trình bày ở
+\cref{chap:phuongphap}.
+
+\subsection{Phép toán hình thái}
+
+Bốn phép toán hình thái cơ bản trên ảnh nhị phân $A$ với phần tử cấu trúc $B$:
+
+\begin{align}
+    \text{Co (\en{erosion}):} \quad & A \ominus B = \{z \mid B_z \subseteq A\} \label{eq:erosion}\\
+    \text{Giãn (\en{dilation}):} \quad & A \oplus B = \{z \mid B_z \cap A \neq \emptyset\} \label{eq:dilation}\\
+    \text{Mở (\en{opening}):} \quad & A \circ B = (A \ominus B) \oplus B \label{eq:opening}\\
+    \text{Đóng (\en{closing}):} \quad & A \bullet B = (A \oplus B) \ominus B \label{eq:closing}
+\end{align}
+
+Trong quy trình của luận văn, phép \emph{đóng} lấp các lỗ nhỏ bên trong vùng bệnh
+--- cần thiết vì đốm bệnh thường có tâm sáng hơn viền nên bị ngưỡng hoá cắt rỗng
+--- còn phép \emph{mở} loại các điểm nhiễu rải rác bên ngoài vùng chính. Hình dạng
+phần tử cấu trúc có ý nghĩa thực tế: phần tử \emph{elip} bám sát hình dạng tròn
+hoặc bầu dục của đốm bệnh tốt hơn phần tử \emph{chữ nhật}, và đây là một trong các
+cải tiến từ nhãn giả V1 sang V2.
+
+\subsection{Lọc thành phần liên thông}
+
+Sau ngưỡng hoá, mặt nạ thường gồm nhiều vùng liên thông rời rạc. Phân tích thành
+phần liên thông (\en{connected component analysis}) gán nhãn cho từng vùng và cho
+phép lọc theo diện tích hoặc theo thứ hạng. Chiến lược giữ lại $k$ vùng lớn nhất
+có diện tích vượt một ngưỡng tối thiểu phù hợp với đặc thù bệnh đốm lá: cần giữ
+\emph{nhiều} vùng vì bệnh biểu hiện thành nhiều đốm, nhưng phải loại các mảnh vụn
+nhiễu mà phép mở hình thái không xử lý hết.
+
+\subsection{Lọc song phương}
+
+Lọc song phương (\en{bilateral filter}) của Tomasi và
+Manduchi~\cite{tomasi1998bilateral} làm trơn ảnh nhưng bảo toàn biên, nhờ nhân
+trọng số tính trên cả khoảng cách không gian lẫn chênh lệch cường độ:
+
+\begin{equation}
+    I^{\text{filt}}(p) = \frac{1}{W_p}\sum_{q \in \Omega} I(q)\,
+        \underbrace{G_{\sigma_s}\big(\lVert p - q \rVert\big)}_{\text{gần về không gian}}\;
+        \underbrace{G_{\sigma_r}\big(|I(p) - I(q)|\big)}_{\text{giống về cường độ}}
+    \label{eq:bilateral}
+\end{equation}
+
+Hai điểm ảnh chỉ ảnh hưởng lẫn nhau khi vừa gần nhau về vị trí vừa tương đồng về
+cường độ. Áp dụng lên bản đồ nhiệt, bộ lọc này khiến kích hoạt ``lan'' theo các
+vùng đồng màu và dừng lại tại ranh giới màu sắc thực của tổn thương.
+
+\subsection{Trường ngẫu nhiên có điều kiện}
+
+Dense CRF~\cite{krahenbuhl2011densecrf} tinh chỉnh kết quả phân đoạn bằng cách
+cực tiểu hoá hàm năng lượng gồm thế đơn (dựa trên dự đoán ban đầu) và thế cặp
+(khuyến khích các điểm ảnh gần nhau và giống màu nhận cùng nhãn):
+
+\begin{equation}
+    E(\mathbf{x}) = \sum_{i} \psi_u(x_i) + \sum_{i < j} \psi_p(x_i, x_j)
+    \label{eq:crf}
+\end{equation}
+
+Luận văn có khảo sát Dense CRF như một hướng tinh chỉnh thay thế cho \SAM{}, nhưng
+không đưa vào quy trình cuối vì lý do triển khai được nêu ở \cref{chap:thucnghiem}.
+
+\section{Chỉ số đánh giá}
+\label{sec:metrics}
+
+\subsection{Chỉ số cho bài toán phân loại}
+
+Từ ma trận nhầm lẫn, với TP, FP, FN lần lượt là số dương tính thật, dương tính giả
+và âm tính giả:
+
+\begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}, \qquad
+    \text{Recall} = \frac{TP}{TP + FN}, \qquad
+    F_1 = \frac{2 \cdot P \cdot R}{P + R}
+    \label{eq:prf}
+\end{equation}
+
+Với bài toán chẩn đoán bệnh cây trồng, \textbf{recall quan trọng hơn precision}:
+bỏ sót một cây bệnh (âm tính giả) gây thiệt hại lan rộng, trong khi cảnh báo nhầm
+một cây khoẻ (dương tính giả) chỉ tốn thêm một lần kiểm tra. Nhận định này định
+hướng cách diễn giải kết quả ở \cref{chap:thucnghiem}.
+
+Do bộ dữ liệu gần cân bằng (tỉ lệ mất cân bằng 1,33), luận văn báo cáo cả
+\en{macro-average} --- trung bình không trọng số qua các lớp, phản ánh hiệu năng
+trên lớp ít mẫu --- và \en{weighted-average}.
+
+\subsection{Chỉ số cho bài toán phân đoạn}
+
+Hai chỉ số chuẩn đo độ chồng lấp giữa mặt nạ dự đoán $X$ và mặt nạ tham chiếu $Y$:
+
+\begin{equation}
+    \text{IoU} = \frac{|X \cap Y|}{|X \cup Y|} = \frac{TP}{TP + FP + FN}
+    \label{eq:iou}
+\end{equation}
+
+\begin{equation}
+    \text{Dice} = \frac{2|X \cap Y|}{|X| + |Y|} = \frac{2\,TP}{2\,TP + FP + FN}
+    \label{eq:dicecoef}
+\end{equation}
+
+Hai chỉ số liên hệ với nhau qua một song ánh đơn điệu:
+
+\begin{equation}
+    \text{Dice} = \frac{2\,\text{IoU}}{1 + \text{IoU}}, \qquad
+    \text{IoU} = \frac{\text{Dice}}{2 - \text{Dice}}
+    \label{eq:iou_dice_relation}
+\end{equation}
+
+Từ \cref{eq:iou_dice_relation} suy ra hai hệ quả cần lưu ý khi đọc kết quả. Thứ
+nhất, Dice luôn lớn hơn hoặc bằng IoU, nên báo cáo Dice thay vì IoU luôn cho con
+số ``đẹp'' hơn dù chất lượng không đổi. Thứ hai, do quan hệ là đơn điệu, việc xếp
+hạng các mô hình theo IoU hay theo Dice luôn cho cùng thứ tự --- báo cáo cả hai
+không cung cấp thêm thông tin về thứ hạng, mà chỉ giúp đối chiếu với các công bố
+dùng chỉ số khác nhau.
+
+Trong bài toán phân đoạn nhị phân, $F_1$ tính trên tập điểm ảnh trùng khớp hoàn
+toàn với hệ số Dice --- điều này giải thích vì sao hai cột $F_1$ và Dice trong
+các bảng kết quả ở \cref{chap:thucnghiem} luôn bằng nhau.
+
+\subsection{Ghi chú về mốc tham chiếu}
+
+Mọi công thức trong mục này đều giả định $Y$ là nhãn chuẩn (\en{ground truth}).
+Trong luận văn, do không có nhãn thủ công ở mức điểm ảnh, $Y$ là \emph{nhãn giả}.
+Các công thức vẫn tính được và vẫn có ý nghĩa so sánh nội bộ, nhưng ý nghĩa diễn
+giải thay đổi hoàn toàn: chúng đo mức độ mô hình tái tạo nhãn giả, chứ không đo
+độ chính xác so với tổn thương thực. \Cref{sec:caveat} phân tích trọn vẹn hệ quả
+của sự thay đổi này.
+
+\section{Nghiên cứu liên quan}
+\label{sec:lienquan}
+
+\subsection{Học sâu trong phát hiện bệnh cây trồng}
+
+Mohanty và cộng sự~\cite{mohanty2016plantdisease} là công trình mở đường, đạt độ
+chính xác 99,35\% trên bộ PlantVillage với 54.306 ảnh thuộc 38 lớp bệnh--cây
+trồng. Tuy nhiên các tác giả cũng ghi nhận độ chính xác sụt giảm mạnh khi kiểm
+thử trên ảnh chụp trong điều kiện thực địa --- do PlantVillage được chụp trên nền
+đồng nhất trong phòng thí nghiệm. Đây là bài học nền tảng về khoảng cách giữa dữ
+liệu chuẩn hoá và dữ liệu thực tế.
+
+Ferentinos~\cite{ferentinos2018plantdisease} mở rộng khảo sát trên 87.848 ảnh với
+25 loài cây, so sánh nhiều kiến trúc CNN và đạt độ chính xác cao nhất 99,53\%.
+Kamilaris và Prenafeta-Boldú~\cite{kamilaris2018survey} tổng hợp 40 nghiên cứu
+ứng dụng học sâu trong nông nghiệp và kết luận rằng học sâu vượt trội so với các
+kỹ thuật xử lý ảnh truyền thống, đồng thời chỉ ra hai điểm nghẽn: thiếu dữ liệu
+có nhãn chất lượng và thiếu khả năng diễn giải.
+
+Fuentes và cộng sự~\cite{fuentes2017tomato} tiếp cận theo hướng phát hiện đối
+tượng thay vì phân loại, cho phép định vị nhiều vùng bệnh trên cùng một ảnh cà
+chua. Barbedo~\cite{barbedo2019lesions} lập luận rằng nhận dạng ở mức
+\emph{từng tổn thương} thay vì mức toàn lá giúp tăng đáng kể lượng mẫu huấn luyện
+hiệu dụng và cải thiện khả năng khái quát --- lập luận trực tiếp ủng hộ hướng
+phân đoạn mà luận văn theo đuổi.
+
+\subsection{Vị trí của luận văn}
+
+Đối chiếu với các công trình trên, luận văn có ba điểm khác biệt:
+
+\begin{enumerate}
+    \item \textbf{Đối tượng}: sầu riêng là cây trồng chưa được nghiên cứu nhiều
+          trong lĩnh vực phát hiện bệnh bằng học sâu, so với cà chua, lúa hay
+          khoai tây.
+    \item \textbf{Mức đầu ra}: hầu hết công trình dừng ở phân loại hoặc phát hiện
+          bằng hộp bao; luận văn hướng tới phân đoạn ở mức điểm ảnh mà không dùng
+          nhãn thủ công nào ở mức đó.
+    \item \textbf{Thái độ với kết quả}: thay vì chỉ báo cáo chỉ số cao nhất đạt
+          được, luận văn phân tích thẳng vào việc \emph{các chỉ số ấy có nghĩa gì
+          và không có nghĩa gì} khi thiếu nhãn chuẩn --- một khía cạnh thường bị
+          bỏ qua trong các nghiên cứu học giám sát yếu.
+\end{enumerate}
+
+\section{Kết luận chương}
+
+Chương này đã trình bày nền tảng lý thuyết cho toàn bộ quy trình đề xuất:
+EfficientNet với cơ chế mở rộng hợp thành làm mạng phân loại và bộ mã hoá;
+\UNetpp{} với kết nối tắt lồng nhau làm mạng phân đoạn; tổ hợp Focal và Dice làm
+hàm mất mát cho dữ liệu mất cân bằng; \GradCAMpp{} hợp nhất đa tỉ lệ để sinh bản
+đồ kích hoạt; \SAM{} trong vai trò bộ tinh chỉnh biên; cùng các kỹ thuật xử lý ảnh
+cổ điển để chuyển bản đồ nhiệt thành mặt nạ nhị phân.
+
+Hai điểm lý thuyết sẽ được viện dẫn nhiều lần ở các chương sau, cần được ghi nhận
+ngay: (i) bản đồ kích hoạt trả lời câu hỏi ``mô hình nhìn vào đâu'' chứ không phải
+``bệnh nằm ở đâu'' (\cref{sec:weaksup}); và (ii) mọi chỉ số IoU/Dice đều được định
+nghĩa \emph{tương đối} với một mốc tham chiếu, nên khi mốc tham chiếu thay đổi thì
+các con số không còn so sánh trực tiếp được với nhau (\cref{sec:metrics}).
+
+\Cref{chap:phuongphap} trình bày cách các thành phần lý thuyết trên được lắp ghép
+thành một quy trình hoàn chỉnh, cùng lý do kỹ thuật của từng lựa chọn thiết kế.

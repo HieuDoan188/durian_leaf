@@ -1,0 +1,56 @@
+% !TeX root = ../main.tex
+\chapter*{DANH MỤC TỪ VIẾT TẮT VÀ THUẬT NGỮ}
+\addcontentsline{toc}{chapter}{Danh mục từ viết tắt và thuật ngữ}
+
+\begin{longtable}{L{2.6cm} L{4.6cm} L{6.5cm}}
+\toprule
+\textbf{Viết tắt} & \textbf{Tiếng Anh đầy đủ} & \textbf{Giải thích} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Viết tắt} & \textbf{Tiếng Anh đầy đủ} & \textbf{Giải thích} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+AI      & Artificial Intelligence            & Trí tuệ nhân tạo \\
+CAM     & Class Activation Map               & Bản đồ kích hoạt theo lớp \\
+CC      & Connected Component                & Thành phần liên thông \\
+CNN     & Convolutional Neural Network       & Mạng nơ-ron tích chập \\
+CRF     & Conditional Random Field           & Trường ngẫu nhiên có điều kiện \\
+EDA     & Exploratory Data Analysis          & Phân tích khám phá dữ liệu \\
+FN      & False Negative                     & Âm tính giả --- bỏ sót vùng bệnh \\
+FP      & False Positive                     & Dương tính giả --- báo nhầm vùng lành \\
+GPU     & Graphics Processing Unit           & Bộ xử lý đồ hoạ \\
+Grad-CAM & Gradient-weighted Class Activation Mapping & Bản đồ kích hoạt có trọng số gradient \\
+HSV     & Hue--Saturation--Value             & Không gian màu sắc độ--bão hoà--độ sáng \\
+IoU     & Intersection over Union            & Tỉ số giao trên hợp \\
+KDE     & Kernel Density Estimation          & Ước lượng mật độ hạt nhân \\
+LR      & Learning Rate                      & Tốc độ học \\
+ReLU    & Rectified Linear Unit              & Hàm kích hoạt tuyến tính chỉnh lưu \\
+RGB     & Red--Green--Blue                   & Không gian màu đỏ--lục--lam \\
+SAM     & Segment Anything Model             & Mô hình nền tảng phân đoạn tổng quát \\
+TP      & True Positive                      & Dương tính thật \\
+ViT     & Vision Transformer                 & Mạng Transformer cho thị giác máy tính \\
+XAI     & Explainable Artificial Intelligence & Trí tuệ nhân tạo khả diễn giải \\
+\end{longtable}
+
+\vspace{0.6cm}
+\noindent\textbf{Quy ước thuật ngữ.} Các thuật ngữ tiếng Anh đã trở thành chuẩn
+trong lĩnh vực (\en{pseudo-label}, \en{fine-tuning}, \en{early stopping},
+\en{ground truth}, \en{backbone}, \en{encoder}, \en{decoder}\dots) được giữ
+nguyên dạng tiếng Anh và in nghiêng ở lần xuất hiện đầu tiên, kèm giải thích
+tiếng Việt trong ngoặc. Ở các lần sau, thuật ngữ được dùng trực tiếp không in
+nghiêng nhằm giữ mạch đọc.
+
+\vspace{0.4cm}
+\noindent\textbf{Quy ước ký hiệu phiên bản.} Luận văn xây dựng ba phiên bản
+pipeline phân đoạn, ký hiệu thống nhất là \textbf{V1}, \textbf{V2}, \textbf{V3}.
+Mỗi phiên bản gồm một bộ \en{pseudo-label} và một mô hình phân đoạn huấn luyện
+trên bộ nhãn đó; chi tiết trong \cref{chap:phuongphap}.
+
+\vspace{0.4cm}
+\noindent\textbf{Quy ước số thập phân.} Luận văn dùng dấu phẩy làm dấu thập phân
+theo chuẩn tiếng Việt (ví dụ: 0,6239). Trong các đoạn mã nguồn và tên tệp trích
+dẫn nguyên trạng, dấu chấm được giữ nguyên theo đúng dữ liệu gốc.

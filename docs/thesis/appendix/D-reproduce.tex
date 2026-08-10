@@ -1,0 +1,129 @@
+% !TeX root = ../main.tex
+\chapter{HƯỚNG DẪN TÁI TẠO KẾT QUẢ}
+\label{app:D}
+
+\section{Cấu trúc kho mã nguồn}
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc thư mục chính của kho mã nguồn}
+\label{tab:app_repo}
+\begin{tabular}{L{5.2cm} L{7.8cm}}
+\toprule
+\textbf{Đường dẫn} & \textbf{Nội dung} \\
+\midrule
+\texttt{notebooks/} & Mười \en{notebook} thực nghiệm, đánh số theo thứ tự chạy \\
+\texttt{notebooks/\allowbreak data/\allowbreak raw/} & Ảnh gốc, chia sẵn theo tập và theo lớp \\
+\texttt{notebooks/\allowbreak data/\allowbreak pseudo\_\allowbreak labels*/} & Các bộ nhãn giả sinh ra \\
+\texttt{notebooks/\allowbreak models/} & Điểm kiểm tra và tệp chỉ số của các mô hình \\
+\texttt{utils/} & Mã dùng chung: mô hình, tiền xử lý, chỉ số, Grad-CAM \\
+\texttt{visualizations/} & Hình sinh ra từ các \en{notebook} \\
+\texttt{app.py} & Ứng dụng minh hoạ Streamlit \\
+\texttt{docs/thesis/} & Mã nguồn LaTeX của luận văn \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Thứ tự thực thi}
+
+Các \en{notebook} phải chạy theo đúng thứ tự vì mỗi bước sử dụng sản phẩm của bước
+trước.
+
+\begin{table}[H]
+\centering
+\caption{Thứ tự thực thi và sản phẩm của từng notebook}
+\label{tab:app_order}
+\small
+\begin{tabular}{c L{4.6cm} L{6.4cm}}
+\toprule
+\textbf{STT} & \textbf{Notebook} & \textbf{Sản phẩm} \\
+\midrule
+1 & \texttt{01-\allowbreak data-\allowbreak exploration} & Hình EDA, thống kê bộ dữ liệu \\
+2 & \texttt{02-\allowbreak classification-\allowbreak baseline} & \texttt{best\_\allowbreak model.\allowbreak pth}, chỉ số phân loại \\
+3 & \texttt{03-\allowbreak xai-\allowbreak gradcam-\allowbreak analysis} & Hình bản đồ kích hoạt, thống kê độ tin cậy \\
+4 & \texttt{04-\allowbreak pseudo-\allowbreak labeling} & 3.104 mặt nạ nhãn giả V1 \\
+5 & \texttt{05-\allowbreak segmentation-\allowbreak model} & Mô hình phân đoạn V1, chỉ số kiểm thử \\
+6 & \texttt{06-\allowbreak pseudo-\allowbreak labeling-\allowbreak v2} & 3.104 mặt nạ nhãn giả V2 \\
+7 & \texttt{07-\allowbreak segmentation-\allowbreak v2} & Mô hình phân đoạn V2, chỉ số kiểm thử \\
+8 & \texttt{08-\allowbreak segmentation-\allowbreak v3-\allowbreak sam} & Nhãn tinh chỉnh SAM, mô hình V3 \\
+9 & \texttt{10-\allowbreak inference-\allowbreak single-\allowbreak image} & Hình minh hoạ suy luận đầu cuối \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Riêng \en{notebook} thứ tám có cơ chế tiếp tục: nếu thư mục nhãn tinh chỉnh đã đủ
+3.104 tệp, bước sinh nhãn bằng \SAM{} sẽ được bỏ qua và mô hình \SAM{} không được
+nạp lên bộ nhớ đồ hoạ. Muốn sinh lại từ đầu cần đặt biến \texttt{FORCE\_REDO} bằng
+\texttt{True} hoặc xoá thư mục nhãn.
+
+Các \en{notebook} huấn luyện đều lưu điểm kiểm tra tạm sau mỗi epoch, cho phép
+tiếp tục nếu quá trình bị gián đoạn.
+
+\section{Yêu cầu môi trường}
+
+Môi trường đã dùng để sinh toàn bộ kết quả trong luận văn được liệt kê ở
+\cref{tab:moitruong}. Các thư viện chính cần cài đặt:
+
+\begin{itemize}
+    \item \texttt{torch}, \texttt{torchvision} --- phiên bản tương thích CUDA của
+          máy đích.
+    \item \texttt{segmentation-\allowbreak models-\allowbreak pytorch} --- cung cấp kiến trúc \UNetpp{}.
+    \item \texttt{albumentations} --- tăng cường dữ liệu đồng bộ ảnh và mặt nạ.
+    \item \texttt{segment-\allowbreak anything} --- mô hình \SAM{}.
+    \item \texttt{opencv-\allowbreak python}, \texttt{pillow}, \texttt{numpy},
+          \texttt{pandas}, \texttt{matplotlib}, \texttt{seaborn},
+          \texttt{scikit-learn}, \texttt{tqdm}.
+    \item \texttt{streamlit}, \texttt{plotly} --- chỉ cần cho ứng dụng minh hoạ.
+\end{itemize}
+
+Trọng số \SAM{} ViT-B (khoảng 375 MB) được tải tự động ở lần chạy đầu tiên của
+\en{notebook} thứ tám.
+
+\section{Lưu ý về khả năng tái lập}
+
+\subsection{Các yếu tố đã được cố định}
+
+Hạt giống ngẫu nhiên được đặt bằng 42 cho việc chia tập dữ liệu ở mọi phiên bản
+phân đoạn, bảo đảm các phiên bản V2 và V3 dùng đúng cùng một tập kiểm thử.
+
+\subsection{Các yếu tố chưa được cố định hoàn toàn}
+
+Cần lưu ý ba nguồn sai khác có thể khiến kết quả chạy lại không trùng khớp tuyệt
+đối với số liệu báo cáo:
+
+\begin{itemize}
+    \item \textbf{Tính không tất định của cuDNN.} Chỉ \en{notebook} thứ tám đặt
+          \texttt{cudnn.\allowbreak deterministic} bằng \texttt{True}; các \en{notebook} còn
+          lại không đặt. Các thuật toán tích chập được chọn tự động có thể khác
+          nhau giữa các lần chạy và giữa các loại GPU.
+    \item \textbf{Lấy mẫu điểm gợi ý cho \SAM{}.} Bốn điểm tiền cảnh và ba điểm
+          nền được lấy ngẫu nhiên mà không cố định hạt giống, nên nhãn tinh chỉnh
+          sinh lại sẽ khác đôi chút so với bộ nhãn đã dùng.
+    \item \textbf{Tăng cường dữ liệu ngẫu nhiên.} Chuỗi phép biến đổi Albumentations
+          không cố định hạt giống trong vòng lặp huấn luyện.
+    \end{itemize}
+
+Vì vậy, khi chạy lại, các chỉ số có thể lệch ở chữ số thập phân thứ hai hoặc thứ
+ba. Các kết luận định tính của luận văn --- chiều của các so sánh, hiện tượng nở
+mặt nạ, sự lệch pha giữa hàm mất mát và IoU --- không phụ thuộc vào mức sai khác
+này.
+
+\subsection{Khuyến nghị cho lần chạy tiếp theo}
+
+Để tăng khả năng tái lập, ba thay đổi nên được áp dụng: cố định hạt giống ngẫu
+nhiên cho \texttt{random}, \texttt{numpy} và \texttt{torch} ở đầu mọi
+\en{notebook}; đặt \texttt{cudnn.\allowbreak deterministic} bằng \texttt{True} một cách nhất
+quán; và cố định hạt giống cho bước lấy mẫu điểm gợi ý của \SAM{}.
+
+\section{Truy vết số liệu}
+
+Toàn bộ con số xuất hiện trong luận văn được ghi lại trong tệp
+\texttt{docs/\allowbreak thesis/\allowbreak INVENTORY.\allowbreak md}, kèm thông tin về \en{notebook} và ô lệnh đã
+sinh ra nó. Tệp này cũng liệt kê các điểm mà số liệu chưa đủ bằng chứng, cùng
+những chỗ số liệu trong công bố liên quan của nhóm không khớp với kết quả thực
+thi thực tế.
+
+Một số giá trị trong luận văn được tính lại trực tiếp từ các tệp kết quả trên đĩa
+thay vì lấy từ ô kết quả của \en{notebook} --- cụ thể là bảng độ phủ của nhãn tinh
+chỉnh bằng \SAM{} ở \cref{tab:sam_expansion}. Đoạn mã dùng để tính lại được ghi
+đầy đủ trong tệp kiểm kê nói trên, cho phép kiểm chứng độc lập.

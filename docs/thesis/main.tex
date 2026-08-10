@@ -1,0 +1,173 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+% ============================================================================
+%  LUẬN VĂN THẠC SĨ
+%  Phát hiện và phân đoạn bệnh lá sầu riêng bằng học sâu
+%  kết hợp AI khả diễn giải và gán nhãn giả
+%
+%  ⚠ BẮT BUỘC BIÊN DỊCH BẰNG XeLaTeX — KHÔNG DÙNG pdfLaTeX
+%
+%  Dòng "% !TeX program = xelatex" ở đầu file giúp Overleaf tự chọn đúng
+%  trình biên dịch. Nếu Overleaf vẫn báo lỗi fontspec, hãy đặt thủ công:
+%      Menu (góc trên bên trái) → Compiler → XeLaTeX → Recompile
+%
+%  Lý do: tài liệu dùng fontspec + polyglossia để hiển thị tiếng Việt,
+%  hai gói này chỉ chạy được trên XeLaTeX hoặc LuaLaTeX.
+%
+%  Xem hướng dẫn đầy đủ tại README.md
+% ============================================================================
+% Cỡ chữ 13pt được đặt qua gói `fontsize` trong preamble.tex, KHÔNG qua tuỳ chọn
+% của documentclass: gói extsizes chỉ hỗ trợ 8/9/10/11/12/14/17/20pt — truyền
+% 13pt vào sẽ bị âm thầm bỏ qua và tài liệu tụt về 10pt.
+\documentclass[12pt, a4paper, oneside]{report}
+
+\input{preamble}
+
+\begin{document}
+
+% ===========================================================================
+%  PHẦN ĐẦU — đánh số La Mã
+% ===========================================================================
+\pagenumbering{roman}
+
+% ---------------------------------------------------------------------------
+%  Trang bìa
+%
+%  Lưu ý: KHÔNG dùng môi trường `titlepage` của LaTeX. Môi trường đó tự đặt lại
+%  bộ đếm trang về 1 khi kết thúc; dùng hai lần cho bìa chính và bìa phụ sẽ tạo
+%  ra hai trang cùng mang số i và ii, khiến hyperref sinh trùng mỏ neo trang
+%  (cảnh báo "Object @page.i already defined") và kéo theo cảnh báo tham chiếu
+%  chưa xác định. Ở đây dùng khối căn giữa thông thường rồi \clearpage.
+% ---------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\centering
+\vspace*{0.5cm}
+
+{\large\bfseries \TODO{Tên Bộ / Trường Đại học chủ quản}}\\[0.3cm]
+{\large\bfseries \TODO{Tên Khoa / Viện}}\\[2.5cm]
+
+{\Large\bfseries \TODO{Họ và tên học viên}}\\[2.5cm]
+
+{\LARGE\bfseries
+PHÁT HIỆN VÀ PHÂN ĐOẠN BỆNH LÁ SẦU RIÊNG\\[0.35cm]
+BẰNG HỌC SÂU KẾT HỢP AI KHẢ DIỄN GIẢI\\[0.35cm]
+VÀ GÁN NHÃN GIẢ
+}\\[2.5cm]
+
+{\large LUẬN VĂN THẠC SĨ}\\[0.4cm]
+{\large \TODO{Ngành và mã ngành đào tạo}}\\[3cm]
+
+\vfill
+{\large \TODO{Địa danh} --- \the\year}
+\par
+\endgroup
+\clearpage
+
+% ---------------------------------------------------------------------------
+%  Trang bìa phụ (có tên người hướng dẫn)
+% ---------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\centering
+\vspace*{0.5cm}
+
+{\large\bfseries \TODO{Tên Bộ / Trường Đại học chủ quản}}\\[0.3cm]
+{\large\bfseries \TODO{Tên Khoa / Viện}}\\[2cm]
+
+{\Large\bfseries \TODO{Họ và tên học viên}}\\[2cm]
+
+{\LARGE\bfseries
+PHÁT HIỆN VÀ PHÂN ĐOẠN BỆNH LÁ SẦU RIÊNG\\[0.35cm]
+BẰNG HỌC SÂU KẾT HỢP AI KHẢ DIỄN GIẢI\\[0.35cm]
+VÀ GÁN NHÃN GIẢ
+}\\[1.5cm]
+
+{\large LUẬN VĂN THẠC SĨ}\\[0.3cm]
+{\large \TODO{Ngành và mã ngành đào tạo}}\\[2.5cm]
+
+{\large NGƯỜI HƯỚNG DẪN KHOA HỌC}\\[0.4cm]
+{\large\bfseries \TODO{Học hàm, học vị và họ tên người hướng dẫn}}\\[3cm]
+
+\vfill
+{\large \TODO{Địa danh} --- \the\year}
+\par
+\endgroup
+\clearpage
+
+% ---------------------------------------------------------------------------
+%  Lời cam đoan
+% ---------------------------------------------------------------------------
+\chapter*{LỜI CAM ĐOAN}
+\addcontentsline{toc}{chapter}{Lời cam đoan}
+
+Tôi xin cam đoan luận văn này là công trình nghiên cứu của riêng tôi, được thực
+hiện dưới sự hướng dẫn khoa học của \TODO{tên người hướng dẫn}. Các số liệu, kết
+quả thực nghiệm trình bày trong luận văn đều được sinh ra trực tiếp từ mã nguồn và
+các \en{notebook} thực nghiệm kèm theo, có thể tái tạo được và chưa từng được
+công bố trong bất kỳ công trình nào khác. Mọi tham khảo từ tài liệu của tác giả
+khác đều được trích dẫn đầy đủ.
+
+Tôi xin chịu hoàn toàn trách nhiệm về nội dung luận văn của mình.
+
+\vspace{1.5cm}
+\begin{flushright}
+\begin{minipage}{7cm}
+\centering
+\TODO{Địa danh}, ngày \quad tháng \quad năm \the\year\\[0.3cm]
+\textbf{Học viên thực hiện}\\[2.5cm]
+\TODO{Họ và tên học viên}
+\end{minipage}
+\end{flushright}
+
+% ---------------------------------------------------------------------------
+%  Lời cảm ơn
+% ---------------------------------------------------------------------------
+\chapter*{LỜI CẢM ƠN}
+\addcontentsline{toc}{chapter}{Lời cảm ơn}
+
+\TODO{Viết lời cảm ơn: người hướng dẫn, cơ sở đào tạo, đơn vị cung cấp dữ liệu, gia đình.}
+
+% ---------------------------------------------------------------------------
+%  Mục lục và các danh mục
+% ---------------------------------------------------------------------------
+\tableofcontents
+\listoffigures
+\addcontentsline{toc}{chapter}{Danh mục hình vẽ}
+\listoftables
+\addcontentsline{toc}{chapter}{Danh mục bảng biểu}
+
+\input{chapters/00-abbreviations}
+
+% ===========================================================================
+%  PHẦN THÂN — đánh số Ả Rập
+% ===========================================================================
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{chapters/01-mo-dau}
+\input{chapters/02-co-so-ly-thuyet}
+\input{chapters/03-phuong-phap}
+\input{chapters/04-thuc-nghiem}
+\input{chapters/05-ket-luan}
+
+% ===========================================================================
+%  TÀI LIỆU THAM KHẢO
+% ===========================================================================
+% \sloppy nới lỏng ràng buộc giãn chữ trong đoạn: cần thiết cho danh mục tham
+% khảo vì tên tạp chí và tên hội nghị dài không phải lúc nào cũng ngắt vừa dòng.
+\begingroup
+\sloppy
+\printbibliography[heading=bibintoc, title={TÀI LIỆU THAM KHẢO}]
+\endgroup
+
+% ===========================================================================
+%  PHỤ LỤC
+% ===========================================================================
+\appendix
+\input{appendix/A-hyperparameters}
+\input{appendix/B-training-logs}
+\input{appendix/C-demo-app}
+\input{appendix/D-reproduce}
+
+\end{document}

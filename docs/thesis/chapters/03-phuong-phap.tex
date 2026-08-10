@@ -1,0 +1,776 @@
+% !TeX root = ../main.tex
+\chapter{PHƯƠNG PHÁP ĐỀ XUẤT}
+\label{chap:phuongphap}
+
+\section{Tổng quan quy trình}
+\label{sec:tongquan}
+
+Quy trình đề xuất gồm bốn giai đoạn nối tiếp, trong đó đầu ra của giai đoạn trước
+trở thành đầu vào của giai đoạn sau. Điểm mấu chốt của thiết kế là \emph{không có
+giai đoạn nào cần nhãn thủ công ở mức điểm ảnh}: toàn bộ thông tin không gian được
+chiết xuất từ nhãn mức ảnh thông qua cơ chế giải thích của mạng phân loại.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[node distance=0.85cm and 0.95cm]
+    \node[data] (dataset) {Bộ dữ liệu lá sầu riêng\\4.437 ảnh RGB\\5 lớp bệnh};
+    \node[data, right=of dataset] (split) {Chia tập 70/10/20\\Train 3.104\\Val 443 / Test 890};
+    \node[classmodel, right=of split] (classifier) {Giai đoạn 1\\EfficientNet-B0\\phân loại mức ảnh};
+    \node[xai, right=of classifier] (gradcam) {Giai đoạn 2\\GradCAM++ đa tỉ lệ\\$0{,}6H_{\text{fine}}+0{,}4H_{\text{coarse}}$};
+    \node[xai, right=of gradcam] (post) {Sinh mặt nạ thích ứng\\ngưỡng phân vị theo lớp\\hình thái + top-3 CC};
+    \node[sam, right=of post] (samrefine) {Giai đoạn 3\\Tinh chỉnh bằng SAM\\gợi ý điểm FG/BG\\bảo vệ IoU (min = 0,15)};
+    \node[segmodel, right=of samrefine] (segtrain) {Giai đoạn 4\\Phân đoạn UNet++\\bộ mã hoá EfficientNet-B0\\hàm mất mát FocalDice};
+
+    \node[data, below=2.15cm of split] (newimage) {Ảnh lá đầu vào\\$224\times224\times3$};
+    \node[classmodel, right=of newimage] (inferclass) {Dự đoán lớp bệnh\\kèm xác suất};
+    \node[segmodel, right=of inferclass] (inferseg) {Định vị tổn thương\\mặt nạ nhị phân};
+    \node[data, right=of inferseg] (decision) {Kết quả cuối\\lớp bệnh +\\vùng nhiễm bệnh};
+
+    \draw[flow] (dataset) -- (split);
+    \draw[flow] (split) -- (classifier);
+    \draw[flow] (classifier) -- (gradcam);
+    \draw[flow] (gradcam) -- (post);
+    \draw[flow] (post) -- (samrefine);
+    \draw[flow] (samrefine) -- (segtrain);
+
+    \draw[dashedflow] (classifier.south) -- ++(0,-0.7) -| (inferclass.north);
+    \draw[dashedflow] (segtrain.south) -- ++(0,-0.7) -| (inferseg.north);
+    \draw[flow] (newimage) -- (inferclass);
+    \draw[flow] (inferclass) -- (inferseg);
+    \draw[flow] (inferseg) -- (decision);
+
+    \node[lane, fit=(dataset)(split)(classifier)(gradcam)(post)(samrefine)(segtrain), inner xsep=7pt, inner ysep=12pt,
+        label={[font=\bfseries\small]above:Huấn luyện và xây dựng nhãn giả}] {};
+    \node[lane, fit=(newimage)(inferclass)(inferseg)(decision), inner xsep=7pt, inner ysep=12pt,
+        label={[font=\bfseries\small]below:Suy luận}] {};
+\end{tikzpicture}%
+}
+\caption[Tổng quan quy trình học giám sát yếu đề xuất]{Tổng quan quy trình phân
+tích bệnh lá sầu riêng theo hướng giám sát yếu. Mô hình phân loại học nhãn mức ảnh
+trước, sau đó các giải thích GradCAM++ đa tỉ lệ của nó được chuyển thành mặt nạ
+phân đoạn giả thông qua ngưỡng phân vị theo lớp. SAM tinh chỉnh biên của các mặt
+nạ này trước khi chúng được dùng để huấn luyện mô hình phân đoạn UNet++ cuối cùng.
+Khi suy luận, hệ thống trả về đồng thời lớp bệnh và vùng tổn thương được định vị.}
+\label{fig:pipeline}
+\end{figure}
+
+Bảng dưới tóm tắt vai trò và sản phẩm của từng giai đoạn.
+
+\begin{table}[H]
+\centering
+\caption{Vai trò và sản phẩm của bốn giai đoạn}
+\label{tab:giaidoan}
+\small
+\begin{tabular}{L{1.4cm} L{3.6cm} L{3.4cm} L{4.2cm}}
+\toprule
+\textbf{Giai đoạn} & \textbf{Nhiệm vụ} & \textbf{Đầu vào} & \textbf{Sản phẩm} \\
+\midrule
+1 & Phân loại bệnh & Ảnh + nhãn mức ảnh & Mô hình phân loại đã huấn luyện \\
+2 & Sinh nhãn giả & Mô hình phân loại + 3.104 ảnh huấn luyện & 3.104 mặt nạ nhị phân \\
+3 & Tinh chỉnh biên & Mặt nạ giả + ảnh gốc & 3.104 mặt nạ biên sắc nét hơn \\
+4 & Phân đoạn & Ảnh + mặt nạ giả & Mô hình phân đoạn đầu cuối \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Luận văn xây dựng \emph{ba phiên bản} của quy trình, khác nhau ở cách sinh nhãn
+giả ở Giai đoạn 2--3, còn Giai đoạn 4 giữ nguyên kiến trúc để bảo đảm tính so
+sánh:
+
+\begin{itemize}
+    \item \textbf{V1} --- \GradCAM{} một tầng, ngưỡng cố định 0,5
+          (\cref{sec:pseudov1}).
+    \item \textbf{V2} --- \GradCAMpp{} đa tỉ lệ, ngưỡng phân vị theo lớp
+          (\cref{sec:pseudov2}).
+    \item \textbf{V3} --- nhãn V2 được \SAM{} tinh chỉnh biên
+          (\cref{sec:samrefine}).
+\end{itemize}
+
+\section{Bộ dữ liệu và phân tích khám phá}
+\label{sec:dulieu}
+
+Phân tích khám phá dữ liệu (\en{Exploratory Data Analysis}, EDA) được thực hiện
+trước khi huấn luyện nhằm ba mục đích: xác nhận tính toàn vẹn của dữ liệu, phát
+hiện sớm các đặc điểm có thể gây khó khăn cho mô hình, và định hướng lựa chọn chỉ
+số đánh giá.
+
+\subsection{Thành phần và phân bố lớp}
+
+Bộ dữ liệu gồm \num{4437} ảnh chia thành năm lớp như trong \cref{tab:phanbolop}.
+
+\begin{table}[H]
+\centering
+\caption{Phân bố số lượng ảnh theo lớp}
+\label{tab:phanbolop}
+\begin{tabular}{c l r r}
+\toprule
+\textbf{Nhãn} & \textbf{Lớp} & \textbf{Số ảnh} & \textbf{Tỉ lệ} \\
+\midrule
+0 & Algal Leaf Spot (đốm tảo)          & 733 & 16,5\% \\
+1 & Allocaridara Attack (rầy phấn)     & 913 & 20,6\% \\
+2 & Healthy Leaf (lá khoẻ)             & 976 & 22,0\% \\
+3 & Leaf Blight (cháy lá)              & 937 & 21,1\% \\
+4 & Phomopsis Leaf Spot (đốm Phomopsis)& 878 & 19,8\% \\
+\midrule
+\multicolumn{2}{l}{\textbf{Tổng}} & \textbf{4.437} & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Nhãn số được gán theo thứ tự bảng chữ cái của tên thư mục, thống nhất giữa mọi
+tập con và mọi lần chạy.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/eda_class_distribution.png}
+\caption[Phân bố lớp của bộ dữ liệu]{Phân bố số lượng ảnh theo lớp (trái) và tỉ lệ
+phần trăm (phải). Đường nét đứt biểu thị giá trị trung bình 887 ảnh mỗi lớp.}
+\label{fig:class_distribution}
+\end{figure}
+
+Tỉ lệ mất cân bằng --- thương của lớp nhiều nhất trên lớp ít nhất --- bằng
+$976/733 = 1{,}33$. Đây là mức rất thấp; theo thông lệ, chỉ khi tỉ lệ vượt khoảng
+1:10 mới cần các biện pháp can thiệp như lấy mẫu quá mức hay trọng số theo lớp.
+Do đó luận văn \emph{không} áp dụng biện pháp nào và huấn luyện trực tiếp trên
+phân bố gốc. Cân bằng gần hoàn hảo cũng khiến \en{macro-F1} trở thành chỉ số tổng
+hợp phù hợp, vì không lớp nào đủ áp đảo để bóp méo giá trị trung bình.
+
+\subsection{Phân chia tập dữ liệu}
+
+Bộ dữ liệu được chia theo tỉ lệ 70/10/20 với phân tầng theo lớp.
+
+\begin{table}[H]
+\centering
+\caption{Phân chia tập dữ liệu cho bài toán phân loại}
+\label{tab:split}
+\begin{tabular}{l r r L{6.0cm}}
+\toprule
+\textbf{Tập} & \textbf{Số ảnh} & \textbf{Tỉ lệ} & \textbf{Vai trò} \\
+\midrule
+Huấn luyện   & 3.104 & 70,0\% & Cập nhật trọng số \\
+Kiểm định    & 443   & 10,0\% & Dừng sớm, chọn điểm kiểm tra, điều chỉnh tốc độ học \\
+Kiểm thử     & 890   & 20,1\% & Đánh giá cuối, dùng đúng một lần \\
+\midrule
+\textbf{Tổng} & \textbf{4.437} & \textbf{100\%} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/eda_dataset_splits.png}
+\caption[Phân chia tập dữ liệu]{Số lượng ảnh trong ba tập con (trái) và phân bố
+lớp trong từng tập (phải). Phân bố lớp đồng đều trên cả ba tập, không có hiện
+tượng lệch khi chia dữ liệu.}
+\label{fig:dataset_splits}
+\end{figure}
+
+Lựa chọn tỉ lệ này phản ánh một cân nhắc cụ thể. Tập kiểm định chỉ chiếm 10\%
+(443 ảnh, trung bình khoảng 89 ảnh mỗi lớp) --- vừa đủ để ước lượng hiệu năng phục
+vụ dừng sớm --- trong khi phần tiết kiệm được dồn cho tập kiểm thử 20\% (890 ảnh).
+Tập kiểm thử lớn cho ước lượng hiệu năng cuối cùng có phương sai thấp hơn, điều
+quan trọng khi cần báo cáo một con số duy nhất làm kết quả chính thức.
+
+Phân bố theo lớp trong tập huấn luyện --- bộ ảnh sẽ được dùng để sinh nhãn giả ở
+các giai đoạn sau --- như sau: Algal Leaf Spot 513 ảnh, Allocaridara Attack 639,
+Healthy Leaf 683, Leaf Blight 655 và Phomopsis Leaf Spot 614.
+
+\subsection{Đặc điểm hình thái của các lớp}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/eda_samples_per_class.png}
+\caption[Ảnh mẫu của năm lớp]{Hai ảnh mẫu cho mỗi lớp bệnh. Sự khác biệt hình thái
+giữa Algal Leaf Spot và Phomopsis Leaf Spot là nhỏ nhất trong năm lớp.}
+\label{fig:samples_per_class}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Đặc điểm hình thái quan sát được của từng lớp}
+\label{tab:hinhthai}
+\small
+\begin{tabular}{L{3.4cm} L{9.6cm}}
+\toprule
+\textbf{Lớp} & \textbf{Biểu hiện trên lá} \\
+\midrule
+Algal Leaf Spot & Đốm tròn hoặc bầu dục màu vàng--nâu--xám, rải rác trên bề mặt lá, viền tương đối rõ. \\
+Allocaridara Attack & Vết cắn, đường kẻ và lỗ thủng không đều do côn trùng; kết cấu lá bị phá vỡ mạnh. \\
+Healthy Leaf & Lá xanh đồng màu, bề mặt nhẵn, không có tổn thương hay đổi màu. \\
+Leaf Blight & Mảng hoại tử lớn màu nâu--đen, thường lan từ rìa lá vào trong, ranh giới không rõ. \\
+Phomopsis Leaf Spot & Đốm nhỏ hơn Algal, màu nâu tối viền vàng nhạt, thường tụ thành cụm. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Quan sát quan trọng nhất từ \cref{fig:samples_per_class} là cặp \emph{Algal Leaf
+Spot} và \emph{Phomopsis Leaf Spot} có hình thái gần nhau: cả hai đều tạo đốm nhỏ
+trên nền lá xanh, khác biệt chủ yếu ở kích thước và mật độ đốm. Đây là cặp lớp dự
+kiến gây nhầm lẫn nhiều nhất, và dự đoán này sẽ được kiểm chứng bằng ma trận nhầm
+lẫn ở \cref{chap:thucnghiem}.
+
+\subsection{Phân tích màu sắc}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/eda_rgb_histogram.png}
+\caption[Biểu đồ phân bố kênh màu RGB]{Phân bố ba kênh màu R, G, B cho từng lớp.
+Healthy Leaf là lớp duy nhất có kênh Green dịch rõ về phía giá trị cao.}
+\label{fig:rgb_histogram}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/eda_mean_rgb.png}
+\caption[Giá trị trung bình các kênh màu theo lớp]{Giá trị trung bình của ba kênh
+màu theo từng lớp, tính trên 30 ảnh mỗi lớp.}
+\label{fig:mean_rgb}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Giá trị trung bình các kênh màu theo lớp (mẫu 30 ảnh mỗi lớp)}
+\label{tab:meanrgb}
+\begin{tabular}{l r r r r}
+\toprule
+\textbf{Lớp} & \textbf{R} & \textbf{G} & \textbf{B} & \textbf{G $-$ R} \\
+\midrule
+Algal Leaf Spot     & 95,8  & 125,8 & 106,6 & 30,0 \\
+Allocaridara Attack & 94,4  & 134,5 & 98,9  & 40,1 \\
+Healthy Leaf        & 96,4  & 133,0 & 92,1  & 36,6 \\
+Leaf Blight         & 103,5 & 137,8 & 107,2 & 34,3 \\
+Phomopsis Leaf Spot & 97,2  & 138,6 & 88,5  & 41,4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Phân tích màu cho hai nhận định có ý nghĩa thực tiễn.
+
+Thứ nhất, \emph{Algal Leaf Spot có hiệu $G - R$ thấp nhất} (30,0) --- dấu hiệu của
+việc mô lá chuyển sang nâu đỏ, làm giảm ưu thế của kênh lục. Đây là đặc trưng màu
+sắc phân biệt được lớp này khỏi các lớp còn lại.
+
+Thứ hai, và quan trọng hơn về mặt phương pháp, \emph{các giá trị trung bình toàn
+ảnh không đủ để phân tách năm lớp}: khoảng biến thiên của kênh lục giữa các lớp
+chỉ từ 125,8 đến 138,6, quá hẹp so với độ lệch trong nội bộ từng lớp. Điều này bác
+bỏ khả năng xây dựng một bộ phân loại đơn giản dựa trên đặc trưng màu thủ công, và
+củng cố lựa chọn dùng CNN để học đặc trưng \emph{cục bộ} --- vốn là nơi thông tin
+bệnh học thực sự nằm.
+
+\subsection{Độ sáng và dung lượng tệp}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/eda_filesize_brightness.png}
+\caption[Dung lượng tệp và độ sáng]{Phân bố dung lượng tệp (trái) và phân bố độ
+sáng trung bình theo lớp (phải).}
+\label{fig:filesize_brightness}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/eda_brightness_kde.png}
+\caption[Mật độ phân bố độ sáng theo lớp]{Ước lượng mật độ hạt nhân của độ sáng
+trung bình cho từng lớp.}
+\label{fig:brightness_kde}
+\end{figure}
+
+Dung lượng tệp tập trung quanh giá trị trung bình 11,36 KB với độ lệch chuẩn chỉ
+0,80 KB (nhỏ nhất 8,91 KB, lớn nhất 15,07 KB). Độ đồng đều cao này xác nhận toàn
+bộ ảnh đã đi qua cùng một quy trình nén và chuẩn hoá --- nhất quán với nhận định
+về trạng thái tiền xử lý của dữ liệu ở \cref{subsec:nguongoc}.
+
+Về hình học, kiểm tra trên mẫu 100 ảnh cho thấy chiều rộng, chiều cao và tỉ lệ
+khung hình đều có độ lệch chuẩn bằng 0 --- mọi ảnh đúng $224 \times 224$ và vuông.
+Hệ quả trực tiếp: bước thay đổi kích thước trong quy trình tiền xử lý trở thành
+phép đồng nhất, và không có biến dạng hình học nào được đưa thêm vào dữ liệu.
+
+\subsection{Kiểm chứng luồng nạp dữ liệu}
+
+Trước khi huấn luyện, luồng nạp dữ liệu được kiểm chứng bằng cách lấy một lô mẫu
+và đối chiếu các đại lượng thống kê. Kết quả: kích thước lô $[32, 3, 224, 224]$
+đúng như thiết kế; giá trị điểm ảnh sau chuẩn hoá nằm trong khoảng
+$[-2{,}118;\ 2{,}640]$; nhãn nằm trong $[0, 4]$; độ lệch chuẩn theo từng kênh xấp
+xỉ 1,0 (\num{1.0298}, \num{1.0201}, \num{1.0387}).
+
+Giá trị trung bình theo kênh sau chuẩn hoá là $(-0{,}618;\ 0{,}001;\ -0{,}320)$
+thay vì $(0, 0, 0)$. Đây \emph{không} phải lỗi mà là hệ quả có thể dự đoán được:
+phép chuẩn hoá dùng giá trị trung bình và độ lệch chuẩn của ImageNet, trong khi
+ảnh lá cây có kênh lục trội hơn và kênh đỏ, lam yếu hơn so với phân bố ImageNet.
+Độ lệch chuẩn theo kênh xấp xỉ 1,0 cho thấy phép chuẩn hoá vẫn phát huy đúng tác
+dụng chính là đưa dữ liệu về thang đo phù hợp cho tối ưu bằng gradient.
+
+\section{Giai đoạn 1 --- Mô hình phân loại}
+\label{sec:giaidoan1}
+
+\subsection{Kiến trúc}
+
+Mô hình phân loại dùng EfficientNet-B0 tiền huấn luyện trên ImageNet, thay tầng
+phân loại 1000 lớp gốc bằng cấu trúc:
+
+\begin{equation}
+    \text{Dropout}(p = 0{,}2) \;\rightarrow\; \text{Linear}(1280 \rightarrow 5)
+    \label{eq:cls_head}
+\end{equation}
+
+Toàn bộ mô hình có \num{4013953} tham số và được tinh chỉnh hoàn toàn --- không
+tầng nào bị đóng băng --- theo biện luận ở \cref{sec:cnn}.
+
+\subsection{Tăng cường dữ liệu}
+
+Tăng cường dữ liệu (\en{data augmentation}) được áp dụng \emph{chỉ trên tập huấn
+luyện}: lật ngang, lật dọc, xoay và biến đổi màu (\en{color jitter}). Tập kiểm
+định và kiểm thử không được tăng cường, vì nếu tăng cường thì mỗi lần đánh giá sẽ
+cho kết quả khác nhau, làm nhiễu chính tín hiệu dùng để dừng sớm.
+
+Lật dọc là phép biến đổi hợp lệ trong bài toán này --- khác với ảnh chữ viết hay
+ảnh phong cảnh --- vì một chiếc lá không có hướng ``đúng'' cố định khi chụp.
+
+\subsection{Cấu hình huấn luyện}
+
+\begin{table}[H]
+\centering
+\caption{Cấu hình huấn luyện mô hình phân loại}
+\label{tab:cauhinh_cls}
+\begin{tabular}{L{4.6cm} L{8.4cm}}
+\toprule
+\textbf{Thành phần} & \textbf{Thiết lập} \\
+\midrule
+Kiến trúc          & EfficientNet-B0, tiền huấn luyện ImageNet \\
+Tầng phân loại     & Dropout(0,2) + Linear(1280 $\rightarrow$ 5) \\
+Số tham số         & 4.013.953 (toàn bộ khả huấn luyện) \\
+Hàm mất mát        & Cross-Entropy \\
+Bộ tối ưu          & Adam, tốc độ học $1 \times 10^{-4}$ \\
+Lịch tốc độ học    & ReduceLROnPlateau theo \texttt{val\_acc}, patience = 2, hệ số 0,5 \\
+Kích thước lô      & 16 \\
+Số epoch tối đa    & 50 \\
+Dừng sớm           & patience = 5 theo \texttt{val\_acc} \\
+Tăng cường         & Lật ngang/dọc, xoay, biến đổi màu \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Hai lựa chọn cần biện luận:
+
+\textbf{Tốc độ học $10^{-4}$.} Giá trị này nhỏ hơn một bậc so với mặc định
+$10^{-3}$ của Adam. Với tinh chỉnh toàn bộ, tốc độ học lớn khiến các bước cập nhật
+đầu tiên --- khi tầng phân loại mới còn khởi tạo ngẫu nhiên và sinh gradient lớn
+--- phá huỷ chính các trọng số tiền huấn luyện mà ta muốn tận dụng.
+
+\textbf{Kích thước lô 16.} Lô nhỏ tạo nhiễu gradient, mà nhiễu này có tác dụng
+chính quy hoá nhẹ --- hữu ích với tập huấn luyện chỉ hơn ba nghìn ảnh.
+
+\subsection{Chiến lược dừng sớm}
+
+Cần phân biệt rõ hai cơ chế cùng theo dõi \texttt{val\_acc} nhưng phục vụ hai mục
+đích khác nhau: \en{ReduceLROnPlateau} với patience = 2 \emph{giảm tốc độ học} khi
+hiệu năng chững lại, còn dừng sớm với patience = 5 \emph{kết thúc huấn luyện}. Việc
+đặt patience của bộ lập lịch nhỏ hơn của dừng sớm là có chủ đích: mô hình được cho
+ít nhất hai cơ hội giảm tốc độ học để thoát vùng phẳng trước khi bị dừng hẳn.
+
+Điểm kiểm tra chỉ được ghi đè khi \texttt{val\_acc} vượt kỷ lục cũ, nên tệp
+\texttt{best\_\allowbreak model.\allowbreak pth} luôn ứng với mô hình tốt nhất từng đạt được. Đây chính là
+tệp được nạp lại ở tất cả các giai đoạn sau.
+
+\section{Giai đoạn 2 --- Sinh nhãn giả phiên bản V1}
+\label{sec:pseudov1}
+
+\subsection{Trích xuất bản đồ nhiệt}
+
+Nhãn giả V1 dùng \GradCAM{} một tầng theo \cref{eq:gradcam}, với tầng đích là
+\texttt{base.\allowbreak features.\allowbreak 8.\allowbreak 0} --- tầng tích chập cuối cùng của EfficientNet-B0, cho
+bản đồ đặc trưng $7 \times 7$. Đây là lựa chọn tiêu chuẩn: tầng sâu nhất giữ nhiều
+ngữ nghĩa nhất trong khi vẫn còn thông tin không gian.
+
+Quy trình được áp dụng cho \emph{toàn bộ} \num{3104} ảnh huấn luyện. Phép biến đổi
+đầu vào giống hệt tập kiểm định và kiểm thử, không tăng cường --- yêu cầu bắt buộc
+để mặt nạ sinh ra ổn định giữa các lần chạy.
+
+\subsection{Nhị phân hoá và hậu xử lý hình thái}
+
+Bản đồ nhiệt đã chuẩn hoá về $[0, 1]$ được nhị phân hoá bằng ngưỡng cố định:
+
+\begin{equation}
+    M(i,j) = \begin{cases}
+        1 & \text{nếu } H(i,j) \geq 0{,}5 \\
+        0 & \text{nếu ngược lại}
+    \end{cases}
+    \label{eq:threshold_v1}
+\end{equation}
+
+Sau đó áp dụng lần lượt phép \emph{đóng} rồi phép \emph{mở} theo
+\cref{eq:closing,eq:opening} với phần tử cấu trúc \emph{chữ nhật} $5 \times 5$.
+Kích thước này tương ứng khoảng 0,05\% diện tích ảnh --- đủ để làm mịn biên mà
+không xoá mất các đốm bệnh nhỏ.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/pl1_morphology_demo.png}
+\caption[Minh hoạ hậu xử lý hình thái]{Tác động của hậu xử lý hình thái. Từ trái
+sang phải: ảnh gốc, bản đồ nhiệt Grad-CAM, mặt nạ chỉ qua ngưỡng hoá, và mặt nạ
+sau khi áp dụng phép đóng rồi phép mở với phần tử cấu trúc $5 \times 5$.}
+\label{fig:morphology_demo}
+\end{figure}
+
+Toàn bộ quá trình sinh \num{3104} mặt nạ mất 14 phút 00 giây trên GPU, tương đương
+tốc độ 3,69 ảnh mỗi giây.
+
+\subsection{Ba hạn chế của phiên bản V1}
+\label{subsec:hanche_v1}
+
+Phân tích thống kê mặt nạ V1 bộc lộ ba vấn đề, mỗi vấn đề dẫn tới một cải tiến cụ
+thể ở phiên bản V2.
+
+\textbf{Thứ nhất --- lớp lá khoẻ sinh mặt nạ vô nghĩa.} Độ phủ trung bình của lớp
+Healthy Leaf đạt 26,4\%, cao gần gấp đôi các lớp bệnh (12,3--15,1\%), với giá trị
+lớn nhất lên tới 59,1\%. Điều này hoàn toàn logic mà lại rất tai hại: lá khoẻ
+\emph{không có} tổn thương nào để mạng tập trung, nên bản đồ chú ý khuếch tán khắp
+phiến lá; ngưỡng hoá một bản đồ khuếch tán tất yếu cho vùng rộng. Nếu đưa
+\num{683} mặt nạ này vào huấn luyện phân đoạn, mô hình sẽ học rằng lá khoẻ cũng có
+26\% diện tích ``bệnh''.
+
+\textbf{Thứ hai --- ngưỡng cố định không thích ứng.} Ngưỡng 0,5 áp dụng cho mọi
+ảnh, bất kể phân bố bản đồ nhiệt của từng ảnh. Ảnh bệnh nhẹ bị phân đoạn thiếu,
+ảnh có nền nổi bật bị phân đoạn thừa. Hệ quả là độ lệch chuẩn của độ phủ rất lớn
+(0,039--0,076 tuỳ lớp).
+
+\textbf{Thứ ba --- biên quá thô.} Bản đồ $7 \times 7$ phóng lên $224 \times 224$
+khiến mỗi ô tương ứng một khối $32 \times 32$ điểm ảnh. Các đốm bệnh rời rạc bị
+gộp thành một khối lớn duy nhất, làm mất thông tin về số lượng và vị trí từng đốm
+--- đúng như phân tích lý thuyết ở \cref{sec:xai}.
+
+\section{Giai đoạn 2' --- Sinh nhãn giả phiên bản V2}
+\label{sec:pseudov2}
+
+Phiên bản V2 khắc phục cả ba hạn chế trên bằng bốn thay đổi kỹ thuật, tóm tắt ở
+\cref{tab:v1_v2}.
+
+\begin{table}[H]
+\centering
+\caption{So sánh thiết kế nhãn giả V1 và V2}
+\label{tab:v1_v2}
+\small
+\begin{tabular}{L{2.6cm} L{3.5cm} L{3.5cm} L{3.6cm}}
+\toprule
+\textbf{Thành phần} & \textbf{V1} & \textbf{V2} & \textbf{Lý do thay đổi} \\
+\midrule
+Phương pháp CAM & Grad-CAM & Grad-CAM++ & Tránh hiệu ứng san phẳng khi có nhiều đốm bệnh \\
+Tầng đích & \texttt{features.8} ($7\times7$) & \texttt{features.6} ($14\times14$) + \texttt{features.8} & Tăng chi tiết không gian gấp bốn lần về diện tích \\
+Ngưỡng hoá & Cố định 0,5 & Phân vị theo lớp & Kiểm soát trực tiếp độ phủ \\
+Phần tử cấu trúc & Chữ nhật $5\times5$ & Elip $5\times5$ & Bám hình dạng tròn của đốm bệnh \\
+Lọc nhiễu & Không & Top-3 CC $\geq$ 400 px & Loại mảnh vụn mà phép mở bỏ sót \\
+Lá khoẻ & Xử lý như lớp bệnh & Mặt nạ toàn số 0 & Loại 683 mặt nạ dương tính giả \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Grad-CAM++ đa tỉ lệ}
+
+Hai tầng đích được chọn theo \cref{eq:multiscale}:
+
+\begin{itemize}
+    \item \textbf{Tầng tinh}: \texttt{base.\allowbreak features.\allowbreak 6.\allowbreak 3.\allowbreak block.\allowbreak 3.\allowbreak 0}, độ phân giải
+          $14 \times 14$ --- nắm bắt các đốm nhỏ.
+    \item \textbf{Tầng thô}: \texttt{base.\allowbreak features.\allowbreak 8.\allowbreak 0}, độ phân giải
+          $7 \times 7$ --- cung cấp ngữ cảnh ngữ nghĩa.
+\end{itemize}
+
+Bản đồ nhiệt hợp nhất:
+
+\begin{equation}
+    H_{\text{final}} = 0{,}6 \cdot H_{\text{fine}} + 0{,}4 \cdot H_{\text{coarse}}
+    \label{eq:fusion_v2}
+\end{equation}
+
+Trọng số thiên về tầng tinh nhằm ưu tiên độ sắc nét của biên, nhưng vẫn giữ 40\%
+đóng góp từ tầng thô để tránh kích hoạt nhầm trên kết cấu nền. Trọng số của từng
+tầng được tính theo \cref{eq:gradcampp_alpha,eq:gradcampp_w}.
+
+\subsection{Ngưỡng phân vị theo lớp}
+
+Đây là cải tiến trung tâm của V2. Thay vì cố định giá trị ngưỡng, ta cố định
+\emph{tỉ lệ diện tích} được giữ lại. Với tỉ lệ mục tiêu $p$, ngưỡng được tính là
+phân vị thứ $(1 - p) \times 100$ của chính bản đồ nhiệt đó:
+
+\begin{equation}
+    \tau = \operatorname{percentile}\big(H,\; (1 - p) \times 100\big),
+    \qquad
+    M(i,j) = \mathbf{1}\big[H(i,j) \geq \tau\big]
+    \label{eq:percentile}
+\end{equation}
+
+Cách làm này đảo ngược quan hệ nhân quả so với V1: ở V1 ngưỡng là tham số và độ
+phủ là kết quả không kiểm soát được; ở V2 độ phủ là tham số còn ngưỡng được suy ra
+cho từng ảnh. Nhờ đó ngưỡng tự thích ứng với phân bố riêng của từng bản đồ nhiệt.
+
+\begin{table}[H]
+\centering
+\caption{Tỉ lệ độ phủ mục tiêu theo lớp}
+\label{tab:keeppct}
+\begin{tabular}{l c L{7.2cm}}
+\toprule
+\textbf{Lớp} & \textbf{Giữ lại} & \textbf{Căn cứ} \\
+\midrule
+Algal Leaf Spot     & 18\% & Đốm nhỏ rải rác, cần độ chính xác cao \\
+Allocaridara Attack & 20\% & Tổn thương côn trùng trên vùng rộng hơn \\
+Healthy Leaf        & 0\%  & Không có mô tổn thương --- ép về không \\
+Leaf Blight         & 22\% & Mảng hoại tử lan rộng nhất \\
+Phomopsis Leaf Spot & 18\% & Đốm nhỏ, tương tự Algal \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Các giá trị 18--22\% được chọn dựa trên đặc điểm bệnh học quan sát từ
+\cref{tab:hinhthai}, theo thứ tự: bệnh đốm chiếm diện tích nhỏ nhất, bệnh cháy lá
+lan rộng nhất. Cần nói rõ đây là \emph{tham số suy luận, chưa được hiệu chỉnh dựa
+trên nhãn chuẩn} --- một hạn chế đã nêu ở \cref{subsec:gioihan-quantrong}.
+
+Lý do không dùng ngưỡng Otsu đã được phân tích ở \cref{sec:xulyanh}: phép hợp nhất
+đa tỉ lệ theo \cref{eq:fusion_v2} làm bản đồ nhiệt trở nên trơn và đơn đỉnh, vi
+phạm giả định hai đỉnh mà Otsu dựa vào.
+
+\subsection{Ép về không cho lớp lá khoẻ}
+
+Với lớp Healthy Leaf, tỉ lệ giữ lại được đặt bằng 0, tức mặt nạ là ma trận không:
+
+\begin{equation}
+    M_{\text{healthy}}(i,j) = 0 \quad \forall (i,j)
+    \label{eq:hardzero}
+\end{equation}
+
+Đây là một \emph{tri thức tiên nghiệm} được đưa thẳng vào quy trình: lá khoẻ theo
+định nghĩa không có tổn thương, nên mọi kích hoạt trên ảnh lá khoẻ đều là dương
+tính giả xét theo mục tiêu phân đoạn bệnh. Biện pháp này loại bỏ \num{683} mặt nạ
+nhiễu và cung cấp cho mô hình phân đoạn các mẫu âm sạch --- điều mà bản thân bản đồ
+kích hoạt không bao giờ tự cho được.
+
+\subsection{Hậu xử lý}
+
+Hai bước nối tiếp sau ngưỡng hoá:
+
+\begin{enumerate}
+    \item \textbf{Hình thái với phần tử elip $5 \times 5$}: đóng rồi mở. Phần tử
+          elip bám sát hình dạng tròn hoặc bầu dục của đốm bệnh tốt hơn phần tử
+          chữ nhật dùng ở V1.
+    \item \textbf{Lọc top-3 thành phần liên thông}, chỉ giữ các vùng có diện tích
+          $\geq 400$ điểm ảnh.
+\end{enumerate}
+
+Hai tham số của bước lọc phản ánh đặc thù bài toán. Giữ \emph{ba} vùng thay vì một
+vì bệnh đốm lá biểu hiện thành nhiều tổn thương tách biệt --- giữ một vùng sẽ làm
+mất phần lớn thông tin. Ngưỡng \emph{400 điểm ảnh}, tương đương khoảng 0,8\% diện
+tích ảnh, đủ lớn để loại các mảnh vụn cỡ trung mà phép mở hình thái không xử lý
+hết, nhưng vẫn nhỏ hơn một đốm bệnh điển hình.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/pl2_v1_vs_v2.png}
+\caption[So sánh mặt nạ V1 và V2]{So sánh chất lượng mặt nạ trên cùng một ảnh. Từ
+trái sang phải: ảnh gốc, bản đồ nhiệt GradCAM++ đa tỉ lệ, mặt nạ V1 (ngưỡng cố
+định 0,5, phần tử chữ nhật) và mặt nạ V2 (ngưỡng phân vị, phần tử elip, lọc top-3
+thành phần liên thông).}
+\label{fig:v1_vs_v2}
+\end{figure}
+
+Toàn bộ quá trình sinh nhãn V2 mất 4 phút 08 giây (12,51 ảnh mỗi giây) --- nhanh
+hơn V1 khoảng 3,4 lần dù tính hai bản đồ kích hoạt thay vì một, nhờ cách cài đặt
+hiệu quả hơn cho phép truyền ngược.
+
+\subsection{Đánh đổi của thiết kế V2}
+\label{subsec:tradeoff_v2}
+
+Ngưỡng phân vị bảo đảm độ phủ bám sát mục tiêu, nhưng cái giá phải trả cần được
+nêu thẳng: \emph{độ phủ trở nên gần như đồng nhất trong cùng một lớp}. Một ảnh chỉ
+có một đốm bệnh nhỏ và một ảnh bị bệnh phủ kín lá đều nhận mặt nạ chiếm xấp xỉ
+cùng tỉ lệ diện tích.
+
+Nói cách khác, mặt nạ V2 \emph{không mã hoá được mức độ nặng nhẹ của bệnh}. Mô
+hình phân đoạn huấn luyện trên nhãn này học cách ``phủ đúng diện tích'' hơn là học
+cách ``phát hiện vùng bệnh thực sự''. Đây là đánh đổi được chấp nhận có ý thức để
+loại bỏ hiện tượng phân đoạn thừa của Otsu, và hệ quả của nó sẽ hiện rõ trong kết
+quả thực nghiệm ở \cref{chap:thucnghiem}.
+
+\section{Giai đoạn 3 --- Tinh chỉnh biên bằng SAM}
+\label{sec:samrefine}
+
+\subsection{Động lực}
+
+Mặt nạ V2 định vị đúng vùng bệnh nhưng biên vẫn thô, vì bản đồ nhiệt gốc chỉ có độ
+phân giải $14 \times 14$ và $7 \times 7$. \SAM{} được kỳ vọng bổ khuyết đúng điểm
+này: giữ nguyên thông tin \emph{vị trí} từ V2 và thay thế thông tin \emph{biên}
+bằng biên chính xác ở mức điểm ảnh mà \SAM{} sinh ra.
+
+\subsection{Sinh gợi ý}
+
+Với mỗi mặt nạ V2 khác rỗng, các gợi ý được trích xuất như sau:
+
+\begin{itemize}
+    \item \textbf{Điểm tiền cảnh} (5 điểm): trọng tâm của mặt nạ, cộng 4 điểm lấy
+          ngẫu nhiên trong vùng mặt nạ. Việc bổ sung điểm ngẫu nhiên là cần thiết
+          --- nếu chỉ dùng trọng tâm thì với mặt nạ hình vành khuyên hoặc gồm
+          nhiều cụm rời, trọng tâm có thể rơi ra ngoài vùng thực.
+    \item \textbf{Điểm nền} (3 điểm): lấy ngẫu nhiên trong phần bù của mặt nạ đã
+          giãn nở 30 điểm ảnh. Vùng đệm 30 điểm ảnh bảo đảm điểm nền không rơi sát
+          biên tổn thương --- nơi nhãn vốn không chắc chắn.
+\end{itemize}
+
+Mặt nạ rỗng --- toàn bộ \num{683} ảnh lá khoẻ --- được bỏ qua và giữ nguyên trạng
+thái rỗng.
+
+\subsection{Cơ chế bảo vệ dựa trên IoU}
+
+Để phòng trường hợp \SAM{} chọn nhầm vùng, một cơ chế bảo vệ được cài đặt:
+
+\begin{equation}
+    M_{\text{refined}} =
+    \begin{cases}
+        M_{\SAM} & \text{nếu } \operatorname{IoU}(M_{\SAM},\, M_{\text{V2}}) \geq 0{,}15 \\[4pt]
+        M_{\text{V2}} & \text{nếu ngược lại}
+    \end{cases}
+    \label{eq:iou_guard}
+\end{equation}
+
+Ý tưởng là nếu mặt nạ \SAM{} sinh ra chồng lấp quá ít với mặt nạ V2 thì nhiều khả
+năng \SAM{} đã chuyển sang một đối tượng khác, khi đó ta quay về dùng mặt nạ V2.
+
+Cần lưu ý ngay rằng cơ chế này \emph{chỉ chặn được một trong hai kiểu sai lệch}.
+Phân tích đầy đủ về khiếm khuyết của nó, cùng bằng chứng định lượng, được trình
+bày ở \cref{chap:thucnghiem} --- đây là một trong những phát hiện chính của luận
+văn.
+
+\subsection{Hậu xử lý}
+
+Mặt nạ sau tinh chỉnh được làm sạch bằng hai bước: loại các thành phần liên thông
+có diện tích nhỏ hơn 5\% tổng diện tích mặt nạ hoặc nhỏ hơn 30 điểm ảnh, sau đó
+áp dụng phép đóng hình thái $5 \times 5$ để lấp các lỗ nhỏ.
+
+\section{Giai đoạn 4 --- Mô hình phân đoạn}
+\label{sec:giaidoan4}
+
+\subsection{Kiến trúc}
+
+Phiên bản V1 dùng EfficientNet-UNet tự cài đặt: bộ mã hoá EfficientNet-B0 trích
+đặc trưng tại bốn mức, bộ giải mã U-Net với kết nối tắt trực tiếp, tổng cộng
+\num{7276925} tham số (bộ mã hoá \num{4007548}, bộ giải mã \num{3269312}).
+
+Hai phiên bản V2 và V3 dùng \UNetpp{} với bộ mã hoá EfficientNet-B0
+(\num{6569581} tham số) theo biện luận ở \cref{sec:unet}. Đầu ra là một kênh
+\en{logit}, hàm \en{sigmoid} được đưa vào trong hàm mất mát thay vì đặt ở đầu ra
+mô hình --- cách làm chuẩn để bảo đảm ổn định số học.
+
+\subsection{Tăng cường dữ liệu cho phân đoạn}
+
+Khác với phân loại, tăng cường cho phân đoạn phải biến đổi \emph{đồng bộ} cả ảnh
+lẫn mặt nạ. Phiên bản V1 chỉ dùng lật ngang và lật dọc. Hai phiên bản V2 và V3 dùng
+bộ tăng cường mạnh hơn nhiều qua thư viện
+Albumentations~\cite{buslaev2020albumentations}, liệt kê ở \cref{tab:augment}.
+
+\begin{table}[H]
+\centering
+\caption{Bộ tăng cường dữ liệu cho phân đoạn (V2 và V3)}
+\label{tab:augment}
+\small
+\begin{tabular}{L{4.2cm} c L{7.2cm}}
+\toprule
+\textbf{Phép biến đổi} & \textbf{Xác suất} & \textbf{Mục đích} \\
+\midrule
+RandomResizedCrop (0,7--1,0) & 1,00 & Bất biến với tỉ lệ và vị trí tổn thương \\
+HorizontalFlip / VerticalFlip & 0,50 & Bất biến với hướng đặt lá \\
+RandomRotate90 & 0,50 & Bất biến với góc quay vuông \\
+ShiftScaleRotate & 0,50 & Bất biến với xoay nhỏ và tịnh tiến \\
+ElasticTransform & 0,30 & Mô phỏng lá cong vênh trong thực tế \\
+GridDistortion & 0,20 & Mô phỏng biến dạng phối cảnh \\
+ColorJitter & 0,50 & Bất biến với điều kiện ánh sáng \\
+GaussNoise & 0,20 & Bền vững với nhiễu cảm biến \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Hai phép biến đổi đàn hồi và biến dạng lưới đáng chú ý vì chúng làm biến dạng
+\emph{cả mặt nạ}. Với nhãn chuẩn, điều này chấp nhận được; với nhãn giả vốn đã
+không chắc chắn về biên, việc biến dạng thêm có thể làm nhiễu tín hiệu huấn luyện.
+Đây là một điểm cần cân nhắc, được thảo luận lại ở \cref{chap:thucnghiem}.
+
+\subsection{Cấu hình của ba phiên bản}
+
+\begin{table}[H]
+\centering
+\caption{Cấu hình huấn luyện ba phiên bản mô hình phân đoạn}
+\label{tab:cauhinh_seg}
+\small
+\begin{tabular}{L{3.2cm} L{3.2cm} L{3.2cm} L{3.2cm}}
+\toprule
+\textbf{Thành phần} & \textbf{V1} & \textbf{V2} & \textbf{V3} \\
+\midrule
+Kiến trúc & EfficientNet-UNet & UNet++ EB0 & UNet++ EB0 \\
+Số tham số & 7.276.925 & 6.569.581 & 6.569.581 \\
+Nhãn huấn luyện & Pseudo V1 & Pseudo V2 & SAM tinh chỉnh \\
+Hàm mất mát & BCE + Dice & FocalDice & FocalDice \\
+Bộ tối ưu & Adam $10^{-4}$ & AdamW $10^{-4}$, wd $10^{-4}$ & AdamW $10^{-4}$, wd $10^{-4}$ \\
+Lịch tốc độ học & ReduceLROnPlateau & CosineAnnealing $T_{\max}=50$ & CosineAnnealing $T_{\max}=50$ \\
+Kích thước lô & 8 & 4 & 8 \\
+Epoch tối đa & 30 & 50 & 50 \\
+Dừng sớm & patience 7 & patience 5 & patience 10 \\
+Tiêu chí dừng & \texttt{val\_loss} & \texttt{val\_loss} & \texttt{val\_loss} \\
+Cắt gradient & Không & \texttt{max\_norm} = 1,0 & \texttt{max\_norm} = 1,0 \\
+Tăng cường & Chỉ lật & Albumentations & Albumentations \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Thiết kế thực nghiệm được tổ chức sao cho \textbf{V2 và V3 chỉ khác nhau ở một
+biến duy nhất là bộ nhãn huấn luyện}. Kiến trúc, hàm mất mát, bộ tối ưu, lịch tốc
+độ học, bộ tăng cường và cách chia tập đều giữ nguyên. Nhờ vậy, chênh lệch hiệu
+năng giữa hai phiên bản có thể quy cho tác động của việc tinh chỉnh biên bằng
+\SAM{} --- đây là phép so sánh có kiểm soát duy nhất trong luận văn.
+
+Hai khác biệt còn lại giữa V2 và V3 --- kích thước lô 4 so với 8 và patience 5 so
+với 10 --- xuất phát từ ràng buộc kỹ thuật khi chạy thực nghiệm chứ không phải lựa
+chọn thiết kế, và ảnh hưởng của chúng được đánh giá ở \cref{chap:thucnghiem}.
+
+\subsection{Chia tập cho bài toán phân đoạn}
+\label{subsec:split_seg}
+
+Toàn bộ \num{3104} ảnh huấn luyện kèm nhãn giả được chia lại theo tỉ lệ 70/15/15,
+cho \num{2172} ảnh huấn luyện, 465 ảnh kiểm định và 467 ảnh kiểm thử, với hạt
+giống ngẫu nhiên cố định bằng 42.
+
+Cần lưu ý một chi tiết kỹ thuật có hệ quả trực tiếp tới việc diễn giải kết quả:
+
+\begin{quote}
+Phiên bản V1 chia tập bằng \texttt{torch.\allowbreak random\_\allowbreak split} với bộ sinh số ngẫu nhiên
+của PyTorch, trong khi V2 và V3 chia bằng
+\texttt{numpy.\allowbreak random.\allowbreak default\_rng(42).\allowbreak
+permutation}. Dù cùng hạt giống 42, hai bộ
+sinh số ngẫu nhiên này tạo ra \emph{hai hoán vị khác nhau}, nên \textbf{tập kiểm
+thử của V1 không trùng với tập kiểm thử của V2 và V3}.
+\end{quote}
+
+Đây là một trong nhiều lý do khiến chỉ số của V1 không so sánh trực tiếp được với
+V2 và V3, bên cạnh lý do quan trọng hơn về khác biệt mốc tham chiếu, được phân
+tích trọn vẹn ở \cref{sec:caveat}. Ngược lại, V2 và V3 dùng chung đúng một hoán vị
+nên tập kiểm thử của chúng trùng khớp hoàn toàn.
+
+\section{Kết luận chương}
+
+Chương này đã trình bày chi tiết quy trình bốn giai đoạn cùng ba phiên bản nhãn
+giả. Các quyết định thiết kế chính và căn cứ của chúng được tóm tắt như sau:
+
+\begin{itemize}
+    \item Dùng chung EfficientNet-B0 cho cả phân loại và bộ mã hoá phân đoạn, bảo
+          đảm bản đồ kích hoạt và đặc trưng phân đoạn cùng không gian biểu diễn.
+    \item Chuyển từ \GradCAM{} một tầng sang \GradCAMpp{} đa tỉ lệ để xử lý đặc
+          thù nhiều đốm bệnh trên một lá.
+    \item Thay ngưỡng cố định bằng ngưỡng phân vị theo lớp, đảo ngược quan hệ giữa
+          tham số và kết quả để kiểm soát trực tiếp độ phủ.
+    \item Ép mặt nạ lớp lá khoẻ về không, đưa tri thức tiên nghiệm vào quy trình
+          để loại \num{683} mặt nạ dương tính giả.
+    \item Giữ nguyên mọi yếu tố giữa V2 và V3 ngoại trừ bộ nhãn, tạo ra phép so
+          sánh có kiểm soát cho tác động của \SAM{}.
+\end{itemize}
+
+Hai điểm đã được nêu trước và sẽ được kiểm chứng bằng số liệu ở chương sau: đánh
+đổi giữa kiểm soát độ phủ và khả năng mã hoá mức độ bệnh
+(\cref{subsec:tradeoff_v2}), và khiếm khuyết của cơ chế bảo vệ dựa trên IoU
+(\cref{eq:iou_guard}).

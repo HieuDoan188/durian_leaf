@@ -1,0 +1,304 @@
+% ============================================================================
+%  preamble.tex — toàn bộ cấu hình định dạng của luận văn
+%  Biên dịch: XeLaTeX (Overleaf: Menu → Compiler → XeLaTeX)
+%  Thư mục tham chiếu: biblatex + biber (Overleaf tự nhận diện)
+%
+%  Nếu trường có template riêng, chỉ cần thay THẾ file này — nội dung các
+%  chương trong chapters/ không phụ thuộc vào định dạng.
+% ============================================================================
+
+% ---------------------------------------------------------------------------
+% 1. Trang giấy và lề
+% ---------------------------------------------------------------------------
+% Cỡ chữ 13pt — đặt qua gói `fontsize` vì lớp report chuẩn chỉ nhận 10/11/12pt
+% còn extsizes thì thiếu đúng mức 13pt. Gói này cho phép cỡ chữ tuỳ ý và điều
+% chỉnh đồng bộ toàn bộ các cỡ dẫn xuất (\large, \small, chú thích, chỉ số trên...).
+\usepackage[fontsize=13pt]{fontsize}
+
+% Cho phép các font Type1 (Computer Modern dùng trong công thức toán) nhận cỡ
+% chữ tuỳ ý. Thiếu gói này, mọi cỡ không nằm trong bảng dựng sẵn — trong đó có
+% đúng 13pt — đều bị thay thế kèm cảnh báo "Font shape ... not available".
+\usepackage{anyfontsize}
+
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=3.5cm,      % lề trái rộng để đóng bìa
+    right=2.0cm,
+    top=3.0cm,
+    bottom=3.0cm,
+    footskip=1.2cm
+}
+
+% ---------------------------------------------------------------------------
+% 2. Font và ngôn ngữ tiếng Việt (XeLaTeX)
+% ---------------------------------------------------------------------------
+\usepackage{fontspec}
+
+% Font được nạp theo TÊN TỆP (không theo tên hệ thống) để chạy được trên mọi
+% môi trường: Overleaf, TeX Live, MiKTeX và Tectonic. Tectonic không dùng
+% fontconfig nên tra theo tên hệ thống ("TeX Gyre Termes") sẽ thất bại.
+% Ba họ font dưới đây là bản tự do tương đương Times, Helvetica và Courier.
+\setmainfont{texgyretermes}[
+    Extension      = .otf,
+    UprightFont    = *-regular,
+    BoldFont       = *-bold,
+    ItalicFont     = *-italic,
+    BoldItalicFont = *-bolditalic,
+]
+\setsansfont{texgyreheros}[
+    Extension      = .otf,
+    UprightFont    = *-regular,
+    BoldFont       = *-bold,
+    ItalicFont     = *-italic,
+    BoldItalicFont = *-bolditalic,
+]
+\setmonofont{texgyrecursor}[
+    Extension      = .otf,
+    UprightFont    = *-regular,
+    BoldFont       = *-bold,
+    ItalicFont     = *-italic,
+    BoldItalicFont = *-bolditalic,
+    Scale          = 0.92,
+]
+
+\usepackage{polyglossia}
+\setdefaultlanguage{vietnamese}
+\setotherlanguage{english}
+
+% Lưới an toàn: ép lại tên tiếng Việt phòng khi gói ngôn ngữ dịch thiếu.
+% Dùng \AtBeginDocument thay cho \renewcaptionname để tương thích với MỌI
+% phiên bản polyglossia — lệnh \renewcaptionname chỉ có ở các bản mới.
+\AtBeginDocument{%
+    \renewcommand{\chaptername}{Chương}%
+    \renewcommand{\figurename}{Hình}%
+    \renewcommand{\tablename}{Bảng}%
+    \renewcommand{\contentsname}{Mục lục}%
+    \renewcommand{\listfigurename}{Danh mục hình vẽ}%
+    \renewcommand{\listtablename}{Danh mục bảng biểu}%
+    \renewcommand{\appendixname}{Phụ lục}%
+    \renewcommand{\indexname}{Chỉ mục}%
+}
+
+% ---------------------------------------------------------------------------
+% 3. Giãn dòng và đoạn văn
+% ---------------------------------------------------------------------------
+\usepackage{setspace}
+\onehalfspacing                        % giãn dòng 1,5
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{0.35em}
+
+% Nới ràng buộc dàn dòng. Văn bản tiếng Việt có nhiều từ đơn âm tiết ngắn và
+% hầu như không ngắt từ được, lại xen kẽ nhiều thuật ngữ tiếng Anh cùng tên
+% hàm, tên tệp dài — nếu giữ mặc định sẽ còn khá nhiều dòng tràn ra lề.
+% \emergencystretch cho TeX một lượng giãn dự phòng ở lượt dàn dòng cuối cùng.
+\tolerance=2000
+\setlength{\emergencystretch}{3em}
+\hbadness=6000                         % bớt cảnh báo dòng thưa chữ không đáng kể
+
+% ---------------------------------------------------------------------------
+% 4. Toán học
+% ---------------------------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+% ---------------------------------------------------------------------------
+% 5. Hình ảnh và bảng biểu
+% ---------------------------------------------------------------------------
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small, labelfont=bf, skip=6pt}
+\captionsetup[table]{position=above}
+
+% Cột canh giữa/phải có độ rộng cố định
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ---------------------------------------------------------------------------
+% 6. Màu và sơ đồ TikZ (tái sử dụng từ paper_ijai.tex)
+% ---------------------------------------------------------------------------
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, fit, calc}
+
+\definecolor{stageblue}{HTML}{DCEBFF}
+\definecolor{stagegreen}{HTML}{DDF4E7}
+\definecolor{stageorange}{HTML}{FFE8CC}
+\definecolor{stagegray}{HTML}{EEF1F5}
+\definecolor{stagepurple}{HTML}{EDE4FF}
+\definecolor{arrowgray}{HTML}{4B5563}
+
+\tikzset{
+    pipelinebox/.style={
+        draw=arrowgray, rounded corners=2pt, align=center,
+        minimum width=3.1cm, minimum height=1.15cm,
+        font=\small, inner sep=5pt
+    },
+    data/.style={pipelinebox, fill=stagegray},
+    classmodel/.style={pipelinebox, fill=stageblue},
+    xai/.style={pipelinebox, fill=stageorange},
+    sam/.style={pipelinebox, fill=stagepurple},
+    segmodel/.style={pipelinebox, fill=stagegreen},
+    flow/.style={-{Latex[length=2.6mm]}, thick, draw=arrowgray},
+    dashedflow/.style={-{Latex[length=2.6mm]}, thick, dashed, draw=arrowgray},
+    lane/.style={draw=arrowgray!45, rounded corners=4pt, inner sep=8pt}
+}
+
+% Bảng màu Okabe–Ito, đồng bộ với màu trong toàn bộ notebook
+\definecolor{okOrange}{HTML}{E69F00}
+\definecolor{okSky}{HTML}{56B4E9}
+\definecolor{okGreen}{HTML}{009E73}
+\definecolor{okBlue}{HTML}{0072B2}
+\definecolor{okVermil}{HTML}{D55E00}
+
+% ---------------------------------------------------------------------------
+% 7. Đánh số chương mục và tiêu đề
+% ---------------------------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+    {\normalfont\Large\bfseries\centering}
+    {\chaptertitlename\ \thechapter}{12pt}{\LARGE}
+\titlespacing*{\chapter}{0pt}{-10pt}{28pt}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+% ---------------------------------------------------------------------------
+% 8. Header / footer
+% ---------------------------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------------------------------------------------------------------------
+% 9. Liên kết chéo và trích dẫn
+% ---------------------------------------------------------------------------
+% Cho phép ngắt dòng bên trong văn bản đánh máy (\texttt). Mặc định LaTeX đặt
+% \hyphenchar = -1 cho font đánh máy nên các chuỗi dài như tên tệp, đường dẫn
+% hay định danh mã nguồn không thể ngắt và tràn ra ngoài lề.
+\usepackage[htt]{hyphenat}
+
+\usepackage[hidelinks, unicode]{hyperref}
+
+% xurl cho phép ngắt URL tại bất kỳ ký tự nào. Cần thiết vì một số mục trong
+% danh mục tham khảo chứa địa chỉ kho mã nguồn dài. Phải nạp sau hyperref.
+\usepackage{xurl}
+\hypersetup{
+    pdftitle={Phat hien benh la sau rieng bang hoc sau ket hop XAI va pseudo-labeling},
+    pdfauthor={},
+    bookmarksnumbered=true
+}
+% Tuỳ chọn `english` ép cleveref nạp bộ định nghĩa tiếng Anh thay vì tự dò theo
+% babel/polyglossia. Cần thiết vì cleveref 0.21.x không biết ngôn ngữ
+% `vietnamese`; nếu để nó tự dò thì các macro liên từ (\crefpairconjunction...)
+% sẽ không được định nghĩa và mọi lệnh \cref nhiều nhãn đều lỗi.
+% Toàn bộ chuỗi hiển thị được Việt hoá ngay bên dưới nên tuỳ chọn này không
+% làm lộ chữ tiếng Anh nào ra bản in.
+\usepackage[nameinlink, english]{cleveref}
+
+% Bản vá tương thích cleveref 0.21.x với polyglossia 1.5x: cleveref chỉ đặt
+% \cref@language khi \languagename đã tồn tại, còn polyglossia bản mới định
+% nghĩa \languagename muộn hơn. Hệ quả là \cref@language chưa xác định khi
+% cleveref chạy hook \AtBeginDocument, gây lỗi "Undefined control sequence".
+% Khai báo dự phòng dưới đây vô hại nếu cleveref đã tự đặt được giá trị.
+\makeatletter
+\providecommand{\cref@language}{english}
+\makeatother
+
+% Việt hoá các liên từ khi tham chiếu nhiều nhãn cùng lúc:
+%   \cref{a,b}   -> "Hình 1 và Hình 2"
+%   \cref{a,b,c} -> "Hình 1, Hình 2 và Hình 3"
+%   \crefrange   -> "Hình 1 đến Hình 5"
+%
+% Phải đặt trong \AtBeginDocument: cleveref chỉ tạo các macro liên từ ở hook
+% \AtBeginDocument của chính nó (sau khi đã xác định ngôn ngữ), nên ở thời điểm
+% preamble chúng chưa tồn tại và \renewcommand sẽ báo "Command undefined".
+% Hook khai báo tại đây chạy sau hook của cleveref vì được đăng ký muộn hơn.
+\newcommand{\vnand}{ và~}
+\AtBeginDocument{%
+    \renewcommand{\crefpairconjunction}{\vnand}%
+    \renewcommand{\crefmiddleconjunction}{, }%
+    \renewcommand{\creflastconjunction}{\vnand}%
+    \renewcommand{\crefpairgroupconjunction}{\vnand}%
+    \renewcommand{\crefmiddlegroupconjunction}{, }%
+    \renewcommand{\creflastgroupconjunction}{\vnand}%
+    \renewcommand{\crefrangeconjunction}{ đến~}%
+    \renewcommand{\crefrangepreconjunction}{}%
+    \renewcommand{\crefrangepostconjunction}{}%
+}
+
+\crefname{figure}{Hình}{Hình}
+\crefname{table}{Bảng}{Bảng}
+\crefname{chapter}{Chương}{Chương}
+\crefname{section}{Mục}{Mục}
+\crefname{equation}{Công thức}{Công thức}
+
+% Dùng backend=bibtex thay vì biber: bibtex có sẵn trong Tectonic và mọi bản
+% TeX Live/MiKTeX, trong khi biber là chương trình ngoài phải cài riêng.
+% Tệp refs.bib chỉ chứa ký tự ASCII và các dấu phụ đã escape theo cú pháp
+% LaTeX (\'e, \"a...) nên bibtex xử lý được đầy đủ.
+% Khai báo language=english để biblatex dùng bộ chuỗi tiếng Anh cho phần tài
+% liệu tham khảo — phù hợp vì toàn bộ tài liệu trích dẫn đều là công bố quốc tế.
+% autolang=none: chặn biblatex tự đổi ngôn ngữ theo ngôn ngữ tài liệu. Không có
+% tuỳ chọn này, biblatex sẽ cố dựng mục tài liệu tham khảo bằng tiếng Việt,
+% nhưng không tồn tại tệp vietnamese.lbx nên hàng loạt chuỗi ("and", "pages",
+% "in"...) bị bỏ chưa dịch và hiện ra thô trong bản in.
+\usepackage[backend=bibtex, style=ieee, sorting=none,
+            language=english, autolang=none]{biblatex}
+
+% biblatex chốt ngôn ngữ mục tài liệu tham khảo ngay lúc nạp gói, dựa theo ngôn
+% ngữ chính của tài liệu. Vì không tồn tại tệp vietnamese.lbx, cần ánh xạ tường
+% minh sang english.lbx — đây là cơ chế chính thức của biblatex cho các ngôn ngữ
+% chưa có bộ chuỗi riêng. Thiếu dòng này, các chuỗi "and", "pages", "in",
+% "jourvol"... sẽ bị bỏ chưa dịch và hiện thô trong danh mục tham khảo.
+\DeclareLanguageMapping{vietnamese}{english}
+
+\addbibresource{refs.bib}
+
+% ---------------------------------------------------------------------------
+% 10. Ghi chú việc còn thiếu — mọi chỗ số liệu chưa xác minh phải dùng \todo
+% ---------------------------------------------------------------------------
+% \TODO được cố tình định nghĩa ở dạng NỘI DÒNG (không dùng todonotes) để có thể
+% đặt ở bất kỳ đâu, kể cả giữa các dòng của trang bìa — nơi lệnh \todo[inline]
+% của todonotes sẽ phá vỡ cấu trúc đoạn và gây lỗi "There's no line here to end".
+% Nền vàng viền đỏ bảo đảm không thể bỏ sót khi rà soát bản in.
+% KHÔNG bọc trong \colorbox: hộp màu là một hộp ngang không thể ngắt dòng, nên
+% một ghi chú dài sẽ tràn ra ngoài lề hàng chục xăng-ti-mét. Chữ đỏ đậm ngắt
+% dòng bình thường mà vẫn đủ nổi bật để không bỏ sót khi rà bản in.
+\newcommand{\TODO}[1]{%
+    \textcolor{red}{\textbf{[\,CẦN BỔ SUNG: #1\,]}}%
+}
+
+% ---------------------------------------------------------------------------
+% 11. Macro dùng chung
+% ---------------------------------------------------------------------------
+\usepackage{siunitx}
+\sisetup{output-decimal-marker={,}, group-separator={.}, group-minimum-digits=4}
+
+% Tên kỹ thuật viết nhất quán trong toàn luận văn
+\newcommand{\EffNet}{EfficientNet-B0}
+\newcommand{\GradCAM}{Grad-CAM}
+\newcommand{\GradCAMpp}{Grad-CAM++}
+\newcommand{\UNetpp}{UNet++}
+\newcommand{\SAM}{SAM}
+
+% Thuật ngữ tiếng Anh giữ nguyên, in nghiêng ở lần xuất hiện đầu
+\newcommand{\en}[1]{\textit{#1}}
+
+\usepackage{enumitem}
+\setlist{itemsep=2pt, topsep=4pt, parsep=0pt}
+
+\usepackage{microtype}

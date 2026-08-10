@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ieee-numeric.csl — kieu trich dan danh so theo IEEE, rut gon.
+
+  Ban .docx dung Pandoc + citeproc thay cho biblatex, nen can mot tep CSL.
+  Kieu IEEE day du khong di kem Pandoc; tep nay tai lap dung phan IEEE ma
+  luan van thuc su can (article / inproceedings / incollection) de qua trinh
+  dung khong phu thuoc mang.
+
+  Doi chieu voi ban PDF: preamble.tex dung
+      \usepackage[backend=bibtex, style=ieee, sorting=none]{biblatex}
+  -> trich dan dang [1], danh muc sap theo thu tu xuat hien.
+-->
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0"
+       default-locale="en-US">
+  <info>
+    <title>IEEE (rut gon cho luan van)</title>
+    <id>https://example.org/styles/ieee-numeric-thesis</id>
+    <updated>2026-08-07T00:00:00+00:00</updated>
+  </info>
+
+  <!--
+    Ep cac tu noi ve tieng Anh cho MOI ngon ngu tai lieu. Luan van khai bao
+    lang=vi-VN nen citeproc mac dinh dung tu tieng Viet ("va", "tr"), trong khi
+    preamble.tex chu dich dat biblatex o language=english vi toan bo tai lieu
+    trich dan deu la cong bo quoc te. Khoi nay giu ban .docx giong ban PDF.
+  -->
+  <locale>
+    <terms>
+      <term name="and">and</term>
+      <term name="in">in</term>
+      <term name="page" form="short">
+        <single>p.</single>
+        <multiple>pp.</multiple>
+      </term>
+    </terms>
+  </locale>
+
+  <!-- Ten tac gia kieu IEEE: chu cai dau dung truoc ho -->
+  <macro name="author">
+    <names variable="author">
+      <name initialize-with=". " delimiter=", " and="text"/>
+      <substitute>
+        <names variable="editor"/>
+      </substitute>
+    </names>
+  </macro>
+
+  <!-- Bai bao va bai hoi nghi dat trong ngoac kep; sach in nghieng -->
+  <macro name="title">
+    <choose>
+      <if type="article-journal paper-conference chapter" match="any">
+        <text variable="title" quotes="true"/>
+      </if>
+      <else>
+        <text variable="title" font-style="italic"/>
+      </else>
+    </choose>
+  </macro>
+
+  <macro name="container">
+    <choose>
+      <if type="paper-conference chapter" match="any">
+        <text variable="container-title" prefix="in " font-style="italic"/>
+      </if>
+      <else>
+        <text variable="container-title" font-style="italic"/>
+      </else>
+    </choose>
+  </macro>
+
+  <macro name="locators">
+    <group delimiter=", ">
+      <text variable="volume" prefix="vol. "/>
+      <text variable="issue" prefix="no. "/>
+      <group delimiter=" ">
+        <label variable="page" form="short"/>
+        <text variable="page"/>
+      </group>
+    </group>
+  </macro>
+
+  <citation collapse="citation-number">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout prefix="[" suffix="]" delimiter="], [">
+      <text variable="citation-number"/>
+    </layout>
+  </citation>
+
+  <bibliography entry-spacing="0" second-field-align="flush">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout suffix=".">
+      <text variable="citation-number" prefix="[" suffix="]"/>
+      <group delimiter=", ">
+        <text macro="author"/>
+        <text macro="title"/>
+        <text macro="container"/>
+        <text variable="publisher"/>
+        <text macro="locators"/>
+        <date variable="issued">
+          <date-part name="year"/>
+        </date>
+      </group>
+    </layout>
+  </bibliography>
+</style>

@@ -1,0 +1,118 @@
+% !TeX root = ../main.tex
+\chapter{ỨNG DỤNG MINH HOẠ}
+\label{app:C}
+
+Để kiểm chứng khả năng vận hành đầu cuối của quy trình, luận văn xây dựng hai công
+cụ minh hoạ: một \en{notebook} suy luận trên ảnh đơn lẻ và một ứng dụng web tương
+tác.
+
+\section{Suy luận trên ảnh đơn lẻ}
+
+Quy trình suy luận đầy đủ gồm bốn bước nối tiếp trên một ảnh đầu vào:
+
+\begin{enumerate}
+    \item \textbf{Phân loại} --- nạp mô hình \EffNet{} đã huấn luyện, trả về lớp
+          bệnh dự đoán kèm phân bố xác suất trên năm lớp.
+    \item \textbf{Giải thích} --- sinh bản đồ kích hoạt \GradCAM{} cho lớp được dự
+          đoán, chồng lên ảnh gốc.
+    \item \textbf{Phân đoạn} --- nạp mô hình \UNetpp{} phiên bản V3, trả về bản đồ
+          xác suất và mặt nạ nhị phân sau khi áp ngưỡng 0,5.
+    \item \textbf{Tổng hợp} --- ghép kết quả thành một bảng năm khung và tính tỉ lệ
+          diện tích tổn thương.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/infer_demo.png}
+\caption[Kết quả suy luận đầu cuối trên một ảnh]{Kết quả suy luận đầu cuối trên
+một ảnh thuộc lớp Algal Leaf Spot. Từ trái sang phải: ảnh đầu vào, phân bố xác
+suất năm lớp, bản đồ kích hoạt Grad-CAM chồng lớp, mặt nạ phân đoạn, và ảnh tổng
+hợp với đường bao vùng tổn thương.}
+\label{fig:infer_demo}
+\end{figure}
+
+Với ảnh minh hoạ ở \cref{fig:infer_demo}, mô hình dự đoán lớp Algal Leaf Spot với
+độ tin cậy \textbf{99,29\%}. Phân bố xác suất trên năm lớp cho thấy mức độ tách
+bạch rất cao: lớp có xác suất lớn thứ hai là Phomopsis Leaf Spot với 0,62\%, các
+lớp còn lại đều dưới 0,05\%. Điều này phù hợp với nhận định ở
+\cref{sec:ketqua_cls} rằng Algal và Phomopsis là cặp lớp gần nhau nhất --- ngay cả
+khi mô hình rất chắc chắn, lớp cạnh tranh duy nhất vẫn là Phomopsis.
+
+\begin{table}[H]
+\centering
+\caption{Phân bố xác suất dự đoán trên ảnh minh hoạ}
+\label{tab:app_infer}
+\begin{tabular}{l r}
+\toprule
+\textbf{Lớp} & \textbf{Xác suất} \\
+\midrule
+\textbf{Algal Leaf Spot}   & \textbf{0,9929} \\
+Phomopsis Leaf Spot        & 0,0062 \\
+Leaf Blight                & 0,0005 \\
+Healthy Leaf               & 0,0004 \\
+Allocaridara Attack        & 0,0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Ứng dụng web tương tác}
+
+Ứng dụng được xây dựng bằng Streamlit, cho phép người dùng tải lên ảnh lá và nhận
+kết quả phân tích tức thời mà không cần biết lập trình.
+
+\subsection{Chức năng}
+
+\begin{itemize}
+    \item Tải ảnh lên từ máy người dùng, hỗ trợ định dạng JPG và PNG.
+    \item Chọn phiên bản mô hình phân đoạn trong ba lựa chọn V1, V2, V3 --- phục
+          vụ so sánh trực quan giữa các phiên bản.
+    \item Điều chỉnh ngưỡng nhị phân hoá bằng thanh trượt trong khoảng 0,1--0,9,
+          cho phép quan sát ảnh hưởng của ngưỡng lên diện tích mặt nạ.
+    \item Bật hoặc tắt lớp hiển thị bản đồ kích hoạt.
+    \item Hiển thị đồng thời năm khung: ảnh gốc, biểu đồ xác suất, bản đồ kích
+          hoạt, mặt nạ phân đoạn, và ảnh tổng hợp có đường bao.
+    \item Hiển thị bản đồ xác suất thô và thông tin điểm kiểm tra đang dùng.
+\end{itemize}
+
+\subsection{Kiến trúc kỹ thuật}
+
+\begin{table}[H]
+\centering
+\caption{Thành phần kỹ thuật của ứng dụng minh hoạ}
+\label{tab:app_streamlit}
+\begin{tabular}{L{4.6cm} L{8.4cm}}
+\toprule
+\textbf{Thành phần} & \textbf{Mô tả} \\
+\midrule
+Giao diện          & Streamlit, bố cục rộng, thanh điều khiển bên trái \\
+Biểu đồ            & Plotly, biểu đồ cột ngang cho phân bố xác suất \\
+Nạp mô hình        & Có bộ nhớ đệm, mô hình chỉ nạp một lần cho mỗi phiên làm việc \\
+Thiết bị tính toán & Tự phát hiện GPU, chuyển về CPU nếu không có \\
+Bảng màu           & Okabe--Ito, an toàn với người mù màu \\
+Đầu ra định lượng  & Lớp dự đoán, độ tin cậy, tỉ lệ diện tích tổn thương \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Việc cho phép người dùng chuyển đổi giữa ba phiên bản mô hình ngay trên giao diện
+có giá trị sư phạm: nó cho thấy trực quan điều mà \cref{sec:caveat} phân tích bằng
+số liệu --- ba phiên bản cho ra ba kiểu mặt nạ khác nhau về hình dạng và diện tích,
+và không thể kết luận phiên bản nào ``đúng'' hơn nếu không có nhãn chuẩn.
+
+\subsection{Hạn chế của ứng dụng}
+
+Ứng dụng chỉ nhằm mục đích minh hoạ, chưa phải sản phẩm triển khai thực tế. Bốn
+hạn chế chính:
+
+\begin{itemize}
+    \item Chưa hiệu chỉnh sai lệch hệ thống của mô hình --- như đã phân tích ở
+          \cref{sec:ablation}, mô hình phiên bản V3 có xu hướng ước lượng thừa
+          diện tích tổn thương.
+    \item Chỉ xử lý ảnh chụp lá đơn lẻ trên nền tương đối sạch, chưa xử lý được
+          ảnh chụp toàn tán.
+    \item Tỉ lệ diện tích tổn thương hiển thị là tỉ lệ trên \emph{toàn khung ảnh},
+          không phải trên diện tích lá --- hai đại lượng chỉ trùng nhau khi lá
+          chiếm trọn khung.
+    \item Chưa có cơ chế cảnh báo khi ảnh đầu vào nằm ngoài phân bố dữ liệu huấn
+          luyện, chẳng hạn ảnh không phải lá sầu riêng.
+\end{itemize}

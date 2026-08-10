@@ -1,0 +1,1019 @@
+% !TeX root = ../main.tex
+\chapter{THỰC NGHIỆM VÀ KẾT QUẢ}
+\label{chap:thucnghiem}
+
+\section{Thiết lập thực nghiệm}
+\label{sec:thietlap}
+
+\subsection{Môi trường phần cứng và phần mềm}
+
+\begin{table}[H]
+\centering
+\caption{Môi trường thực nghiệm}
+\label{tab:moitruong}
+\begin{tabular}{L{4.4cm} L{8.6cm}}
+\toprule
+\textbf{Thành phần} & \textbf{Cấu hình} \\
+\midrule
+Bộ xử lý đồ hoạ & NVIDIA Quadro M1000M, 2,15 GB VRAM \\
+Hệ điều hành    & Windows 10 Pro \\
+Python          & 3.13.12 \\
+PyTorch         & 2.6.0+cu124~\cite{paszke2019pytorch} \\
+torchvision     & 0.21.0+cu124 \\
+CUDA            & 12.4 \\
+Thư viện phân đoạn & segmentation-models-pytorch~\cite{iakubovskii2019smp} \\
+Thư viện tăng cường & Albumentations~\cite{buslaev2020albumentations} \\
+Thư viện xử lý ảnh & OpenCV~\cite{bradski2000opencv} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dung lượng bộ nhớ đồ hoạ chỉ 2,15 GB là ràng buộc chi phối nhiều quyết định thực
+nghiệm và cần được nêu rõ để người đọc hiểu đúng bối cảnh. Ràng buộc này giải
+thích trực tiếp việc chọn kiến trúc quy mô vừa (EfficientNet-B0 thay vì các biến
+thể lớn hơn), kích thước lô nhỏ, và --- như phân tích ở \cref{subsec:confound}
+--- cả một số khác biệt cấu hình giữa các phiên bản vốn không nằm trong ý đồ
+thiết kế ban đầu.
+
+\subsection{Chỉ số đánh giá và quy ước báo cáo}
+
+Bài toán phân loại được đánh giá bằng \en{accuracy}, \en{precision}, \en{recall}
+và $F_1$ theo \cref{eq:prf}, báo cáo cả ở mức tổng hợp lẫn mức từng lớp. Bài toán
+phân đoạn dùng IoU và Dice theo \cref{eq:iou,eq:dicecoef}, kèm \en{precision} và
+\en{recall} tính trên tập điểm ảnh.
+
+Mọi chỉ số phân đoạn được tính \emph{theo từng ảnh rồi lấy trung bình} trên toàn
+tập, chứ không gộp toàn bộ điểm ảnh của cả tập rồi tính một lần. Cách thứ nhất
+cho mỗi ảnh trọng số như nhau, phù hợp khi diện tích tổn thương biến thiên mạnh
+giữa các ảnh; cách thứ hai sẽ khiến các ảnh có vùng bệnh lớn chi phối kết quả.
+
+Toàn bộ chỉ số báo cáo trong chương này được lấy trực tiếp từ ô kết quả của các
+\en{notebook} thực nghiệm hoặc từ tệp kết quả đã lưu, và có thể truy vết về đúng
+nguồn sinh ra chúng.
+
+\section{Kết quả phân loại}
+\label{sec:ketqua_cls}
+
+\subsection{Diễn biến huấn luyện}
+
+Mô hình được huấn luyện tối đa 50 epoch với cơ chế dừng sớm. Thực tế quá trình
+dừng ở epoch 16 khi \texttt{val\_acc} không cải thiện trong 5 epoch liên tiếp.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/cls_training_curves.png}
+\caption[Đường cong huấn luyện mô hình phân loại]{Diễn biến hàm mất mát (trái) và
+độ chính xác (phải) qua 16 epoch. Đường nét đứt đánh dấu độ chính xác kiểm định
+tốt nhất 98,19\% đạt tại epoch 11.}
+\label{fig:cls_curves}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Diễn biến huấn luyện mô hình phân loại qua 16 epoch}
+\label{tab:cls_history}
+\small
+\begin{tabular}{c r r r r l}
+\toprule
+\textbf{Epoch} & \textbf{train\_loss} & \textbf{train\_acc} & \textbf{val\_loss} & \textbf{val\_acc} & \textbf{Ghi chú} \\
+\midrule
+1  & 1,0963 & 0,5892 & 0,4712 & 0,8623 & \\
+2  & 0,4369 & 0,8547 & 0,2316 & 0,9187 & \\
+3  & 0,2740 & 0,9056 & 0,1820 & 0,9368 & \\
+4  & 0,2293 & 0,9249 & 0,1222 & 0,9616 & \\
+5  & 0,1906 & 0,9327 & 0,1175 & 0,9639 & \\
+6  & 0,1602 & 0,9478 & 0,1017 & 0,9684 & \\
+7  & 0,1487 & 0,9507 & 0,1356 & 0,9503 & lần đầu không cải thiện \\
+8  & 0,1220 & 0,9597 & 0,0926 & 0,9729 & \\
+9  & 0,1130 & 0,9613 & 0,0887 & 0,9729 & \\
+10 & 0,0989 & 0,9662 & 0,0890 & 0,9752 & \\
+\textbf{11} & 0,0977 & 0,9671 & 0,0811 & \textbf{0,9819} & \textbf{điểm kiểm tra tốt nhất} \\
+12 & 0,0820 & 0,9729 & 0,0910 & 0,9774 & \\
+13 & 0,0791 & 0,9771 & 0,1023 & 0,9684 & \\
+14 & 0,0747 & 0,9758 & 0,1108 & 0,9729 & \\
+15 & 0,0559 & 0,9800 & 0,1050 & 0,9616 & \\
+16 & 0,0476 & 0,9858 & 0,0831 & 0,9684 & dừng sớm kích hoạt \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Diễn biến chia thành ba pha rõ rệt. \emph{Pha hội tụ nhanh} (epoch 1--6): hàm mất
+mát kiểm định giảm từ 0,4712 xuống 0,1017, độ chính xác tăng vọt từ 86,23\% lên
+96,84\% --- hiệu quả điển hình của học chuyển giao, mô hình chỉ cần thích ứng đặc
+trưng sẵn có với miền dữ liệu mới. \emph{Pha tinh chỉnh} (epoch 7--11): cải thiện
+chậm dần, đạt đỉnh 98,19\% tại epoch 11. \emph{Pha quá khớp} (epoch 12--16): dấu
+hiệu rất rõ --- \texttt{train\_acc} tiếp tục tăng tới 98,58\% trong khi
+\texttt{val\_acc} dao động rồi giảm về 96,84\%, đồng thời \texttt{val\_loss} tăng
+từ 0,0811 lên 0,1108 tại epoch 14. Dừng sớm đã can thiệp đúng thời điểm.
+
+Đáng chú ý là ở epoch 16, \texttt{train\_acc} (98,58\%) đã vượt \texttt{val\_acc}
+(96,84\%) --- khoảng cách 1,74 điểm phần trăm. Khoảng cách này còn nhỏ, cho thấy
+mức quá khớp ở giai đoạn cuối là nhẹ và không phá huỷ khả năng khái quát.
+
+\subsection{Hiệu năng trên tập kiểm thử}
+
+\begin{table}[H]
+\centering
+\caption{Hiệu năng phân loại trên tập kiểm thử (890 ảnh)}
+\label{tab:cls_test}
+\begin{tabular}{l c c}
+\toprule
+\textbf{Chỉ số} & \textbf{Kiểm định (tốt nhất)} & \textbf{Kiểm thử} \\
+\midrule
+Accuracy            & \textbf{98,19\%} & \textbf{97,30\%} \\
+Precision (weighted) & ---             & 97,34\% \\
+Recall (weighted)    & ---             & 97,30\% \\
+$F_1$ (weighted)     & ---             & 97,31\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Mô hình phân loại đúng 866 trên 890 ảnh kiểm thử, tức chỉ sai 24 ảnh.
+
+Khoảng cách giữa kiểm định (98,19\%) và kiểm thử (97,30\%) là 0,89 điểm phần trăm.
+Chênh lệch nhỏ và \emph{theo đúng chiều dự kiến} --- hiệu năng trên tập kiểm thử
+thấp hơn --- là dấu hiệu lành mạnh: tập kiểm định đã bị dùng gián tiếp để chọn
+điểm kiểm tra và điều chỉnh tốc độ học nên không còn khách quan, còn tập kiểm thử
+chỉ được dùng đúng một lần. Nếu khoảng cách này lớn (chẳng hạn trên 5 điểm phần
+trăm), đó sẽ là dấu hiệu mô hình đã bị điều chỉnh quá mức theo tập kiểm định.
+
+\subsection{Ma trận nhầm lẫn}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/cls_confusion_matrix.png}
+\caption[Ma trận nhầm lẫn trên tập kiểm thử]{Ma trận nhầm lẫn của mô hình
+EfficientNet-B0 trên 890 ảnh kiểm thử. Phần lớn nhầm lẫn xảy ra giữa Algal Leaf
+Spot và Phomopsis Leaf Spot.}
+\label{fig:confusion}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Ma trận nhầm lẫn trên tập kiểm thử (hàng: nhãn thật, cột: dự đoán)}
+\label{tab:confusion}
+\small
+\begin{tabular}{l r r r r r | r}
+\toprule
+ & \textbf{Algal} & \textbf{Alloc.} & \textbf{Healthy} & \textbf{Blight} & \textbf{Phom.} & \textbf{Tổng} \\
+\midrule
+Algal Leaf Spot     & \textbf{143} & 0 & 2 & 0 & 2 & 147 \\
+Allocaridara Attack & 2 & \textbf{180} & 0 & 0 & 1 & 183 \\
+Healthy Leaf        & 1 & 0 & \textbf{191} & 0 & 4 & 196 \\
+Leaf Blight         & 2 & 1 & 3 & \textbf{181} & 1 & 188 \\
+Phomopsis Leaf Spot & 3 & 1 & 1 & 0 & \textbf{171} & 176 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Ma trận nhầm lẫn xác nhận dự đoán đưa ra từ phân tích khám phá ở
+\cref{sec:dulieu}: cặp \emph{Algal Leaf Spot} và \emph{Phomopsis Leaf Spot} nhầm
+lẫn qua lại nhiều nhất --- 2 ảnh Algal bị nhận thành Phomopsis và 3 ảnh Phomopsis
+bị nhận thành Algal, tổng cộng 5 trên 24 lỗi. Điều này phù hợp với quan sát hình
+thái ở \cref{tab:hinhthai}: cả hai bệnh đều tạo đốm nhỏ trên nền lá xanh, khác
+biệt chủ yếu ở kích thước và mật độ đốm.
+
+Hai quan sát khác đáng lưu ý. \emph{Leaf Blight có precision tuyệt đối 100\%}:
+cột Leaf Blight không chứa bất kỳ giá trị khác không nào nằm ngoài đường chéo ---
+không một ảnh thuộc lớp khác từng bị nhận nhầm thành Leaf Blight. Mảng hoại tử lớn
+màu nâu đen là dấu hiệu đặc thù mà không lớp nào khác có. Tuy vậy chính lớp này
+lại có \emph{recall thấp nhất} (96,28\%): 7 ảnh Leaf Blight bị phân sang các lớp
+khác, phân tán khá đều (2 sang Algal, 1 sang Allocaridara, 3 sang Healthy, 1 sang
+Phomopsis). Cách phân bố lỗi này gợi ý rằng các ảnh Leaf Blight ở giai đoạn bệnh
+sớm --- khi mảng hoại tử chưa lan rộng --- có biểu hiện gần với bệnh đốm hoặc thậm
+chí gần lá khoẻ.
+
+Đáng chú ý về mặt ứng dụng là hai chiều nhầm lẫn liên quan tới lớp Healthy Leaf.
+Theo chiều \emph{báo động giả}, 5 ảnh lá khoẻ bị nhận thành lớp bệnh (1 sang Algal,
+4 sang Phomopsis). Theo chiều \emph{bỏ sót}, 6 ảnh bệnh bị nhận thành lá khoẻ (2
+từ Algal, 3 từ Leaf Blight, 1 từ Phomopsis).
+
+Theo tiêu chí ưu tiên \en{recall} đã nêu ở \cref{sec:metrics}, chiều thứ nhất là
+loại lỗi ít nghiêm trọng --- cảnh báo nhầm một cây khoẻ chỉ tốn thêm một lần kiểm
+tra. Chiều thứ hai mới đáng lo, vì bỏ sót cây bệnh đồng nghĩa mất cơ hội can thiệp
+sớm. Với 6 ảnh trên tổng số 694 ảnh bệnh trong tập kiểm thử, tỉ lệ bỏ sót bệnh là
+0,86\% --- mức chấp nhận được cho ứng dụng thực tế.
+
+\subsection{Hiệu năng theo từng lớp}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/cls_per_class_metrics.png}
+\caption[Chỉ số theo từng lớp]{Precision, recall và $F_1$ cho từng lớp trên tập
+kiểm thử. Cả năm lớp đều đạt $F_1$ trên 95\%.}
+\label{fig:per_class}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Hiệu năng phân loại theo từng lớp trên tập kiểm thử}
+\label{tab:cls_perclass}
+\begin{tabular}{l c c c r}
+\toprule
+\textbf{Lớp} & \textbf{Precision} & \textbf{Recall} & \textbf{$F_1$} & \textbf{Số mẫu} \\
+\midrule
+Algal Leaf Spot     & 94,70\%  & 97,28\% & 95,97\% & 147 \\
+Allocaridara Attack & 98,90\%  & 98,36\% & \textbf{98,63\%} & 183 \\
+Healthy Leaf        & 96,95\%  & 97,45\% & 97,20\% & 196 \\
+Leaf Blight         & \textbf{100,00\%} & 96,28\% & 98,10\% & 188 \\
+Phomopsis Leaf Spot & 95,53\%  & 97,16\% & 96,34\% & 176 \\
+\midrule
+\textbf{Trung bình có trọng số} & \textbf{97,34\%} & \textbf{97,30\%} & \textbf{97,31\%} & \textbf{890} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Ba nhận xét từ \cref{tab:cls_perclass}:
+
+\textbf{Không lớp nào bị bỏ rơi.} $F_1$ thấp nhất là 95,97\% (Algal Leaf Spot),
+cao nhất 98,63\% (Allocaridara Attack) --- biên độ chỉ 2,66 điểm phần trăm. Kết
+hợp với tỉ lệ mất cân bằng thấp (1,33), điều này cho thấy mô hình không thiên vị
+lớp đa số.
+
+\textbf{Recall vượt precision ở bốn trên năm lớp.} Ngoại lệ duy nhất là
+Allocaridara Attack và Leaf Blight. Xu hướng chung này thuận lợi cho bài toán chẩn
+đoán bệnh, theo tiêu chí đã nêu ở \cref{sec:metrics}.
+
+\textbf{Algal Leaf Spot là lớp yếu nhất} với precision 94,70\% --- thấp nhất trong
+năm lớp. Điều này nhất quán với ma trận nhầm lẫn và với phân tích màu ở
+\cref{tab:meanrgb}, nơi lớp này có hiệu $G - R$ thấp nhất và phân bố kênh màu
+chồng lấn nhiều nhất với các lớp còn lại.
+
+\section{Phân tích bản đồ kích hoạt}
+\label{sec:ketqua_xai}
+
+Bản đồ kích hoạt được sinh cho toàn bộ \num{3104} ảnh huấn luyện, dùng điểm kiểm
+tra tốt nhất từ \cref{sec:ketqua_cls}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.80\textheight, keepaspectratio]{figures/xai_gradcam_best.png}
+\caption[Bản đồ kích hoạt Grad-CAM theo lớp]{Bản đồ kích hoạt của ảnh có độ tin
+cậy cao nhất trong mỗi lớp. Từ trái sang phải: ảnh gốc, bản đồ nhiệt, và ảnh chồng
+lớp.}
+\label{fig:gradcam}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Độ chính xác và độ tin cậy trên tập huấn luyện theo lớp}
+\label{tab:gradcam_stats}
+\begin{tabular}{l r c c c}
+\toprule
+\textbf{Lớp} & \textbf{Số ảnh} & \textbf{Accuracy} & \textbf{Tin cậy TB} & \textbf{Tin cậy nhỏ nhất} \\
+\midrule
+Algal Leaf Spot     & 513 & 99,03\% & 0,971 & \textbf{0,165} \\
+Allocaridara Attack & 639 & 99,22\% & 0,981 & 0,220 \\
+Healthy Leaf        & 683 & 99,56\% & 0,979 & 0,204 \\
+Leaf Blight         & 655 & \textbf{99,85\%} & 0,988 & 0,354 \\
+Phomopsis Leaf Spot & 614 & 99,84\% & \textbf{0,991} & 0,415 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Độ chính xác trên tập huấn luyện đạt 99,03--99,85\%, cao hơn mức 97,30\% trên tập
+kiểm thử. Chênh lệch này là bình thường và có hai nguyên nhân cộng hưởng: đây là
+dữ liệu mô hình đã thấy khi huấn luyện, và khi suy luận thì không áp dụng tăng
+cường dữ liệu nên bài toán dễ hơn.
+
+Về mặt chất lượng bản đồ kích hoạt, quan sát \cref{fig:gradcam} cho thấy bốn kiểu
+hành vi khác nhau:
+
+\begin{itemize}
+    \item \textbf{Algal và Phomopsis}: kích hoạt tập trung vào các đốm bệnh, chứng
+          tỏ mô hình phân biệt hai lớp dựa trên đặc trưng đốm chứ không dựa vào
+          màu tổng thể của lá.
+    \item \textbf{Allocaridara}: kích hoạt bám vào vết cắn và lỗ thủng --- đây là
+          lớp có bản đồ kích hoạt tập trung nhất, phù hợp với việc lớp này đạt
+          $F_1$ cao nhất.
+    \item \textbf{Leaf Blight}: kích hoạt trải rộng theo mảng hoại tử, không có
+          tâm rõ ràng.
+    \item \textbf{Healthy Leaf}: kích hoạt \emph{khuếch tán khắp phiến lá}, không
+          có vùng trọng tâm.
+\end{itemize}
+
+Hành vi cuối cùng có ý nghĩa then chốt và cần được nhấn mạnh. Với lá khoẻ, mô hình
+không có tổn thương nào để tập trung vào; nó nhận diện lớp này qua \emph{sự vắng
+mặt} của dấu hiệu bệnh và qua màu xanh đồng đều trên toàn lá. Bản đồ kích hoạt vì
+thế trải đều --- một hành vi hoàn toàn hợp lý xét theo nhiệm vụ phân loại, nhưng
+lại vô nghĩa và gây hại nếu đem nhị phân hoá thành mặt nạ tổn thương. Đây chính là
+bằng chứng thực nghiệm cho luận điểm lý thuyết ở \cref{sec:weaksup}: bản đồ kích
+hoạt trả lời câu hỏi ``mô hình nhìn vào đâu'', không phải ``bệnh nằm ở đâu''.
+
+Về độ tin cậy, giá trị trung bình đều trên 0,97 nhưng giá trị nhỏ nhất chênh lệch
+đáng kể giữa các lớp: Algal Leaf Spot xuống tới 0,165 trong khi Phomopsis Leaf Spot
+chỉ xuống 0,415. Điều này cho thấy Algal có một số trường hợp biên mà mô hình thực
+sự không chắc chắn; bản đồ kích hoạt của chúng kém tin cậy hơn khi dùng làm nhãn
+giả.
+
+\section{Chất lượng nhãn giả}
+\label{sec:ketqua_pseudo}
+
+\subsection{Nhãn giả V1}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.80\textheight, keepaspectratio]{figures/pl1_per_class.png}
+\caption[Nhãn giả V1 theo lớp]{Mặt nạ giả V1 cho ảnh có độ tin cậy cao nhất mỗi
+lớp. Từ trái sang phải: ảnh gốc, bản đồ nhiệt chồng lớp, mặt nạ giả chồng lớp.}
+\label{fig:pl1}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Thống kê độ phủ mặt nạ giả V1 theo lớp}
+\label{tab:cov_v1}
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Lớp} & \textbf{Trung bình} & \textbf{Độ lệch chuẩn} & \textbf{Nhỏ nhất} & \textbf{Lớn nhất} \\
+\midrule
+Algal Leaf Spot     & 15,1\% & 0,056 & 5,7\%  & 42,6\% \\
+Allocaridara Attack & 13,7\% & 0,039 & 5,0\%  & 26,5\% \\
+Healthy Leaf        & \textbf{26,4\%} & 0,076 & 11,1\% & \textbf{59,1\%} \\
+Leaf Blight         & 12,3\% & 0,047 & 5,5\%  & 43,6\% \\
+Phomopsis Leaf Spot & 14,5\% & 0,048 & 5,4\%  & 37,5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Số liệu ở \cref{tab:cov_v1} định lượng chính xác vấn đề đã dự đoán ở
+\cref{subsec:hanche_v1}. Lớp Healthy Leaf --- lớp \emph{không có} tổn thương ---
+lại có độ phủ trung bình cao nhất (26,4\%), gần gấp đôi lớp Leaf Blight (12,3\%)
+vốn là bệnh lan rộng nhất. Ảnh cực đoan nhất có tới 59,1\% diện tích bị đánh dấu
+là ``bệnh'' trên một chiếc lá hoàn toàn khoẻ mạnh.
+
+Độ lệch chuẩn cũng lớn (0,039--0,076), phản ánh việc ngưỡng cố định 0,5 không
+thích ứng được với phân bố riêng của từng bản đồ nhiệt.
+
+Toàn bộ \num{3104} mặt nạ được sinh trong 14 phút 00 giây. Độ chính xác dự đoán
+trên tập này đạt 99,52\% với độ tin cậy trung bình 0,9822 --- nghĩa là chỉ 15 ảnh
+có nhãn giả sinh ra từ dự đoán sai.
+
+\subsection{Nhãn giả V2}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.80\textheight, keepaspectratio]{figures/pl2_per_class.png}
+\caption[Nhãn giả V2 theo lớp]{Mặt nạ giả V2 sinh bằng GradCAM++ đa tỉ lệ kết hợp
+ngưỡng phân vị theo lớp. Mặt nạ của lớp Healthy Leaf là ma trận không.}
+\label{fig:pl2}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Độ phủ mục tiêu và độ phủ thực tế của nhãn giả V2}
+\label{tab:cov_v2}
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Lớp} & \textbf{Mục tiêu} & \textbf{Thực tế} & \textbf{Sai lệch} & \textbf{Độ lệch chuẩn} \\
+\midrule
+Algal Leaf Spot     & 18\% & 17,7\% & $-0{,}3$ & 0,008 \\
+Allocaridara Attack & 20\% & 19,7\% & $-0{,}3$ & 0,007 \\
+Healthy Leaf        & 0\%  & 0,0\%  & $0{,}0$  & 0,000 \\
+Leaf Blight         & 22\% & 21,7\% & $-0{,}3$ & 0,007 \\
+Phomopsis Leaf Spot & 18\% & 17,6\% & $-0{,}4$ & 0,009 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cơ chế ngưỡng phân vị hoạt động đúng như thiết kế: sai lệch so với mục tiêu không
+vượt quá 0,4 điểm phần trăm ở bất kỳ lớp nào.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/pl2_coverage.png}
+\caption[Phân bố độ phủ V1 và V2]{Phân bố độ phủ của toàn bộ mặt nạ (trái) và độ
+phủ trung bình theo lớp của V2 (phải). Cụm tại giá trị 0 trong biểu đồ bên trái
+tương ứng 683 mặt nạ rỗng của lớp Healthy Leaf.}
+\label{fig:pl2_coverage}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{So sánh tổng hợp nhãn giả V1 và V2}
+\label{tab:v1v2_stats}
+\begin{tabular}{l c c}
+\toprule
+\textbf{Chỉ số} & \textbf{V1} & \textbf{V2} \\
+\midrule
+Tổng số mặt nạ            & 3.104  & 3.104 \\
+Độ chính xác dự đoán      & 99,52\% & 99,52\% \\
+Độ tin cậy trung bình     & 0,9822 & 0,9822 \\
+Độ phủ trung bình         & 0,1660 & 0,1504 \\
+Mặt nạ gần rỗng ($<0{,}05$) & 1      & \textbf{683} \\
+Mặt nạ quá lớn ($>0{,}60$)  & 0      & 0 \\
+Thời gian sinh nhãn       & 14 ph 00 s & \textbf{4 ph 08 s} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Hai chỉ số đầu giống hệt nhau giữa hai phiên bản, điều này là tất yếu vì cả hai
+dùng chung một mô hình phân loại và cùng bộ ảnh --- chỉ khác cách chuyển bản đồ
+kích hoạt thành mặt nạ.
+
+Con số \textbf{683 mặt nạ gần rỗng} ở V2 cần được đọc đúng: đây \emph{không} phải
+lỗi mà là kết quả có chủ đích của việc ép về không cho lớp Healthy Leaf theo
+\cref{eq:hardzero}. Giá trị 683 trùng khớp chính xác với số ảnh lá khoẻ trong tập
+huấn luyện, xác nhận cơ chế hoạt động đúng và không ảnh hưởng tới lớp nào khác.
+
+Việc V2 nhanh hơn V1 tới 3,4 lần (4 phút 08 giây so với 14 phút 00 giây) dù phải
+tính \emph{hai} bản đồ kích hoạt thay vì một là kết quả của cách cài đặt hiệu quả
+hơn cho bước truyền ngược, không phải do giảm khối lượng tính toán.
+
+\subsection{Đánh đổi đã được xác nhận}
+
+Số liệu ở \cref{tab:cov_v2} xác nhận đánh đổi đã dự báo ở
+\cref{subsec:tradeoff_v2}: độ lệch chuẩn của độ phủ giảm mạnh từ khoảng
+0,039--0,076 ở V1 xuống chỉ còn 0,007--0,009 ở V2. Nói cách khác, \emph{mọi ảnh
+trong cùng một lớp đều nhận mặt nạ có diện tích gần như bằng nhau}.
+
+Đây vừa là thành công vừa là hạn chế. Thành công vì độ phủ được kiểm soát chặt chẽ
+đúng như mục tiêu thiết kế. Hạn chế vì mặt nạ không còn mã hoá mức độ nặng nhẹ của
+bệnh: một chiếc lá chỉ có một đốm nhỏ và một chiếc lá bị bệnh gần kín đều được gán
+mặt nạ chiếm xấp xỉ 18\% hoặc 22\% diện tích. Mô hình phân đoạn huấn luyện trên
+nhãn này học cách ``phủ đúng tỉ lệ diện tích'' thay vì học cách ``phát hiện đúng
+vùng bệnh''.
+
+\section{Phân tích tinh chỉnh bằng SAM}
+\label{sec:ketqua_sam}
+
+\subsection{Hiện tượng nở mặt nạ}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{figures/sam_refinement.png}
+\caption[So sánh nhãn V2 và nhãn SAM tinh chỉnh]{Bốn mẫu so sánh ảnh gốc, mặt nạ
+giả V2 và mặt nạ sau khi SAM tinh chỉnh. SAM cho biên sắc nét hơn rõ rệt nhưng
+đồng thời mở rộng diện tích mặt nạ đáng kể.}
+\label{fig:sam_refine}
+\end{figure}
+
+Đo lường trực tiếp trên toàn bộ \num{3104} mặt nạ sau tinh chỉnh cho kết quả ở
+\cref{tab:sam_expansion}.
+
+\begin{table}[H]
+\centering
+\caption{Độ phủ trước và sau khi tinh chỉnh bằng SAM}
+\label{tab:sam_expansion}
+\begin{tabular}{l r r r r}
+\toprule
+\textbf{Lớp} & \textbf{Độ phủ V2} & \textbf{Độ phủ SAM} & \textbf{Độ lệch chuẩn} & \textbf{Mức tăng} \\
+\midrule
+Algal Leaf Spot     & 17,7\% & 34,63\% & 0,1210 & \textbf{+95,7\%} \\
+Allocaridara Attack & 19,7\% & 31,98\% & 0,1112 & +62,3\% \\
+Healthy Leaf        & 0,0\%  & 0,00\%  & 0,0000 & --- \\
+Leaf Blight         & 21,7\% & 30,71\% & 0,1176 & +41,5\% \\
+Phomopsis Leaf Spot & 17,6\% & 33,56\% & 0,1207 & +90,7\% \\
+\midrule
+\textbf{Toàn bộ}    & \textbf{15,04\%} & \textbf{25,43\%} & 0,1708 & \textbf{+69,1\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết quả trái ngược với kỳ vọng ban đầu. \SAM{} được đưa vào quy trình với vai trò
+\emph{tinh chỉnh biên} --- tức giữ nguyên vị trí và diện tích, chỉ làm biên chính
+xác hơn. Thực tế nó \emph{mở rộng} diện tích mặt nạ từ 41,5\% đến 95,7\% tuỳ lớp,
+trung bình toàn bộ tăng 69,1\%.
+
+Hai chỉ số bổ sung làm rõ bản chất hiện tượng:
+
+\begin{itemize}
+    \item \textbf{200 trên \num{3104} mặt nạ (6,4\%) có độ phủ vượt 50\%} --- tức
+          hơn một nửa diện tích ảnh bị đánh dấu là tổn thương, điều không thể xảy
+          ra với bệnh đốm lá.
+    \item \textbf{Độ lệch chuẩn tăng vọt} từ 0,007--0,009 (V2) lên 0,111--0,121
+          (SAM), tức tăng khoảng 15 lần. Nhãn SAM biến thiên mạnh giữa các ảnh
+          thay vì đồng nhất như V2.
+    \item \textbf{683 mặt nạ rỗng được giữ nguyên rỗng} --- cơ chế ép về không cho
+          lớp lá khoẻ không bị \SAM{} phá vỡ, đúng như thiết kế.
+\end{itemize}
+
+Nguyên nhân đã được dự báo về mặt lý thuyết ở \cref{sec:sam}: \SAM{} được huấn
+luyện để phân đoạn \emph{đơn vị ngữ nghĩa tự nhiên} của cảnh. Khi nhận gợi ý là
+vài điểm nằm trên một đốm bệnh, đơn vị ngữ nghĩa mà \SAM{} nhận diện không phải
+đốm bệnh mà là \emph{cả chiếc lá} chứa đốm đó --- quan sát trực tiếp trên
+\cref{fig:sam_refine} xác nhận điều này.
+
+\subsection{Vì sao cơ chế bảo vệ IoU không phát hiện được}
+\label{subsec:iouguard}
+
+Cơ chế bảo vệ theo \cref{eq:iou_guard} lẽ ra phải phát hiện các mặt nạ sai lệch.
+Nó đã không phát hiện được trường hợp nào của hiện tượng nở. Phân tích dưới đây
+cho thấy điều này \emph{không phải sự cố ngẫu nhiên mà là hệ quả tất yếu} của công
+thức được chọn.
+
+\begin{quote}
+\textbf{Mệnh đề.} Giả sử \SAM{} sinh ra mặt nạ $M_{\SAM}$ \emph{chứa trọn} mặt nạ
+gốc $M_{\text{V2}}$, tức $M_{\text{V2}} \subseteq M_{\SAM}$ --- đúng với trường hợp
+nở ra bao cả chiếc lá. Khi đó cơ chế bảo vệ với ngưỡng $\theta$ chỉ kích hoạt khi
+độ phủ của \SAM{} vượt quá $1/\theta$ lần độ phủ của V2.
+\end{quote}
+
+\textbf{Chứng minh.} Khi $M_{\text{V2}} \subseteq M_{\SAM}$ thì
+$|M_{\SAM} \cap M_{\text{V2}}| = |M_{\text{V2}}|$ và
+$|M_{\SAM} \cup M_{\text{V2}}| = |M_{\SAM}|$. Do đó
+
+\begin{equation}
+    \operatorname{IoU}(M_{\SAM}, M_{\text{V2}})
+    = \frac{|M_{\text{V2}}|}{|M_{\SAM}|}
+    = \frac{c_{\text{V2}}}{c_{\SAM}}
+    \label{eq:iou_containment}
+\end{equation}
+
+với $c$ ký hiệu độ phủ. Cơ chế bảo vệ kích hoạt khi
+$c_{\text{V2}}/c_{\SAM} < \theta$, tương đương $c_{\SAM} > c_{\text{V2}}/\theta$.
+$\square$
+
+Áp dụng vào số liệu thực tế với $\theta = 0{,}15$ cho kết quả ở
+\cref{tab:iouguard_analysis}.
+
+\begin{table}[H]
+\centering
+\caption{Ngưỡng độ phủ cần thiết để cơ chế bảo vệ IoU kích hoạt}
+\label{tab:iouguard_analysis}
+\begin{tabular}{l c c c}
+\toprule
+\textbf{Lớp} & \textbf{Độ phủ V2} & \textbf{Độ phủ SAM cần vượt} & \textbf{Khả thi?} \\
+\midrule
+Algal Leaf Spot     & 17,7\% & 118,0\% & \textbf{Không} \\
+Allocaridara Attack & 19,7\% & 131,3\% & \textbf{Không} \\
+Leaf Blight         & 21,7\% & 144,7\% & \textbf{Không} \\
+Phomopsis Leaf Spot & 17,6\% & 117,3\% & \textbf{Không} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết luận rất rõ ràng: với mọi lớp bệnh, ngưỡng độ phủ cần thiết để kích hoạt cơ chế
+bảo vệ đều \emph{vượt quá 100\% diện tích ảnh} --- một điều bất khả thi về mặt vật
+lý. Nói cách khác:
+
+\begin{quote}
+Với cấu hình đã dùng, cơ chế bảo vệ dựa trên IoU \textbf{không bao giờ có thể}
+phát hiện hiện tượng nở mặt nạ ở bất kỳ lớp bệnh nào. Nó chỉ chặn được trường hợp
+\SAM{} \emph{trôi} sang một vùng hoàn toàn khác, chứ hoàn toàn bất lực trước trường
+hợp \SAM{} \emph{nở} ra bao trùm mặt nạ gốc.
+\end{quote}
+
+Đây là một khiếm khuyết thiết kế mang tính hệ thống, không phải lỗi cài đặt. Nguồn
+gốc của nó là IoU đối xứng --- nó phạt cả hai chiều sai lệch như nhau và do đó
+không phân biệt được ``lệch vị trí'' với ``đúng vị trí nhưng quá rộng''.
+
+\subsection{Giải pháp đề xuất}
+
+Khiếm khuyết trên có thể khắc phục bằng cách bổ sung một ràng buộc \emph{bất đối
+xứng} về tỉ lệ độ phủ, hoạt động song song với cơ chế IoU hiện có:
+
+\begin{equation}
+    M_{\text{refined}} =
+    \begin{cases}
+        M_{\text{V2}} & \text{nếu } \operatorname{IoU} < \theta \quad \text{(chống trôi)} \\[4pt]
+        M_{\text{V2}} & \text{nếu } c_{\SAM} > \kappa \cdot c_{\text{V2}} \quad \text{(chống nở)} \\[4pt]
+        M_{\SAM} & \text{trong các trường hợp còn lại}
+    \end{cases}
+    \label{eq:iou_guard_fixed}
+\end{equation}
+
+Với $\kappa = 2{,}0$, ràng buộc thứ hai sẽ kích hoạt cho phần lớn các trường hợp
+nở đã quan sát --- chẳng hạn lớp Algal Leaf Spot có tỉ lệ nở trung bình 1,96 lần,
+nằm sát ngưỡng, còn các ảnh cực đoan với độ phủ vượt 50\% đều bị chặn. Việc kiểm
+chứng thực nghiệm cho giải pháp này nằm ngoài phạm vi luận văn và được đề xuất là
+hướng phát triển ở \cref{chap:ketluan}.
+
+\section{Kết quả phân đoạn}
+\label{sec:ketqua_seg}
+
+\subsection{Tổng hợp ba phiên bản}
+
+\begin{table}[H]
+\centering
+\caption{Hiệu năng phân đoạn trên tập kiểm thử}
+\label{tab:seg_results}
+\small
+\begin{tabular}{l c c c c c}
+\toprule
+\textbf{Phiên bản} & \textbf{IoU} & \textbf{Dice} & \textbf{Precision} & \textbf{Recall} & \textbf{Loss} \\
+\midrule
+V1 --- EfficientNet-UNet, nhãn V1$^{\dagger}$ & 0,7671 & 0,8623 & 0,8562 & 0,8877 & 0,3065 \\
+V2 --- UNet++, nhãn V2                        & 0,5135 & 0,6301 & 0,6169 & 0,7419 & 0,5993 \\
+V3 --- UNet++, nhãn SAM                       & 0,6239 & 0,7053 & 0,7090 & 0,8752 & 0,4704 \\
+\bottomrule
+\multicolumn{6}{l}{\small $^{\dagger}$ V1 dùng kiến trúc, phân bố nhãn và tập kiểm thử khác V2/V3 --- xem \cref{sec:caveat}.}
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Diễn biến huấn luyện ba phiên bản phân đoạn}
+\label{tab:seg_training}
+\begin{tabular}{l C{1.7cm} C{2.5cm} C{2.5cm} C{2.5cm}}
+\toprule
+\textbf{Phiên bản} & \textbf{Số epoch} & \textbf{val\_loss nhỏ nhất} & \textbf{val\_IoU lớn nhất} & \textbf{Điểm kiểm tra chọn} \\
+\midrule
+V1 & 30 & 0,2959 (E23) & 0,7715 (E25) & E23 \\
+V2 & 25 & 0,5957 (E20) & 0,5438 (E18) & E20 \\
+V3 & 22 & 0,4478 (E12) & 0,6981 (E17) & E12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/segv1_curves.png}
+\caption[Đường cong huấn luyện phiên bản V1]{Diễn biến hàm mất mát, IoU và Dice
+của phiên bản V1 qua 30 epoch.}
+\label{fig:segv1_curves}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/segv2_curves.png}
+\caption[Đường cong huấn luyện phiên bản V2]{Diễn biến huấn luyện của phiên bản V2
+qua 25 epoch, kèm lịch tốc độ học cô-sin và biểu đồ so sánh với V1.}
+\label{fig:segv2_curves}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/segv3_curves.png}
+\caption[Đường cong huấn luyện phiên bản V3]{Diễn biến huấn luyện của phiên bản V3
+qua 22 epoch, kèm biểu đồ so sánh ba phiên bản.}
+\label{fig:segv3_curves}
+\end{figure}
+
+\subsection{Kết quả định tính}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/segv1_predictions.png}
+\caption[Dự đoán của phiên bản V1]{Bốn mẫu dự đoán của V1 trên tập kiểm thử: ảnh
+đầu vào, nhãn giả tham chiếu, và mặt nạ dự đoán.}
+\label{fig:segv1_pred}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/segv2_predictions.png}
+\caption[Dự đoán của phiên bản V2]{Bốn mẫu dự đoán của V2: ảnh đầu vào, nhãn giả
+V2, bản đồ xác suất và mặt nạ dự đoán kèm chỉ số IoU/Dice từng ảnh.}
+\label{fig:segv2_pred}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/segv3_predictions.png}
+\caption[Dự đoán của phiên bản V3]{Bốn mẫu dự đoán của V3 với nhãn tham chiếu là
+mặt nạ đã được SAM tinh chỉnh. Biên dự đoán sắc nét hơn so với V2 nhưng diện tích
+lớn hơn đáng kể.}
+\label{fig:segv3_pred}
+\end{figure}
+
+\section{Phân tích tách bạch}
+\label{sec:ablation}
+
+\subsection{Giới hạn về khả năng so sánh giữa các phiên bản}
+\label{sec:caveat}
+
+Đọc \cref{tab:seg_results} một cách ngây thơ sẽ dẫn tới kết luận: V1 tốt nhất
+(IoU 0,7671), V3 đứng thứ hai (0,6239), V2 kém nhất (0,5135) --- và do đó các
+``cải tiến'' ở V2, V3 thực chất làm hỏng mô hình. \emph{Kết luận này sai}, và việc
+chỉ ra vì sao nó sai là một trong những đóng góp chính của luận văn.
+
+Vấn đề nằm ở chỗ mỗi phiên bản được đánh giá trên \emph{mốc tham chiếu của chính
+nó}. Như đã nêu ở \cref{sec:metrics}, IoU và Dice luôn được định nghĩa tương đối
+với một tập nhãn tham chiếu $Y$. Ở đây:
+
+\begin{itemize}
+    \item V1 được đo so với nhãn giả V1;
+    \item V2 được đo so với nhãn giả V2;
+    \item V3 được đo so với nhãn đã qua tinh chỉnh SAM.
+\end{itemize}
+
+Ba mốc tham chiếu này khác nhau về cả hình dạng, độ phủ lẫn độ biến thiên. So sánh
+trực tiếp các con số IoU giữa chúng chẳng khác nào so sánh điểm số của ba học sinh
+làm ba đề thi khác nhau với độ khó khác nhau.
+
+\Cref{tab:confound} liệt kê đầy đủ các biến khác nhau giữa các cặp phiên bản.
+
+\begin{table}[H]
+\centering
+\caption{Các biến khác biệt giữa các cặp phiên bản}
+\label{tab:confound}
+\small
+\begin{tabular}{L{5.0cm} c c}
+\toprule
+\textbf{Biến} & \textbf{V1 so với V2} & \textbf{V2 so với V3} \\
+\midrule
+Phân bố nhãn tham chiếu   & Khác & Khác (chủ đích) \\
+Kiến trúc mô hình         & Khác & Giống \\
+Tập kiểm thử              & \textbf{Khác} & Giống \\
+Hàm mất mát               & Khác & Giống \\
+Bộ tối ưu và lịch tốc độ học & Khác & Giống \\
+Bộ tăng cường dữ liệu     & Khác & Giống \\
+Kích thước lô             & Khác & Khác (ngoài ý muốn) \\
+Patience dừng sớm         & Khác & Khác (ngoài ý muốn) \\
+\midrule
+\textbf{Số biến khác nhau} & \textbf{8} & \textbf{3} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cặp V1--V2 khác nhau ở \emph{tám} biến cùng lúc. Với thiết kế thực nghiệm như vậy,
+không thể quy chênh lệch hiệu năng cho bất kỳ nguyên nhân đơn lẻ nào. Đặc biệt,
+việc hai phiên bản dùng \emph{hai tập kiểm thử khác nhau} --- do khác bộ sinh số
+ngẫu nhiên như đã phân tích ở \cref{subsec:split_seg} --- khiến ngay cả phép so
+sánh thô cũng mất cơ sở.
+
+Vậy tại sao V1 lại đạt IoU cao nhất? Câu trả lời nằm ở \emph{độ khó của mục tiêu}
+chứ không ở chất lượng mô hình:
+
+\begin{itemize}
+    \item Nhãn V1 là các khối tròn lớn, trơn, hình dạng đơn giản và dễ dự đoán ---
+          hệ quả trực tiếp của việc phóng bản đồ $7 \times 7$ lên $224 \times 224$.
+          Tái tạo lại một khối trơn như vậy là bài toán dễ.
+    \item Nhãn V3 là các vùng do \SAM{} sinh ra: biên sắc, hình dạng phức tạp, bám
+          theo cấu trúc thực của ảnh. Tái tạo chính xác các biên này khó hơn nhiều.
+\end{itemize}
+
+Nói cách khác, \textbf{IoU cao của V1 phản ánh việc mục tiêu của nó dễ, không phản
+ánh việc nó định vị bệnh tốt hơn.} Trong điều kiện không có nhãn chuẩn ở mức điểm
+ảnh, không thể thiết lập được hiệu năng định vị bệnh tuyệt đối của bất kỳ phiên
+bản nào.
+
+\subsection{Phép so sánh hợp lệ: V2 so với V3}
+
+Cặp V2--V3 chỉ khác nhau ở ba biến, trong đó biến chính --- bộ nhãn huấn luyện ---
+là biến ta muốn khảo sát. Kiến trúc, hàm mất mát, bộ tối ưu, bộ tăng cường và
+\emph{tập kiểm thử} đều giống hệt nhau. Đây là phép so sánh có kiểm soát tốt nhất
+trong luận văn.
+
+\begin{table}[H]
+\centering
+\caption{So sánh V2 và V3 --- cùng kiến trúc, cùng tập kiểm thử}
+\label{tab:v2v3}
+\begin{tabular}{L{3.1cm} C{1.9cm} C{1.9cm} C{2.3cm} C{2.3cm}}
+\toprule
+\textbf{Chỉ số} & \textbf{V2} & \textbf{V3} & \textbf{Chênh tuyệt đối} & \textbf{Chênh tương đối} \\
+\midrule
+IoU       & 0,5135 & 0,6239 & $+0{,}1104$ & \textbf{+21,5\%} \\
+Dice      & 0,6301 & 0,7053 & $+0{,}0752$ & +11,9\% \\
+Precision & 0,6169 & 0,7090 & $+0{,}0921$ & +14,9\% \\
+Recall    & 0,7419 & 0,8752 & $+0{,}1333$ & +18,0\% \\
+\midrule
+val\_loss nhỏ nhất & 0,5957 (E20) & 0,4478 (E12) & $-0{,}1479$ & $-24{,}8\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cải thiện xuất hiện đồng đều trên cả bốn chỉ số, không có chỉ số nào đi ngược
+chiều --- dấu hiệu của một tác động thực chứ không phải dao động ngẫu nhiên.
+
+Bằng chứng bổ trợ mạnh mẽ đến từ tốc độ hội tụ: V3 đạt \texttt{val\_loss} 0,4478 ở
+epoch 12, trong khi V2 phải tới epoch 20 mới đạt 0,5957 --- cao hơn đáng kể. Cùng
+kiến trúc và cùng siêu tham số, mô hình học được nhanh hơn và sâu hơn trên nhãn
+\SAM{}. Điều này cho thấy nhãn \SAM{} cung cấp \emph{tín hiệu huấn luyện sạch hơn}:
+biên rõ ràng và nhất quán giúp mô hình tìm được quy luật dễ hơn.
+
+\subsection{Ba yếu tố gây nhiễu cần trừ hao}
+\label{subsec:confound}
+
+Việc kết luận toàn bộ mức cải thiện +21,5\% là do \SAM{} sẽ là kết luận vội vàng.
+Ba yếu tố sau có thể đóng góp một phần, và mục này đánh giá chiều tác động của
+từng yếu tố.
+
+\textbf{Yếu tố thứ nhất --- dừng sớm quá sớm ở V2.} Phiên bản V2 dùng patience = 5
+còn V3 dùng patience = 10. Quan trọng hơn, dữ liệu cho thấy V2 \emph{vẫn đang cải
+thiện} khi bị dừng: \texttt{val\_IoU} tăng từ 0,4960 tại epoch 20 lên 0,5339 tại
+epoch 25 --- tức tăng 7,6\% trong 5 epoch cuối cùng trước khi dừng. Cơ chế dừng sớm
+theo dõi \texttt{val\_loss} vốn đã chững lại, nên không nhận ra IoU vẫn đang lên.
+Nếu V2 được cấp patience = 10 như V3, nhiều khả năng nó đã đạt hiệu năng cao hơn.
+\emph{Chiều tác động: yếu tố này làm phóng đại khoảng cách V2--V3.}
+
+\textbf{Yếu tố thứ hai --- kích thước mục tiêu.} Nhãn V3 có độ phủ trung bình
+25,43\% so với 15,04\% của V2, tức lớn gấp 1,69 lần. Đây không phải chi tiết vô
+hại, vì IoU có thiên lệch hệ thống theo kích thước đối tượng. Với một dải sai số
+biên có bề rộng $w$ cố định, phần diện tích sai lệch tỉ lệ với chu vi nhân $w$,
+trong khi mẫu số của IoU tỉ lệ với diện tích. Với các vùng có hình dạng tương tự
+nhau, chu vi tỉ lệ với căn bậc hai của diện tích, nên sai số biên tương đối giảm
+theo $1/\sqrt{A}$. Diện tích tăng 1,69 lần tương ứng sai số biên tương đối giảm
+khoảng $1 - 1/\sqrt{1{,}69} \approx 23\%$. \emph{Chiều tác động: yếu tố này cũng
+làm phóng đại lợi thế của V3.}
+
+\textbf{Yếu tố thứ ba --- kích thước lô.} V2 dùng lô 4, V3 dùng lô 8. Với bộ nhớ
+đồ hoạ chỉ 2,15 GB, đây là ràng buộc kỹ thuật chứ không phải lựa chọn thiết kế.
+Lô lớn hơn cho ước lượng gradient ổn định hơn, có thể có lợi cho V3. \emph{Chiều
+tác động: nhiều khả năng cũng có lợi cho V3, nhưng mức độ khó ước lượng.}
+
+Cả ba yếu tố đều tác động \emph{cùng một chiều} là làm phóng đại lợi thế của V3.
+Kết luận trung thực vì thế phải là:
+
+\begin{quote}
+Tinh chỉnh biên bằng \SAM{} \textbf{cải thiện chất lượng tín hiệu huấn luyện} ---
+bằng chứng thuyết phục nhất là mô hình hội tụ nhanh hơn và đạt hàm mất mát kiểm
+định thấp hơn hẳn với cùng kiến trúc và siêu tham số. Tuy nhiên, con số +21,5\%
+IoU là \textbf{cận trên} của tác động này chứ không phải giá trị thực, vì cả ba
+yếu tố gây nhiễu đã xác định đều tác động cùng chiều làm tăng khoảng cách.
+\end{quote}
+
+\subsection{Nghịch lý của SAM}
+
+Một điểm thú vị về mặt phương pháp luận: \SAM{} vừa \emph{làm hỏng} nhãn theo tiêu
+chí bệnh học --- mở rộng mặt nạ tới 69,1\%, bao cả những vùng lá khoẻ mạnh ---
+lại vừa \emph{cải thiện} kết quả huấn luyện trên mọi chỉ số.
+
+Hai sự thật này không mâu thuẫn. Chúng đo hai thứ khác nhau. Nhãn \SAM{} sai về
+\emph{phạm vi} (bao quá rộng) nhưng đúng về \emph{cấu trúc} (biên bám theo ranh
+giới thực trong ảnh, nhất quán giữa các ảnh). Mô hình học được từ tính nhất quán
+cấu trúc đó, kể cả khi phạm vi bị phóng đại.
+
+Hệ quả thực tiễn quan trọng: một mô hình phân đoạn huấn luyện trên nhãn V3 sẽ có
+xu hướng dự đoán vùng bệnh rộng hơn thực tế. Với ứng dụng ước lượng \emph{tỉ lệ
+diện tích lá bị bệnh} để ra quyết định canh tác, sai lệch hệ thống này phải được
+hiệu chỉnh trước khi sử dụng.
+
+\section{Phân tích lỗi và hạn chế}
+\label{sec:phantichloi}
+
+\subsection{Recall luôn vượt precision}
+
+\begin{table}[H]
+\centering
+\caption{Quan hệ giữa recall và precision ở ba phiên bản}
+\label{tab:recall_precision}
+\begin{tabular}{l c c c}
+\toprule
+\textbf{Phiên bản} & \textbf{Precision} & \textbf{Recall} & \textbf{Chênh lệch} \\
+\midrule
+V1 & 0,8562 & 0,8877 & $+0{,}0315$ \\
+V2 & 0,6169 & 0,7419 & $+0{,}1250$ \\
+V3 & 0,7090 & 0,8752 & $+0{,}1662$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cả ba phiên bản đều có recall vượt precision, và khoảng cách tăng dần từ V1 đến
+V3. Điều này nghĩa là mô hình \emph{phân đoạn thừa} một cách hệ thống: nó đánh dấu
+nhiều điểm ảnh là bệnh hơn so với nhãn tham chiếu.
+
+Nguyên nhân là mô hình kế thừa đúng đặc tính của nhãn mà nó được huấn luyện. Nhãn
+giả vốn đã có xu hướng bao rộng hơn tổn thương thực --- do bản đồ kích hoạt bị làm
+mờ khi phóng từ độ phân giải thấp, và với V3 thì cộng thêm hiện tượng nở của
+\SAM{}. Mô hình học đúng phân bố đó.
+
+Xét theo yêu cầu ứng dụng nêu ở \cref{sec:metrics}, xu hướng này \emph{có lợi}:
+trong chẩn đoán bệnh cây trồng, bỏ sót vùng bệnh nguy hiểm hơn cảnh báo thừa.
+
+\subsection{Tiêu chí dừng sớm không phù hợp}
+\label{subsec:earlystop}
+
+Đây là hạn chế kỹ thuật nghiêm trọng nhất được phát hiện trong quá trình thực
+nghiệm.
+
+\begin{table}[H]
+\centering
+\caption{Diễn biến các epoch then chốt của phiên bản V3}
+\label{tab:v3_epochs}
+\begin{tabular}{c c c c l}
+\toprule
+\textbf{Epoch} & \textbf{val\_loss} & \textbf{val\_IoU} & \textbf{val\_Dice} & \textbf{Ghi chú} \\
+\midrule
+9  & 0,4514 & 0,6536 & 0,7348 & \\
+11 & 0,4495 & 0,6711 & 0,7518 & \\
+\textbf{12} & \textbf{0,4478} & 0,6479 & 0,7294 & \textbf{được chọn} (val\_loss nhỏ nhất) \\
+16 & 0,4508 & 0,6917 & 0,7716 & \\
+\textbf{17} & 0,4537 & \textbf{0,6981} & \textbf{0,7792} & \textbf{bị bỏ lỡ} (val\_IoU lớn nhất) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Điểm kiểm tra được chọn theo tiêu chí \texttt{val\_loss} nhỏ nhất, rơi vào epoch
+12 với val\_IoU = 0,6479. Nhưng epoch 17 có val\_IoU = 0,6981 --- \textbf{cao hơn
+0,0502} --- lại bị bỏ qua vì val\_loss của nó cao hơn epoch 12 một lượng không
+đáng kể (0,4537 so với 0,4478, chênh 1,3\%).
+
+Nói cách khác, mô hình \emph{đã từng tốt hơn} trong quá trình huấn luyện nhưng
+trạng thái đó không được lưu lại. Toàn bộ kết quả V3 báo cáo ở
+\cref{tab:seg_results} vì thế là \emph{ước lượng thấp} so với khả năng thực của
+phương pháp.
+
+Nguyên nhân gốc đã được dự báo về mặt lý thuyết ở \cref{sec:loss}: hàm mất mát
+FocalDice chủ động thu nhỏ gradient của các điểm ảnh dễ, khiến giá trị mất mát
+tổng thể trở thành chỉ báo kém nhạy cho chất lượng phân đoạn. Hàm mất mát và IoU
+không đồng pha với nhau.
+
+Hiện tượng lặp lại ở V2 với mức độ còn nghiêm trọng hơn. Điểm kiểm tra được chọn
+là epoch 20 với val\_IoU = 0,4960, trong khi epoch 18 đạt 0,5438. Đáng nói hơn,
+epoch 20 là một \emph{điểm trũng cục bộ} của val\_IoU: các epoch lân cận đều cao
+hơn hẳn (E18: 0,5438; E19: 0,5435; E21: 0,5379; E22: 0,5404). Nói cách khác, cơ
+chế chọn theo val\_loss đã chọn đúng vào epoch có IoU kém nhất trong cả vùng.
+
+\begin{table}[H]
+\centering
+\caption{Tổn thất do chọn điểm kiểm tra theo \texttt{val\_loss} ở ba phiên bản}
+\label{tab:earlystop_loss}
+\begin{tabular}{l l c c c c}
+\toprule
+\textbf{Phiên bản} & \textbf{Hàm mất mát} & \textbf{Epoch chọn} & \textbf{val\_IoU} & \textbf{val\_IoU tốt nhất} & \textbf{Tổn thất} \\
+\midrule
+V1 & BCE + Dice & E23 & 0,7699 & 0,7715 (E25) & $0{,}0016$ \\
+V2 & FocalDice  & E20 & 0,4960 & 0,5438 (E18) & $\mathbf{0{,}0478}$ \\
+V3 & FocalDice  & E12 & 0,6479 & 0,6981 (E17) & $\mathbf{0{,}0502}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{tab:earlystop_loss} cho thấy một quy luật rất rõ và đây là bằng chứng thực
+nghiệm trực tiếp cho dự báo lý thuyết ở \cref{sec:loss}. Phiên bản V1 dùng
+BCE + Dice có tổn thất gần như bằng không (0,0016) --- hàm mất mát và IoU đồng pha
+với nhau, chọn theo tiêu chí nào cũng cho kết quả tương đương. Hai phiên bản V2 và
+V3 dùng FocalDice có tổn thất lớn gấp \emph{ba mươi lần} (0,0478 và 0,0502).
+
+Cơ chế đằng sau đã được nêu ở \cref{sec:loss}: thành phần Focal chủ động thu nhỏ
+gradient --- và qua đó thu nhỏ cả đóng góp vào giá trị hàm mất mát --- của những
+điểm ảnh đã được phân loại tốt. Phần lớn diện tích ảnh là nền dễ, nên giá trị hàm
+mất mát bị chi phối bởi một nhóm nhỏ điểm ảnh khó ở vùng biên. Trong khi đó IoU
+tính trên toàn bộ vùng. Hai đại lượng vì thế đo hai khía cạnh khác nhau và không
+còn đồng biến.
+
+Khuyến nghị rút ra rất rõ ràng và có thể áp dụng ngay cho các nghiên cứu tương tự:
+\emph{với các bài toán phân đoạn dùng hàm mất mát họ Focal, tiêu chí chọn điểm
+kiểm tra và dừng sớm phải là chính chỉ số đánh giá mục tiêu} --- ở đây là val\_IoU
+--- \emph{chứ không phải giá trị hàm mất mát}. Với hàm mất mát không có thành phần
+điều biến theo độ khó như BCE + Dice, việc chọn theo hàm mất mát vẫn chấp nhận
+được.
+
+\subsection{Lỗi tăng cường dữ liệu ở phiên bản V1}
+
+Trong cài đặt của V1, thuộc tính bật tăng cường được đặt trên đối tượng tập dữ
+liệu \emph{dùng chung} cho cả ba tập con. Hệ quả là tập kiểm định và kiểm thử cũng
+bị áp dụng tăng cường, dù chỉ gồm hai phép lật ngang và lật dọc.
+
+Ảnh hưởng tới kết quả là nhỏ, vì phép lật bảo toàn diện tích và hình dạng của cả
+ảnh lẫn mặt nạ, không làm thay đổi bản chất bài toán. Tuy nhiên đây vẫn là một sai
+sót phương pháp cần ghi nhận: chỉ số của V1 mang thêm một thành phần dao động ngẫu
+nhiên mà V2 và V3 không có. Đây là lý do thứ ba, bên cạnh khác mốc tham chiếu và
+khác tập kiểm thử, khiến V1 không nên được dùng làm mốc so sánh.
+
+\subsection{Dense CRF không khả dụng}
+
+Như đã nêu ở \cref{sec:xulyanh}, Dense CRF là một hướng tinh chỉnh nhãn thay thế
+cho \SAM{}, có ưu điểm là không cần mô hình nền tảng nặng và bám theo biên màu sắc
+thực của ảnh.
+
+Hướng này đã được thử nghiệm nhưng không đưa được vào quy trình: thư viện
+\texttt{pydensecrf} không cài đặt được trên môi trường Python 3.13 dùng trong
+nghiên cứu, do thư viện này chưa cung cấp bản dựng sẵn cho phiên bản Python đó.
+Việc so sánh \SAM{} với Dense CRF trong vai trò bộ tinh chỉnh nhãn vì vậy vẫn là
+một câu hỏi bỏ ngỏ, được đề xuất là hướng phát triển ở \cref{chap:ketluan}.
+
+\subsection{Hạn chế của phép biến đổi đàn hồi}
+
+Như đã lưu ý ở \cref{tab:augment}, bộ tăng cường của V2 và V3 gồm
+\en{ElasticTransform} với xác suất 0,3 và \en{GridDistortion} với xác suất 0,2.
+Hai phép này làm biến dạng \emph{đồng thời} cả ảnh lẫn mặt nạ.
+
+Với nhãn chuẩn, đây là cách tăng cường hợp lệ. Với nhãn giả vốn đã không chắc chắn
+về biên, việc biến dạng thêm có thể làm nhiễu tín hiệu huấn luyện thay vì tăng khả
+năng khái quát. Giả thuyết này chưa được kiểm chứng bằng thực nghiệm tách bạch
+trong luận văn, và được ghi nhận là một hướng khảo sát.
+
+\section{Kết luận chương}
+
+Chương này đã trình bày và phân tích toàn bộ kết quả thực nghiệm. Các phát hiện
+chính:
+
+\begin{enumerate}
+    \item \textbf{Phân loại đạt 97,30\% trên tập kiểm thử} với $F_1$ 97,31\%, cả
+          năm lớp đều vượt $F_1$ 95\%. Cặp nhầm lẫn chính là Algal Leaf Spot và
+          Phomopsis Leaf Spot, đúng như dự đoán từ phân tích khám phá.
+
+    \item \textbf{Bản đồ kích hoạt của lớp lá khoẻ khuếch tán khắp phiến lá}, xác
+          nhận bằng thực nghiệm rằng bản đồ kích hoạt phản ánh cơ sở ra quyết định
+          của mô hình chứ không phải vị trí tổn thương --- cơ sở cho biện pháp ép
+          mặt nạ lớp này về không.
+
+    \item \textbf{Ngưỡng phân vị đạt độ phủ mục tiêu với sai lệch dưới 0,4 điểm
+          phần trăm}, đồng thời làm độ lệch chuẩn của độ phủ giảm khoảng năm lần
+          --- xác nhận cả thành công lẫn đánh đổi đã dự báo.
+
+    \item \textbf{SAM mở rộng độ phủ mặt nạ 69,1\%} thay vì chỉ tinh chỉnh biên,
+          với 200 mặt nạ vượt 50\% diện tích ảnh.
+
+    \item \textbf{Cơ chế bảo vệ dựa trên IoU không thể phát hiện hiện tượng nở} ---
+          đã chứng minh bằng lập luận toán học rằng ngưỡng cần thiết để kích hoạt
+          vượt quá 100\% diện tích ảnh với mọi lớp bệnh. Một ràng buộc bất đối xứng
+          về tỉ lệ độ phủ được đề xuất để khắc phục.
+
+    \item \textbf{Tinh chỉnh bằng SAM cải thiện V2 lên V3 trên mọi chỉ số}
+          (IoU +21,5\%), nhưng ba yếu tố gây nhiễu đều tác động cùng chiều nên con
+          số này là cận trên chứ không phải giá trị thực.
+
+    \item \textbf{Chỉ số của V1 không so sánh được với V2 và V3} do khác biệt ở
+          tám biến, bao gồm cả tập kiểm thử. IoU cao của V1 phản ánh mục tiêu dễ,
+          không phản ánh chất lượng định vị bệnh.
+
+    \item \textbf{Tiêu chí dừng sớm theo val\_loss là không phù hợp} với hàm mất
+          mát họ Focal --- V3 bỏ lỡ điểm kiểm tra tốt hơn 0,0502 IoU.
+\end{enumerate}
+
+\Cref{chap:ketluan} tổng hợp các kết quả này thành câu trả lời trực tiếp cho bốn
+câu hỏi nghiên cứu đặt ra ở \cref{sec:muctieu}, đồng thời đề xuất hướng phát triển.

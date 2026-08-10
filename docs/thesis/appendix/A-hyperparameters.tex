@@ -1,0 +1,207 @@
+% !TeX root = ../main.tex
+\chapter{BẢNG SIÊU THAM SỐ ĐẦY ĐỦ}
+\label{app:A}
+
+Phụ lục này tập hợp toàn bộ siêu tham số của các thực nghiệm trong luận văn, phục
+vụ mục đích tái tạo kết quả. Mọi giá trị được trích trực tiếp từ mã nguồn thực thi.
+
+\section{Mô hình phân loại}
+
+\begin{table}[H]
+\centering
+\caption{Siêu tham số mô hình phân loại EfficientNet-B0}
+\label{tab:app_cls}
+\begin{tabular}{L{5.4cm} L{7.6cm}}
+\toprule
+\textbf{Tham số} & \textbf{Giá trị} \\
+\midrule
+\multicolumn{2}{l}{\textit{Kiến trúc}} \\
+Mạng xương sống       & EfficientNet-B0 \\
+Trọng số khởi tạo     & ImageNet (IMAGENET1K\_V1) \\
+Tầng phân loại        & Dropout($p = 0{,}2$) + Linear($1280 \rightarrow 5$) \\
+Tổng tham số          & 4.013.953 \\
+Tham số khả huấn luyện & 4.013.953 (100\%) \\
+Kích thước đầu vào    & $224 \times 224 \times 3$ \\
+\midrule
+\multicolumn{2}{l}{\textit{Huấn luyện}} \\
+Hàm mất mát           & CrossEntropyLoss \\
+Bộ tối ưu             & Adam \\
+Tốc độ học ban đầu    & $1 \times 10^{-4}$ \\
+Lịch tốc độ học       & ReduceLROnPlateau \\
+\quad chế độ          & \texttt{max} (theo \texttt{val\_acc}) \\
+\quad patience        & 2 \\
+\quad hệ số giảm      & 0,5 \\
+Kích thước lô         & 16 \\
+Số epoch tối đa       & 50 \\
+Số epoch thực tế      & 16 \\
+Dừng sớm --- chỉ số   & \texttt{val\_acc} \\
+Dừng sớm --- patience & 5 \\
+\midrule
+\multicolumn{2}{l}{\textit{Dữ liệu}} \\
+Chia tập              & 70 / 10 / 20 \\
+Số ảnh                & 3.104 / 443 / 890 \\
+Chuẩn hoá             & Trung bình và độ lệch chuẩn ImageNet \\
+Tăng cường (chỉ train) & Lật ngang, lật dọc, xoay, biến đổi màu \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Sinh nhãn giả}
+
+\begin{table}[H]
+\centering
+\caption{Siêu tham số sinh nhãn giả V1 và V2}
+\label{tab:app_pseudo}
+\begin{tabular}{L{4.4cm} L{4.2cm} L{4.4cm}}
+\toprule
+\textbf{Tham số} & \textbf{V1} & \textbf{V2} \\
+\midrule
+Phương pháp CAM   & Grad-CAM & Grad-CAM++ \\
+Số tầng đích      & 1 & 2 \\
+Tầng thô          & \texttt{base.\allowbreak features.\allowbreak 8.\allowbreak 0} & \texttt{base.\allowbreak features.\allowbreak 8.\allowbreak 0} \\
+Độ phân giải thô  & $7 \times 7$ & $7 \times 7$ \\
+Tầng tinh         & --- & \texttt{base.\allowbreak features.} \texttt{6.\allowbreak 3.\allowbreak block.\allowbreak 3.\allowbreak 0} \\
+Độ phân giải tinh & --- & $14 \times 14$ \\
+Trọng số hợp nhất & --- & $0{,}6 \times$ tinh $+\ 0{,}4 \times$ thô \\
+Ngưỡng hoá        & Cố định $\geq 0{,}5$ & Phân vị theo lớp \\
+Phần tử cấu trúc  & Chữ nhật $5 \times 5$ & Elip $5 \times 5$ \\
+Thứ tự hình thái  & Đóng $\rightarrow$ Mở & Đóng $\rightarrow$ Mở \\
+Lọc thành phần liên thông & Không & Top-3, diện tích $\geq 400$ px \\
+Xử lý lớp lá khoẻ & Như lớp bệnh & Mặt nạ toàn số 0 \\
+Số mặt nạ sinh ra & 3.104 & 3.104 \\
+Thời gian sinh    & 14 ph 00 s & 4 ph 08 s \\
+Tốc độ            & 3,69 ảnh/s & 12,51 ảnh/s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Tỉ lệ độ phủ mục tiêu theo lớp (nhãn giả V2)}
+\label{tab:app_keeppct}
+\begin{tabular}{l c}
+\toprule
+\textbf{Lớp} & \textbf{Tỉ lệ giữ lại} \\
+\midrule
+ALGAL\_LEAF\_SPOT      & 0,18 \\
+ALLOCARIDARA\_ATTACK   & 0,20 \\
+HEALTHY\_LEAF          & 0,00 \\
+LEAF\_BLIGHT           & 0,22 \\
+PHOMOPSIS\_LEAF\_SPOT  & 0,18 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Tinh chỉnh bằng SAM}
+
+\begin{table}[H]
+\centering
+\caption{Siêu tham số giai đoạn tinh chỉnh bằng SAM}
+\label{tab:app_sam}
+\begin{tabular}{L{5.6cm} L{7.4cm}}
+\toprule
+\textbf{Tham số} & \textbf{Giá trị} \\
+\midrule
+Mô hình              & SAM ViT-B \\
+Tệp trọng số         & \texttt{sam\_\allowbreak vit\_\allowbreak b\_\allowbreak 01ec64.\allowbreak pth} (375 MB) \\
+Số điểm tiền cảnh    & 5 (trọng tâm + 4 điểm ngẫu nhiên) \\
+Số điểm nền          & 3 \\
+Bán kính giãn nở vùng nền & 30 điểm ảnh \\
+Chế độ sinh mặt nạ   & \texttt{multimask\_\allowbreak output = True}, chọn mặt nạ điểm cao nhất \\
+Ngưỡng bảo vệ IoU    & 0,15 \\
+Lọc thành phần liên thông & Loại nếu $< 5\%$ tổng diện tích hoặc $< 30$ px \\
+Hình thái sau lọc    & Đóng, phần tử $5 \times 5$ \\
+Xử lý mặt nạ rỗng    & Bỏ qua, giữ nguyên rỗng \\
+Số mặt nạ xử lý      & 3.104 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Mô hình phân đoạn}
+
+% Dùng longtable thay cho table+tabular: bảng này dài hơn một trang nên nếu để
+% trong float [H] sẽ tràn quá đáy trang. longtable tự ngắt sang trang sau và
+% lặp lại dòng tiêu đề.
+\begingroup
+\small
+\begin{longtable}{L{3.6cm} L{3.0cm} L{3.0cm} L{3.0cm}}
+\caption{Siêu tham số ba phiên bản mô hình phân đoạn}
+\label{tab:app_seg} \\
+\toprule
+\textbf{Tham số} & \textbf{V1} & \textbf{V2} & \textbf{V3} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\small\itshape (tiếp theo trang trước)} \\
+\toprule
+\textbf{Tham số} & \textbf{V1} & \textbf{V2} & \textbf{V3} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\small\itshape (còn tiếp)} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\multicolumn{4}{l}{\textit{Kiến trúc}} \\
+Mô hình        & EfficientNet-UNet & UNet++ & UNet++ \\
+Bộ mã hoá      & EfficientNet-B0 & EfficientNet-B0 & EfficientNet-B0 \\
+Trọng số mã hoá & ImageNet & ImageNet & ImageNet \\
+Tổng tham số   & 7.276.925 & 6.569.581 & 6.569.581 \\
+\quad bộ mã hoá & 4.007.548 & 4.007.548 & 4.007.548 \\
+\quad bộ giải mã & 3.269.312 & 2.561.888 & 2.561.888 \\
+Số kênh đầu ra & 1 & 1 & 1 \\
+\midrule
+\multicolumn{4}{l}{\textit{Hàm mất mát và tối ưu}} \\
+Hàm mất mát    & BCE + Dice & FocalDice & FocalDice \\
+\quad $\alpha$ & --- & 0,25 & 0,25 \\
+\quad $\gamma$ & --- & 2,0 & 2,0 \\
+\quad $\epsilon$ (Dice) & 1,0 & 1,0 & 1,0 \\
+Bộ tối ưu      & Adam & AdamW & AdamW \\
+Tốc độ học     & $1 \times 10^{-4}$ & $1 \times 10^{-4}$ & $1 \times 10^{-4}$ \\
+Suy giảm trọng số & --- & $1 \times 10^{-4}$ & $1 \times 10^{-4}$ \\
+Lịch tốc độ học & Reduce\allowbreak LR\allowbreak On\allowbreak Plateau
+                & Cosine\allowbreak Annealing\allowbreak LR
+                & Cosine\allowbreak Annealing\allowbreak LR \\
+\quad tham số  & \texttt{min}, p = 2, hệ số 0,5
+               & $T_{\max} = 50$, $\eta_{\min} = 10^{-6}$
+               & $T_{\max} = 50$, $\eta_{\min} = 10^{-6}$ \\
+Cắt gradient   & Không & \texttt{max\_norm} = 1,0 & \texttt{max\_norm} = 1,0 \\
+\midrule
+\multicolumn{4}{l}{\textit{Huấn luyện}} \\
+Kích thước lô  & 8 & 4 & 8 \\
+Epoch tối đa   & 30 & 50 & 50 \\
+Epoch thực tế  & 30 & 25 & 22 \\
+Dừng sớm --- chỉ số & \texttt{val\_loss} & \texttt{val\_loss} & \texttt{val\_loss} \\
+Dừng sớm --- patience & 7 & 5 & 10 \\
+Epoch chọn     & 23 & 20 & 12 \\
+\midrule
+\multicolumn{4}{l}{\textit{Dữ liệu}} \\
+Nhãn huấn luyện & Pseudo V1 & Pseudo V2 & SAM tinh chỉnh \\
+Chia tập       & 70 / 15 / 15 & 70 / 15 / 15 & 70 / 15 / 15 \\
+Số ảnh         & 2.172 / 465 / 467 & 2.172 / 465 / 467 & 2.172 / 465 / 467 \\
+Hạt giống      & 42 & 42 & 42 \\
+Bộ sinh số ngẫu nhiên & \texttt{torch} & \texttt{numpy} & \texttt{numpy} \\
+Ngưỡng nhị phân hoá & 0,5 & 0,5 & 0,5 \\
+\end{longtable}
+\endgroup
+
+\begin{table}[htbp]
+\centering
+\caption{Bộ tăng cường dữ liệu Albumentations (V2 và V3)}
+\label{tab:app_augment}
+\begin{tabular}{L{5.6cm} L{3.6cm} c}
+\toprule
+\textbf{Phép biến đổi} & \textbf{Tham số} & \textbf{Xác suất} \\
+\midrule
+RandomResizedCrop & \texttt{size} = (224, 224), \texttt{scale} = (0,7; 1,0) & 1,00 \\
+HorizontalFlip    & --- & 0,50 \\
+VerticalFlip      & --- & 0,50 \\
+RandomRotate90    & --- & 0,50 \\
+ShiftScaleRotate  & dịch 0,1; co giãn 0,1; xoay 30 độ & 0,50 \\
+ElasticTransform  & mặc định & 0,30 \\
+GridDistortion    & mặc định & 0,20 \\
+ColorJitter       & sáng, tương phản, bão hoà 0,3; sắc độ 0,1 & 0,50 \\
+GaussNoise        & mặc định & 0,20 \\
+Normalize         & trung bình, độ lệch chuẩn ImageNet & 1,00 \\
+\bottomrule
+\end{tabular}
+\end{table}
