@@ -55,7 +55,8 @@
       "Bash(PYTHONIOENCODING=utf-8 /c/Users/pc/AppData/Local/Programs/Python/Python313/python.exe -c ' *)",
       "PowerShell($env:PYTHONIOENCODING='utf-8'; & \"C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" \"E:\\\\Master\\\\thesis-clean\\\\docs\\\\thesis\\\\make_docx.py\")",
       "PowerShell(Set-Location \"E:\\\\Master\\\\thesis-clean\\\\docs\\\\thesis\"; $env:PYTHONIOENCODING='utf-8'; & \"C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" check_tex.py 2>&1 | Select-Object -Last 25)",
-      "Bash(cd /e/Master/thesis-clean/docs/thesis && sed -n '/Mục tiêu cụ thể/,/Câu hỏi nghiên cứu/p' chapters/01-mo-dau.tex)"
+      "Bash(cd /e/Master/thesis-clean/docs/thesis && sed -n '/Mục tiêu cụ thể/,/Câu hỏi nghiên cứu/p' chapters/01-mo-dau.tex)",
+      "Bash(/e/Master/thesis-clean/venv/Scripts/python.exe -c \"import torch;print\\('torch',torch.__version__\\)\")"
     ]
   }
 }
