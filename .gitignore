@@ -15,6 +15,13 @@ venv/
 *.pt
 *.ckpt
 
+# Deployment needs these app checkpoints; keep large SAM weights ignored.
+!notebooks/models/classification/checkpoints/best_model.pth
+!notebooks/models/segmentation/checkpoints/efficientnet_unet_best.pth
+!notebooks/models/segmentation_v2/checkpoints/unetpp_best.pth
+!notebooks/models/segmentation_v3/checkpoints/unetpp_v3_best.pth
+!notebooks/models/segmentation_v5/checkpoints/unetpp_v5_best.pth
+
 # Local scratch/archive folders
 _stage_tmp/
 _to_delete/

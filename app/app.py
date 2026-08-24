@@ -725,11 +725,15 @@ with st.sidebar:
 # ── Main area ─────────────────────────────────────────────────────────────────
 if uploaded is None:
     st.info("Upload a durian leaf image in the sidebar to get started.")
-    st.image(
-        os.path.join(proj_root, "notebooks", "visualizations", "eda", "sample_images_per_class.png"),
-        caption="Example images from each disease class",
-        width="stretch",
-    )
+    sample_path = os.path.join(proj_root, "notebooks", "visualizations", "eda", "sample_images_per_class.png")
+    if os.path.exists(sample_path):
+        st.image(
+            sample_path,
+            caption="Example images from each disease class",
+            width="stretch",
+        )
+    else:
+        st.caption("The deployment build does not include sample images. Upload a leaf image to run inference.")
     st.stop()
 
 # Load image
