@@ -1,6 +1,31 @@
+# Raw/generated image artifacts
 *.jpg
+*.jpeg
 *.png
-*_metadata_*
-*.pyc
+
+# Python/runtime noise
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Heavy model artifacts
 *.pth
+*.pt
+*.ckpt
+
+# Local scratch/archive folders
+_stage_tmp/
+_to_delete/
+_repo_cleanup_archive/
+99_old/
+visualizations/
+
+# Generated metadata/log noise
+*_metadata_*
 *log*
+
+# Office temporary files
+~$*
+*.tmp
