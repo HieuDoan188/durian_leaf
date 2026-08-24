@@ -19,16 +19,16 @@ Bảng dưới là **tên file thực tế** — luận văn sẽ dùng cách đ
 
 | # | File thực tế | Vai trò | Trạng thái output |
 |---|---|---|---|
-| 01 | `01-data-exploration.ipynb` | EDA | ✅ đầy đủ |
-| 02 | `02-classification-baseline.ipynb` | EfficientNet-B0 classification | ✅ đầy đủ |
-| 03 | `03-xai-gradcam-analysis.ipynb` | Grad-CAM trên 3.104 ảnh train | ✅ đầy đủ |
-| 04 | `04-pseudo-labeling.ipynb` | Pseudo-label V1 | ✅ đầy đủ |
-| 05 | `05-segmentation-model.ipynb` | Segmentation V1 (EfficientNet-UNet) | ✅ đầy đủ |
-| 06 | `06-pseudo-labeling-v2.ipynb` | Pseudo-label V2 (GradCAM++ multi-scale) | ✅ đầy đủ |
-| 07 | `07-segmentation-v2.ipynb` | Segmentation V2 (UNet++) | ✅ đầy đủ |
-| 08 | `08-segmentation-v3-sam.ipynb` | SAM refinement + Segmentation V3 | ⚠️ một phần (xem G-08) |
-| 09 | `09-segmentation-v4-crf.ipynb` | Pseudo-label V4.1 + Segmentation V4 | ❌ training bị ngắt (xem G-09) |
-| 10 | `10-inference-single-image.ipynb` | Inference 1 ảnh | ✅ đã sửa & chạy lại 2026-07-26 (G-10) |
+| 01 | `01-dataset-audit-and-eda.ipynb` | EDA | ✅ đầy đủ |
+| 02 | `02-classifier-efficientnet-b0.ipynb` | EfficientNet-B0 classification | ✅ đầy đủ |
+| 03 | `03-xai-gradcam-gradcampp-analysis.ipynb` | Grad-CAM trên 3.104 ảnh train | ✅ đầy đủ |
+| 04 | `04-v1-gradcam-pseudo-labels.ipynb` | Pseudo-label V1 | ✅ đầy đủ |
+| 05 | `05-v1-unet-segmentation-baseline.ipynb` | Segmentation V1 (EfficientNet-UNet) | ✅ đầy đủ |
+| 06 | `06-v2-gradcampp-pseudo-labels.ipynb` | Pseudo-label V2 (GradCAM++ multi-scale) | ✅ đầy đủ |
+| 07 | `07-v2-unetpp-segmentation.ipynb` | Segmentation V2 (UNet++) | ✅ đầy đủ |
+| 08 | `08-v3-sam-refinement-diagnostic.ipynb` | SAM refinement + Segmentation V3 | ⚠️ một phần (xem G-08) |
+| 09 | `deprecated/09-v4-leaf-mask-bilateral-exploratory.ipynb` | Pseudo-label V4.1 + Segmentation V4 | ❌ training bị ngắt (xem G-09) |
+| 10 | `10-inference-and-demo.ipynb` | Inference 1 ảnh | ✅ đã sửa & chạy lại 2026-07-26 (G-10) |
 
 > `README.md` liệt kê `06-model-evaluation.ipynb` và `run_all_notebooks.ps1` gọi `06-model-evaluation-fixed.ipynb` — **cả hai file này KHÔNG tồn tại** trong repo. Xem G-01.
 
