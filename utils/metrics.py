@@ -22,7 +22,10 @@ class ModelEvaluator:
     """Model evaluation following contract specifications."""
 
     def __init__(self, device: str = 'cuda'):
-        self.device = torch.device(device if torch.cuda.is_available() and device == 'cuda' else 'cpu')
+        device = torch.device(device)
+        if device.type == 'cuda' and not torch.cuda.is_available():
+            device = torch.device('cpu')
+        self.device = device
 
     def evaluate_classification(self, model: nn.Module, data_loader: torch.utils.data.DataLoader) -> Dict[str, float]:
         """
