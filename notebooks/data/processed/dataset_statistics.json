@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-23T15:25:15.672238",
+  "timestamp": "2026-08-27T19:41:18.440252",
   "total_images": 4437,
   "split_counts": {
     "train": 3104,
@@ -36,13 +36,171 @@
       "median": 1.0
     },
     "file_sizes": {
-      "mean": 10.87216796875,
-      "std": 1.0070412078199367,
-      "min": 8.5078125,
-      "max": 14.3037109375,
-      "median": 10.82861328125
+      "mean": 11.088828125,
+      "std": 1.046259556661733,
+      "min": 8.9541015625,
+      "max": 14.5556640625,
+      "median": 11.0517578125
     }
   },
+  "integrity_summary": [
+    {
+      "Metric": "Total manifest rows",
+      "Value": 4437
+    },
+    {
+      "Metric": "Missing files",
+      "Value": 0
+    },
+    {
+      "Metric": "Unreadable files",
+      "Value": 0
+    },
+    {
+      "Metric": "Non-image extensions",
+      "Value": 0
+    },
+    {
+      "Metric": "Unique image sizes",
+      "Value": 1
+    },
+    {
+      "Metric": "Exact duplicate hash groups",
+      "Value": 1
+    },
+    {
+      "Metric": "Images inside duplicate hash groups",
+      "Value": 2
+    },
+    {
+      "Metric": "Cross-split exact hash leakage groups",
+      "Value": 0
+    },
+    {
+      "Metric": "Cross-split filename overlap groups",
+      "Value": 0
+    }
+  ],
+  "class_feature_profile": [
+    {
+      "class_label": "Algal Leaf Spot",
+      "n": 733,
+      "file_size_mean": 10.67,
+      "file_size_std": 1.12,
+      "brightness_mean": 106.66999816894531,
+      "brightness_std": 18.280000686645508,
+      "contrast_mean": 52.97999954223633,
+      "saturation_mean": 40.2599983215332,
+      "mean_r": 95.22000122070312,
+      "mean_g": 122.87000274658203,
+      "mean_b": 101.91000366210938,
+      "green_excess": 48.61000061035156
+    },
+    {
+      "class_label": "Allocaridara Attack",
+      "n": 913,
+      "file_size_mean": 10.8,
+      "file_size_std": 1.02,
+      "brightness_mean": 111.04000091552734,
+      "brightness_std": 15.75,
+      "contrast_mean": 52.75,
+      "saturation_mean": 47.400001525878906,
+      "mean_r": 98.11000061035156,
+      "mean_g": 132.35000610351562,
+      "mean_b": 102.66999816894531,
+      "green_excess": 63.93000030517578
+    },
+    {
+      "class_label": "Healthy Leaf",
+      "n": 976,
+      "file_size_mean": 10.74,
+      "file_size_std": 0.96,
+      "brightness_mean": 105.98999786376953,
+      "brightness_std": 15.979999542236328,
+      "contrast_mean": 52.40999984741211,
+      "saturation_mean": 58.91999816894531,
+      "mean_r": 95.31999969482422,
+      "mean_g": 133.63999938964844,
+      "mean_b": 89.01000213623047,
+      "green_excess": 82.94999694824219
+    },
+    {
+      "class_label": "Leaf Blight",
+      "n": 937,
+      "file_size_mean": 11.42,
+      "file_size_std": 1.0,
+      "brightness_mean": 109.83000183105469,
+      "brightness_std": 18.31999969482422,
+      "contrast_mean": 51.7400016784668,
+      "saturation_mean": 47.0099983215332,
+      "mean_r": 100.87000274658203,
+      "mean_g": 129.0500030517578,
+      "mean_b": 99.58999633789062,
+      "green_excess": 57.63999938964844
+    },
+    {
+      "class_label": "Phomopsis Leaf Spot",
+      "n": 878,
+      "file_size_mean": 11.14,
+      "file_size_std": 1.07,
+      "brightness_mean": 102.55999755859375,
+      "brightness_std": 14.15999984741211,
+      "contrast_mean": 54.029998779296875,
+      "saturation_mean": 59.380001068115234,
+      "mean_r": 93.06999969482422,
+      "mean_g": 131.0800018310547,
+      "mean_b": 83.52999877929688,
+      "green_excess": 85.56999969482422
+    }
+  ],
+  "outlier_summary": [
+    {
+      "feature": "file_size_kb",
+      "q1": 10.23,
+      "q3": 11.68,
+      "lower_bound": 8.06,
+      "upper_bound": 13.85,
+      "n_outliers": 31,
+      "outlier_pct": 0.7
+    },
+    {
+      "feature": "brightness",
+      "q1": 96.88,
+      "q3": 118.41,
+      "lower_bound": 64.58,
+      "upper_bound": 150.71,
+      "n_outliers": 51,
+      "outlier_pct": 1.15
+    },
+    {
+      "feature": "contrast",
+      "q1": 48.71,
+      "q3": 56.65,
+      "lower_bound": 36.8,
+      "upper_bound": 68.56,
+      "n_outliers": 48,
+      "outlier_pct": 1.08
+    },
+    {
+      "feature": "saturation",
+      "q1": 40.87,
+      "q3": 58.52,
+      "lower_bound": 14.4,
+      "upper_bound": 85.0,
+      "n_outliers": 123,
+      "outlier_pct": 2.77
+    },
+    {
+      "feature": "green_excess",
+      "q1": 49.12,
+      "q3": 85.12,
+      "lower_bound": -4.88,
+      "upper_bound": 139.13,
+      "n_outliers": 59,
+      "outlier_pct": 1.33
+    }
+  ],
+  "manifest_path": "data/processed\\image_manifest.csv",
   "data_loader_config": {
     "batch_size": 32,
     "image_size": [
