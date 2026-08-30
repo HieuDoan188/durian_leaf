@@ -1,0 +1,176 @@
+{
+  "pairing": {
+    "mask_files": 3104,
+    "matched_pairs": 3104,
+    "missing_images": 0,
+    "shape_mismatch": 0,
+    "mask_unique_values_seen": [
+      0,
+      255
+    ]
+  },
+  "pseudo_source_raw_split_counts": {
+    "train": 3104
+  },
+  "segmentation_split": {
+    "train": 2172,
+    "val": 465,
+    "test": 467,
+    "overlap_by_filename": {
+      "train-val": 0,
+      "test-train": 0,
+      "test-val": 0
+    },
+    "raw_split_stem_overlap": {
+      "train-val": 0,
+      "test-train": 0,
+      "test-val": 0
+    }
+  },
+  "mask_quality_total": {
+    "mean_area": 0.037335807339607875,
+    "median_area": 0.03883330676020408,
+    "empty": 707,
+    "too_small_nonempty_lt_1pct": 38,
+    "too_large_gt_30pct": 0,
+    "mean_cc": 1.7757731958762886
+  },
+  "mask_quality_by_class": [
+    {
+      "class_name": "ALGAL_LEAF_SPOT",
+      "n": 513,
+      "mean_area": 0.04319073663822254,
+      "median_area": 0.03651147959183673,
+      "empty": 4,
+      "too_small": 12,
+      "too_large": 0,
+      "mean_cc": 2.1734892787524367,
+      "mean_conf": 0.9929521933168928,
+      "match_rate": 1.0
+    },
+    {
+      "class_name": "ALLOCARIDARA_ATTACK",
+      "n": 639,
+      "mean_area": 0.0609481853921146,
+      "median_area": 0.05528539540816327,
+      "empty": 0,
+      "too_small": 0,
+      "too_large": 0,
+      "mean_cc": 2.588419405320814,
+      "mean_conf": 0.9985776122933449,
+      "match_rate": 1.0
+    },
+    {
+      "class_name": "HEALTHY_LEAF",
+      "n": 683,
+      "mean_area": 0.0,
+      "median_area": 0.0,
+      "empty": 683,
+      "too_small": 0,
+      "too_large": 0,
+      "mean_cc": NaN,
+      "mean_conf": 0.9957195558799308,
+      "match_rate": 1.0
+    },
+    {
+      "class_name": "LEAF_BLIGHT",
+      "n": 655,
+      "mean_area": 0.052676897929973515,
+      "median_area": 0.04681521045918367,
+      "empty": 0,
+      "too_small": 0,
+      "too_large": 0,
+      "mean_cc": 2.5099236641221374,
+      "mean_conf": 0.9923338854130898,
+      "match_rate": 0.9984732824427481
+    },
+    {
+      "class_name": "PHOMOPSIS_LEAF_SPOT",
+      "n": 614,
+      "mean_area": 0.03303622064664628,
+      "median_area": 0.027712452168367346,
+      "empty": 20,
+      "too_small": 26,
+      "too_large": 0,
+      "mean_cc": 1.789902280130293,
+      "mean_conf": 0.9906518535524704,
+      "match_rate": 0.998371335504886
+    }
+  ],
+  "training_audit": {
+    "epochs_recorded": 12,
+    "best_iou_epoch": 7,
+    "best_iou": 0.21999053842860794,
+    "best_loss_epoch": 12,
+    "best_loss": 0.8895435771634502,
+    "checkpoint_epoch": 7,
+    "checkpoint_val_iou": 0.21999053842860794,
+    "checkpoint_is_best_iou": true
+  },
+  "pseudo_test_metrics": {
+    "test_loss": 0.9085354437409427,
+    "iou": 0.2307262928369114,
+    "dice": 0.28315677646490883,
+    "precision": 0.28312454810307025,
+    "recall": 0.42832986058537503,
+    "f1": 0.2831564765277405
+  },
+  "manual_gt_prediction": {
+    "n_images": 80,
+    "overall_pixel": {
+      "iou": 0.2290606113799456,
+      "dice": 0.3727409523323093,
+      "precision": 0.310543538311076,
+      "recall": 0.46609261385360967,
+      "tp": 109611,
+      "fp": 243354,
+      "fn": 125559
+    },
+    "per_class_mean_image": [
+      {
+        "class_name": "ALGAL_LEAF_SPOT",
+        "n": 20,
+        "mean_iou": 0.09829318769213106,
+        "mean_dice": 0.17544032803609724,
+        "mean_precision": 0.11790387823938772,
+        "mean_recall": 0.46860140351758534,
+        "mean_gt_area": 0.025765306122448976,
+        "mean_pred_area": 0.09313715720663265
+      },
+      {
+        "class_name": "ALLOCARIDARA_ATTACK",
+        "n": 20,
+        "mean_iou": 0.3317198217422943,
+        "mean_dice": 0.4751993976931425,
+        "mean_precision": 0.6165542641471061,
+        "mean_recall": 0.4137954677467712,
+        "mean_gt_area": 0.13429827008928572,
+        "mean_pred_area": 0.0867137675382653
+      },
+      {
+        "class_name": "LEAF_BLIGHT",
+        "n": 20,
+        "mean_iou": 0.2590011876263812,
+        "mean_dice": 0.402171797819631,
+        "mean_precision": 0.3185654635450406,
+        "mean_recall": 0.6607474811118176,
+        "mean_gt_area": 0.05469447544642857,
+        "mean_pred_area": 0.10270149075255101
+      },
+      {
+        "class_name": "PHOMOPSIS_LEAF_SPOT",
+        "n": 20,
+        "mean_iou": 0.08269308764804287,
+        "mean_dice": 0.1452100478930205,
+        "mean_precision": 0.0972644465444812,
+        "mean_recall": 0.43585118919217997,
+        "mean_gt_area": 0.01958705357142857,
+        "mean_pred_area": 0.06917450573979592
+      }
+    ]
+  },
+  "figures": {
+    "data_mask_quality": "E:\\Master\\thesis-clean\\visualizations\\segmentation_v2\\data_mask_quality_audit_v2.png",
+    "manual_gt_prediction_qa": "E:\\Master\\thesis-clean\\visualizations\\segmentation_v2\\manual_gt_prediction_qa_v2.png"
+  }
+}

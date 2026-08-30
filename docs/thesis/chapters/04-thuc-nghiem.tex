@@ -120,17 +120,17 @@ mức quá khớp ở giai đoạn cuối là nhẹ và không phá huỷ khả 
 \toprule
 \textbf{Chỉ số} & \textbf{Kiểm định (tốt nhất)} & \textbf{Kiểm thử} \\
 \midrule
-Accuracy            & \textbf{98,19\%} & \textbf{97,30\%} \\
-Precision (weighted) & ---             & 97,34\% \\
-Recall (weighted)    & ---             & 97,30\% \\
-$F_1$ (weighted)     & ---             & 97,31\% \\
+Accuracy            & \textbf{98,19\%} & \textbf{97,19\%} \\
+Precision (weighted) & ---             & 97,22\% \\
+Recall (weighted)    & ---             & 97,19\% \\
+$F_1$ (weighted)     & ---             & 97,19\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Mô hình phân loại đúng 866 trên 890 ảnh kiểm thử, tức chỉ sai 24 ảnh.
+Mô hình phân loại đúng 865 trên 890 ảnh kiểm thử, tức chỉ sai 25 ảnh.
 
-Khoảng cách giữa kiểm định (98,19\%) và kiểm thử (97,30\%) là 0,89 điểm phần trăm.
+Khoảng cách giữa kiểm định (98,19\%) và kiểm thử (97,19\%) là 1,00 điểm phần trăm.
 Chênh lệch nhỏ và \emph{theo đúng chiều dự kiến} --- hiệu năng trên tập kiểm thử
 thấp hơn --- là dấu hiệu lành mạnh: tập kiểm định đã bị dùng gián tiếp để chọn
 điểm kiểm tra và điều chỉnh tốc độ học nên không còn khách quan, còn tập kiểm thử
@@ -157,11 +157,11 @@ Spot và Phomopsis Leaf Spot.}
 \toprule
  & \textbf{Algal} & \textbf{Alloc.} & \textbf{Healthy} & \textbf{Blight} & \textbf{Phom.} & \textbf{Tổng} \\
 \midrule
-Algal Leaf Spot     & \textbf{143} & 0 & 2 & 0 & 2 & 147 \\
+Algal Leaf Spot     & \textbf{142} & 1 & 1 & 0 & 3 & 147 \\
 Allocaridara Attack & 2 & \textbf{180} & 0 & 0 & 1 & 183 \\
-Healthy Leaf        & 1 & 0 & \textbf{191} & 0 & 4 & 196 \\
-Leaf Blight         & 2 & 1 & 3 & \textbf{181} & 1 & 188 \\
-Phomopsis Leaf Spot & 3 & 1 & 1 & 0 & \textbf{171} & 176 \\
+Healthy Leaf        & 1 & 0 & \textbf{195} & 0 & 0 & 196 \\
+Leaf Blight         & 1 & 3 & 1 & \textbf{182} & 1 & 188 \\
+Phomopsis Leaf Spot & 4 & 4 & 2 & 0 & \textbf{166} & 176 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -212,13 +212,13 @@ kiểm thử. Cả năm lớp đều đạt $F_1$ trên 95\%.}
 \toprule
 \textbf{Lớp} & \textbf{Precision} & \textbf{Recall} & \textbf{$F_1$} & \textbf{Số mẫu} \\
 \midrule
-Algal Leaf Spot     & 94,70\%  & 97,28\% & 95,97\% & 147 \\
-Allocaridara Attack & 98,90\%  & 98,36\% & \textbf{98,63\%} & 183 \\
-Healthy Leaf        & 96,95\%  & 97,45\% & 97,20\% & 196 \\
-Leaf Blight         & \textbf{100,00\%} & 96,28\% & 98,10\% & 188 \\
-Phomopsis Leaf Spot & 95,53\%  & 97,16\% & 96,34\% & 176 \\
+Algal Leaf Spot     & 94,67\%  & 96,60\% & 95,62\% & 147 \\
+Allocaridara Attack & 95,74\%  & 98,36\% & \textbf{97,04\%} & 183 \\
+Healthy Leaf        & \textbf{97,99\%}  & \textbf{99,49\%} & \textbf{98,73\%} & 196 \\
+Leaf Blight         & \textbf{100,00\%} & 96,81\% & 98,38\% & 188 \\
+Phomopsis Leaf Spot & 97,08\%  & 94,32\% & 95,68\% & 176 \\
 \midrule
-\textbf{Trung bình có trọng số} & \textbf{97,34\%} & \textbf{97,30\%} & \textbf{97,31\%} & \textbf{890} \\
+\textbf{Trung bình có trọng số} & \textbf{97,22\%} & \textbf{97,19\%} & \textbf{97,19\%} & \textbf{890} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -271,7 +271,7 @@ Phomopsis Leaf Spot & 614 & 99,84\% & \textbf{0,991} & 0,415 \\
 \end{tabular}
 \end{table}
 
-Độ chính xác trên tập huấn luyện đạt 99,03--99,85\%, cao hơn mức 97,30\% trên tập
+Độ chính xác trên tập huấn luyện đạt 99,03--99,85\%, cao hơn mức 97,19\% trên tập
 kiểm thử. Chênh lệch này là bình thường và có hai nguyên nhân cộng hưởng: đây là
 dữ liệu mô hình đã thấy khi huấn luyện, và khi suy luận thì không áp dụng tăng
 cường dữ liệu nên bài toán dễ hơn.
@@ -982,7 +982,7 @@ Chương này đã trình bày và phân tích toàn bộ kết quả thực ngh
 chính:
 
 \begin{enumerate}
-    \item \textbf{Phân loại đạt 97,30\% trên tập kiểm thử} với $F_1$ 97,31\%, cả
+    \item \textbf{Phân loại đạt 97,19\% trên tập kiểm thử} với $F_1$ 97,19\%, cả
           năm lớp đều vượt $F_1$ 95\%. Cặp nhầm lẫn chính là Algal Leaf Spot và
           Phomopsis Leaf Spot, đúng như dự đoán từ phân tích khám phá.
 

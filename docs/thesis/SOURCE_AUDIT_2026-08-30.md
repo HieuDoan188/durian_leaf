@@ -1,0 +1,224 @@
+# Source audit for thesis update
+
+- Notebooks read: 13
+- Visualization files: 37
+- Output files: 22
+- Model/checkpoint/log files: 845
+- Thesis paragraphs/tables/images before update: 1075 / 46 / 28
+
+## Notebooks
+- `notebooks/01-dataset-audit-and-eda.ipynb`: 21/21 code cells executed; 6 metric/output snippets captured
+- `notebooks/02-classifier-efficientnet-b0.ipynb`: 15/15 code cells executed; 28 metric/output snippets captured
+- `notebooks/03-xai-gradcam-gradcampp-analysis.ipynb`: 9/9 code cells executed; 4 metric/output snippets captured
+- `notebooks/04-v1-gradcam-pseudo-labels.ipynb`: 11/13 code cells executed; 10 metric/output snippets captured
+- `notebooks/05-v1-unet-segmentation-baseline.ipynb`: 12/13 code cells executed; 36 metric/output snippets captured
+- `notebooks/06-v2-gradcampp-pseudo-labels.ipynb`: 17/17 code cells executed; 14 metric/output snippets captured
+- `notebooks/07-v2-unetpp-segmentation.ipynb`: 19/19 code cells executed; 40 metric/output snippets captured
+- `notebooks/08-v3-sam-refinement-diagnostic.ipynb`: 20/20 code cells executed; 20 metric/output snippets captured
+- `notebooks/09-v5-color-prior-pseudo-labels-and-segmentation.ipynb`: 21/21 code cells executed; 40 metric/output snippets captured
+- `notebooks/10-inference-and-demo.ipynb`: 9/9 code cells executed; 2 metric/output snippets captured
+- `notebooks/11-final-segmentation-gtok-comparison.ipynb`: 1/1 code cells executed; 2 metric/output snippets captured
+- `notebooks/12-final-hybrid-gtok-experiment.ipynb`: 5/5 code cells executed; 5 metric/output snippets captured
+- `notebooks/deprecated/09-v4-leaf-mask-bilateral-exploratory.ipynb`: 9/20 code cells executed; 6 metric/output snippets captured
+
+## Key metric files captured
+- `notebooks/data/deprecated/pseudo_labels_v4_train/pseudo_label_stats_v4.json`
+- `notebooks/data/processed/image_manifest.csv`
+- `notebooks/data/pseudo_labels/pseudo_label_stats.json`
+- `notebooks/data/pseudo_labels_train/pseudo_label_gt_ok_metrics.csv`
+- `notebooks/data/pseudo_labels_train/pseudo_label_metadata.csv`
+- `notebooks/data/pseudo_labels_train/pseudo_label_stats.json`
+- `notebooks/data/pseudo_labels_train/pseudo_label_stats_train.json`
+- `notebooks/data/pseudo_labels_train_v1_review/metadata_v1_review.csv`
+- `notebooks/data/pseudo_labels_v2_train/pseudo_label_metadata_v2.csv`
+- `notebooks/data/pseudo_labels_v2_train/pseudo_label_metadata_v2_with_qa_flags.csv`
+- `notebooks/data/pseudo_labels_v2_train/pseudo_label_stats_v2.json`
+- `notebooks/data/pseudo_labels_v2_train/pseudo_label_v2_manual_gt_metrics.csv`
+- `notebooks/data/pseudo_labels_v5_train/pseudo_label_stats_v5.json`
+- `notebooks/data/sam_refined_labels_v3_train/pseudo_label_stats_v3.json`
+- `notebooks/models/classification/gradcam/gradcam_results.json`
+- `notebooks/models/classification/gradcam/gradcam_summary.json`
+- `notebooks/models/classification/gradcam/to_label_1095.jpg_metadata_20260314_100452.json`
+- `notebooks/models/classification/gradcam/to_label_1095.jpg_metadata_20260409_055111.json`
+- `notebooks/models/classification/gradcam/to_label_1146.jpg_metadata_20260314_100535.json`
+- `notebooks/models/classification/gradcam/to_label_1146.jpg_metadata_20260409_055154.json`
+- `notebooks/models/classification/gradcam/to_label_1209.jpg_metadata_20260314_100506.json`
+- `notebooks/models/classification/gradcam/to_label_1209.jpg_metadata_20260409_055124.json`
+- `notebooks/models/classification/gradcam/to_label_1222.jpg_metadata_20260314_100501.json`
+- `notebooks/models/classification/gradcam/to_label_1222.jpg_metadata_20260409_055120.json`
+- `notebooks/models/classification/gradcam/to_label_1317.jpg_metadata_20260314_100544.json`
+- `notebooks/models/classification/gradcam/to_label_1317.jpg_metadata_20260409_055202.json`
+- `notebooks/models/classification/gradcam/to_label_1433.jpg_metadata_20260314_100540.json`
+- `notebooks/models/classification/gradcam/to_label_1433.jpg_metadata_20260409_055159.json`
+- `notebooks/models/classification/gradcam/to_label_1453.jpg_metadata_20260314_100513.json`
+- `notebooks/models/classification/gradcam/to_label_1453.jpg_metadata_20260409_055131.json`
+- `notebooks/models/classification/gradcam/to_label_1499.jpg_metadata_20260314_100548.json`
+- `notebooks/models/classification/gradcam/to_label_1499.jpg_metadata_20260409_055206.json`
+- `notebooks/models/classification/gradcam/to_label_1568.jpg_metadata_20260314_100515.json`
+- `notebooks/models/classification/gradcam/to_label_1568.jpg_metadata_20260409_055133.json`
+- `notebooks/models/classification/gradcam/to_label_1644.jpg_metadata_20260314_100538.json`
+- `notebooks/models/classification/gradcam/to_label_1644.jpg_metadata_20260409_055156.json`
+- `notebooks/models/classification/gradcam/to_label_1652.jpg_metadata_20260314_100508.json`
+- `notebooks/models/classification/gradcam/to_label_1652.jpg_metadata_20260409_055126.json`
+- `notebooks/models/classification/gradcam/to_label_1674.jpg_metadata_20260314_100525.json`
+- `notebooks/models/classification/gradcam/to_label_1674.jpg_metadata_20260409_055143.json`
+- `notebooks/models/classification/gradcam/to_label_1696.jpg_metadata_20260314_100502.json`
+- `notebooks/models/classification/gradcam/to_label_1696.jpg_metadata_20260409_055121.json`
+- `notebooks/models/classification/gradcam/to_label_1715.jpg_metadata_20260314_100517.json`
+- `notebooks/models/classification/gradcam/to_label_1715.jpg_metadata_20260409_055135.json`
+- `notebooks/models/classification/gradcam/to_label_1717.jpg_metadata_20260314_100440.json`
+- `notebooks/models/classification/gradcam/to_label_1717.jpg_metadata_20260409_055058.json`
+- `notebooks/models/classification/gradcam/to_label_174.jpg_metadata_20260314_100510.json`
+- `notebooks/models/classification/gradcam/to_label_174.jpg_metadata_20260409_055129.json`
+- `notebooks/models/classification/gradcam/to_label_1754.jpg_metadata_20260314_100450.json`
+- `notebooks/models/classification/gradcam/to_label_1754.jpg_metadata_20260409_055109.json`
+- `notebooks/models/classification/gradcam/to_label_1775.jpg_metadata_20260314_100454.json`
+- `notebooks/models/classification/gradcam/to_label_1775.jpg_metadata_20260409_055113.json`
+- `notebooks/models/classification/gradcam/to_label_1849.jpg_metadata_20260314_100456.json`
+- `notebooks/models/classification/gradcam/to_label_1849.jpg_metadata_20260409_055114.json`
+- `notebooks/models/classification/gradcam/to_label_197.jpg_metadata_20260314_100514.json`
+- `notebooks/models/classification/gradcam/to_label_197.jpg_metadata_20260409_055133.json`
+- `notebooks/models/classification/gradcam/to_label_2155.jpg_metadata_20260314_100525.json`
+- `notebooks/models/classification/gradcam/to_label_2155.jpg_metadata_20260409_055144.json`
+- `notebooks/models/classification/gradcam/to_label_2157.jpg_metadata_20260314_100438.json`
+- `notebooks/models/classification/gradcam/to_label_2157.jpg_metadata_20260409_055057.json`
+- `notebooks/models/classification/gradcam/to_label_2210.jpg_metadata_20260314_100450.json`
+- `notebooks/models/classification/gradcam/to_label_2210.jpg_metadata_20260409_055109.json`
+- `notebooks/models/classification/gradcam/to_label_2253.jpg_metadata_20260314_100543.json`
+- `notebooks/models/classification/gradcam/to_label_2253.jpg_metadata_20260409_055201.json`
+- `notebooks/models/classification/gradcam/to_label_2286.jpg_metadata_20260314_100518.json`
+- `notebooks/models/classification/gradcam/to_label_2286.jpg_metadata_20260409_055136.json`
+- `notebooks/models/classification/gradcam/to_label_2301.jpg_metadata_20260314_100500.json`
+- `notebooks/models/classification/gradcam/to_label_2301.jpg_metadata_20260409_055118.json`
+- `notebooks/models/classification/gradcam/to_label_2308.jpg_metadata_20260314_100521.json`
+- `notebooks/models/classification/gradcam/to_label_2308.jpg_metadata_20260409_055139.json`
+- `notebooks/models/classification/gradcam/to_label_2315.jpg_metadata_20260314_100530.json`
+- `notebooks/models/classification/gradcam/to_label_2315.jpg_metadata_20260409_055149.json`
+- `notebooks/models/classification/gradcam/to_label_2335.jpg_metadata_20260314_100502.json`
+- `notebooks/models/classification/gradcam/to_label_2335.jpg_metadata_20260409_055121.json`
+- `notebooks/models/classification/gradcam/to_label_239.jpg_metadata_20260314_100444.json`
+- `notebooks/models/classification/gradcam/to_label_239.jpg_metadata_20260409_055102.json`
+- `notebooks/models/classification/gradcam/to_label_2395.jpg_metadata_20260314_100443.json`
+- `notebooks/models/classification/gradcam/to_label_2395.jpg_metadata_20260409_055101.json`
+- `notebooks/models/classification/gradcam/to_label_2469.jpg_metadata_20260314_100529.json`
+- `notebooks/models/classification/gradcam/to_label_2469.jpg_metadata_20260409_055148.json`
+- `notebooks/models/classification/gradcam/to_label_2605.jpg_metadata_20260314_100522.json`
+- `notebooks/models/classification/gradcam/to_label_2605.jpg_metadata_20260409_055141.json`
+- `notebooks/models/classification/gradcam/to_label_262.jpg_metadata_20260314_100519.json`
+- `notebooks/models/classification/gradcam/to_label_262.jpg_metadata_20260409_055137.json`
+- `notebooks/models/classification/gradcam/to_label_2621.jpg_metadata_20260314_100448.json`
+- `notebooks/models/classification/gradcam/to_label_2621.jpg_metadata_20260409_055107.json`
+- `notebooks/models/classification/gradcam/to_label_263.jpg_metadata_20260314_100506.json`
+- `notebooks/models/classification/gradcam/to_label_263.jpg_metadata_20260409_055125.json`
+- `notebooks/models/classification/gradcam/to_label_2646.jpg_metadata_20260314_100524.json`
+- `notebooks/models/classification/gradcam/to_label_2646.jpg_metadata_20260409_055143.json`
+- `notebooks/models/classification/gradcam/to_label_2730.jpg_metadata_20260314_100504.json`
+- `notebooks/models/classification/gradcam/to_label_2730.jpg_metadata_20260409_055123.json`
+- `notebooks/models/classification/gradcam/to_label_2827.jpg_metadata_20260314_100523.json`
+- `notebooks/models/classification/gradcam/to_label_2827.jpg_metadata_20260409_055142.json`
+- `notebooks/models/classification/gradcam/to_label_2860.jpg_metadata_20260314_100542.json`
+- `notebooks/models/classification/gradcam/to_label_2860.jpg_metadata_20260409_055200.json`
+- `notebooks/models/classification/gradcam/to_label_2895.jpg_metadata_20260314_100446.json`
+- `notebooks/models/classification/gradcam/to_label_2895.jpg_metadata_20260409_055104.json`
+- `notebooks/models/classification/gradcam/to_label_2997.jpg_metadata_20260314_100511.json`
+- `notebooks/models/classification/gradcam/to_label_2997.jpg_metadata_20260409_055130.json`
+- `notebooks/models/classification/gradcam/to_label_3030.jpg_metadata_20260314_100500.json`
+- `notebooks/models/classification/gradcam/to_label_3030.jpg_metadata_20260409_055119.json`
+- `notebooks/models/classification/gradcam/to_label_3037.jpg_metadata_20260314_100510.json`
+- `notebooks/models/classification/gradcam/to_label_3037.jpg_metadata_20260409_055129.json`
+- `notebooks/models/classification/gradcam/to_label_3041.jpg_metadata_20260314_100545.json`
+- `notebooks/models/classification/gradcam/to_label_3041.jpg_metadata_20260409_055203.json`
+- `notebooks/models/classification/gradcam/to_label_3068.jpg_metadata_20260314_100533.json`
+- `notebooks/models/classification/gradcam/to_label_3068.jpg_metadata_20260409_055152.json`
+- `notebooks/models/classification/gradcam/to_label_3097.jpg_metadata_20260314_100520.json`
+- `notebooks/models/classification/gradcam/to_label_3097.jpg_metadata_20260409_055138.json`
+- `notebooks/models/classification/gradcam/to_label_3118.jpg_metadata_20260314_100516.json`
+- `notebooks/models/classification/gradcam/to_label_3118.jpg_metadata_20260409_055134.json`
+- `notebooks/models/classification/gradcam/to_label_3288.jpg_metadata_20260314_100459.json`
+- `notebooks/models/classification/gradcam/to_label_3288.jpg_metadata_20260409_055118.json`
+- `notebooks/models/classification/gradcam/to_label_3366.jpg_metadata_20260314_100539.json`
+- `notebooks/models/classification/gradcam/to_label_3366.jpg_metadata_20260409_055158.json`
+- `notebooks/models/classification/gradcam/to_label_3378.jpg_metadata_20260314_100504.json`
+- `notebooks/models/classification/gradcam/to_label_3378.jpg_metadata_20260409_055122.json`
+- `notebooks/models/classification/gradcam/to_label_3435.jpg_metadata_20260314_100545.json`
+- `notebooks/models/classification/gradcam/to_label_3435.jpg_metadata_20260409_055203.json`
+- `notebooks/models/classification/gradcam/to_label_3436.jpg_metadata_20260314_100447.json`
+- `notebooks/models/classification/gradcam/to_label_3436.jpg_metadata_20260409_055106.json`
+- `notebooks/models/classification/gradcam/to_label_3497.jpg_metadata_20260314_100453.json`
+- `notebooks/models/classification/gradcam/to_label_3497.jpg_metadata_20260409_055112.json`
+- `notebooks/models/classification/gradcam/to_label_3518.jpg_metadata_20260314_100508.json`
+- `notebooks/models/classification/gradcam/to_label_3518.jpg_metadata_20260409_055127.json`
+- `notebooks/models/classification/gradcam/to_label_3520.jpg_metadata_20260314_100512.json`
+- `notebooks/models/classification/gradcam/to_label_3520.jpg_metadata_20260409_055131.json`
+- `notebooks/models/classification/gradcam/to_label_3608.jpg_metadata_20260314_100449.json`
+- `notebooks/models/classification/gradcam/to_label_3608.jpg_metadata_20260409_055108.json`
+- `notebooks/models/classification/gradcam/to_label_3646.jpg_metadata_20260314_100526.json`
+- `notebooks/models/classification/gradcam/to_label_3646.jpg_metadata_20260409_055145.json`
+- `notebooks/models/classification/gradcam/to_label_3815.jpg_metadata_20260314_100456.json`
+- `notebooks/models/classification/gradcam/to_label_3815.jpg_metadata_20260409_055115.json`
+- `notebooks/models/classification/gradcam/to_label_3834.jpg_metadata_20260314_100517.json`
+- `notebooks/models/classification/gradcam/to_label_3834.jpg_metadata_20260409_055136.json`
+- `notebooks/models/classification/gradcam/to_label_3903.jpg_metadata_20260314_100532.json`
+- `notebooks/models/classification/gradcam/to_label_3903.jpg_metadata_20260409_055151.json`
+- `notebooks/models/classification/gradcam/to_label_3942.jpg_metadata_20260314_100448.json`
+- `notebooks/models/classification/gradcam/to_label_3942.jpg_metadata_20260409_055107.json`
+- `notebooks/models/classification/gradcam/to_label_4.jpg_metadata_20260314_100537.json`
+- `notebooks/models/classification/gradcam/to_label_4.jpg_metadata_20260409_055155.json`
+- `notebooks/models/classification/gradcam/to_label_4090.jpg_metadata_20260314_100531.json`
+- `notebooks/models/classification/gradcam/to_label_4090.jpg_metadata_20260409_055150.json`
+- `notebooks/models/classification/gradcam/to_label_4117.jpg_metadata_20260314_100505.json`
+- `notebooks/models/classification/gradcam/to_label_4117.jpg_metadata_20260409_055124.json`
+- `notebooks/models/classification/gradcam/to_label_4122.jpg_metadata_20260314_100527.json`
+- `notebooks/models/classification/gradcam/to_label_4122.jpg_metadata_20260409_055146.json`
+- `notebooks/models/classification/gradcam/to_label_4130.jpg_metadata_20260314_100455.json`
+- `notebooks/models/classification/gradcam/to_label_4130.jpg_metadata_20260409_055114.json`
+- `notebooks/models/classification/gradcam/to_label_4175.jpg_metadata_20260314_100547.json`
+- `notebooks/models/classification/gradcam/to_label_4175.jpg_metadata_20260409_055205.json`
+- `notebooks/models/classification/gradcam/to_label_4181.jpg_metadata_20260314_100546.json`
+- `notebooks/models/classification/gradcam/to_label_4181.jpg_metadata_20260409_055204.json`
+- `notebooks/models/classification/gradcam/to_label_4199.jpg_metadata_20260314_100458.json`
+- `notebooks/models/classification/gradcam/to_label_4199.jpg_metadata_20260409_055116.json`
+- `notebooks/models/classification/gradcam/to_label_420.jpg_metadata_20260314_100520.json`
+- `notebooks/models/classification/gradcam/to_label_420.jpg_metadata_20260409_055139.json`
+- `notebooks/models/classification/gradcam/to_label_4208.jpg_metadata_20260314_100536.json`
+- `notebooks/models/classification/gradcam/to_label_4208.jpg_metadata_20260409_055154.json`
+- `notebooks/models/classification/gradcam/to_label_4213.jpg_metadata_20260314_100532.json`
+- `notebooks/models/classification/gradcam/to_label_4213.jpg_metadata_20260409_055150.json`
+- `notebooks/models/classification/gradcam/to_label_4339.jpg_metadata_20260314_100527.json`
+- `notebooks/models/classification/gradcam/to_label_4339.jpg_metadata_20260409_055145.json`
+- `notebooks/models/classification/gradcam/to_label_4374.jpg_metadata_20260314_100539.json`
+- `notebooks/models/classification/gradcam/to_label_4374.jpg_metadata_20260409_055157.json`
+- `notebooks/models/classification/gradcam/to_label_4395.jpg_metadata_20260314_100507.json`
+- `notebooks/models/classification/gradcam/to_label_4395.jpg_metadata_20260409_055126.json`
+- `notebooks/models/classification/gradcam/to_label_4397.jpg_metadata_20260314_100458.json`
+- `notebooks/models/classification/gradcam/to_label_4397.jpg_metadata_20260409_055117.json`
+- `notebooks/models/classification/gradcam/to_label_4403.jpg_metadata_20260314_100446.json`
+- `notebooks/models/classification/gradcam/to_label_4403.jpg_metadata_20260409_055105.json`
+- `notebooks/models/classification/gradcam/to_label_4417.jpg_metadata_20260314_100441.json`
+- `notebooks/models/classification/gradcam/to_label_4417.jpg_metadata_20260409_055059.json`
+- `notebooks/models/classification/gradcam/to_label_455.jpg_metadata_20260314_100443.json`
+- `notebooks/models/classification/gradcam/to_label_455.jpg_metadata_20260409_055101.json`
+- `notebooks/models/classification/gradcam/to_label_48.jpg_metadata_20260314_100513.json`
+- `notebooks/models/classification/gradcam/to_label_48.jpg_metadata_20260409_055132.json`
+- `notebooks/models/classification/gradcam/to_label_572.jpg_metadata_20260314_100452.json`
+- `notebooks/models/classification/gradcam/to_label_572.jpg_metadata_20260409_055111.json`
+- `notebooks/models/classification/gradcam/to_label_610.jpg_metadata_20260314_100542.json`
+- `notebooks/models/classification/gradcam/to_label_610.jpg_metadata_20260409_055201.json`
+- `notebooks/models/classification/gradcam/to_label_613.jpg_metadata_20260314_100440.json`
+- `notebooks/models/classification/gradcam/to_label_613.jpg_metadata_20260409_055057.json`
+- `notebooks/models/classification/gradcam/to_label_665.jpg_metadata_20260314_100529.json`
+- `notebooks/models/classification/gradcam/to_label_665.jpg_metadata_20260409_055148.json`
+- `notebooks/models/classification/gradcam/to_label_94.jpg_metadata_20260314_100537.json`
+- `notebooks/models/classification/gradcam/to_label_94.jpg_metadata_20260409_055156.json`
+- `notebooks/models/classification/gradcam/to_label_949.jpg_metadata_20260314_100534.json`
+- `notebooks/models/classification/gradcam/to_label_949.jpg_metadata_20260409_055153.json`
+- `notebooks/models/classification/gradcam/to_label_978.jpg_metadata_20260314_100442.json`
+- `notebooks/models/classification/gradcam/to_label_978.jpg_metadata_20260409_055100.json`
+- `notebooks/models/classification/gradcam/to_label_994.jpg_metadata_20260314_100454.json`
+- `notebooks/models/classification/gradcam/to_label_994.jpg_metadata_20260409_055112.json`
+- `notebooks/models/classification/metrics/final_classification_metrics.json`
+- `notebooks/models/classification/metrics/test_metrics.json`
+- `notebooks/models/classification/metrics/test_metrics_enhanced.json`
+- `notebooks/models/classification/metrics/training_history.json`
+- `notebooks/models/deprecated/segmentation_v4/metrics/test_metrics.json`
+- `notebooks/models/deprecated/segmentation_v4/metrics/training_history.json`

@@ -1,0 +1,358 @@
+{
+  "version": "v5",
+  "label_name": "Color-prior V5",
+  "n_gt_images": 80,
+  "checkpoint": {
+    "path": "E:\\Master\\thesis-clean\\notebooks\\models\\segmentation_v5\\checkpoints\\unetpp_v5_best.pth",
+    "epoch": 18,
+    "val_iou": 0.36009989596017133,
+    "val_loss": 0.7070861303678123
+  },
+  "prediction_overall": {
+    "iou": 0.20400133153299546,
+    "dice": 0.3388722689754016,
+    "precision": 0.2239798285922827,
+    "recall": 0.6957775226428984,
+    "f1": 0.3388722321317108,
+    "pixel_accuracy": 0.8409456214126065,
+    "specificity": 0.8499797560672032,
+    "tp": 163626,
+    "fp": 566913,
+    "fn": 71544,
+    "tn": 3211997
+  },
+  "pseudo_label_overall": {
+    "iou": 0.14976439333705333,
+    "dice": 0.26051318723200345,
+    "precision": 0.21588139269655632,
+    "recall": 0.3284092358717828,
+    "f1": 0.2605131393690852,
+    "pixel_accuracy": 0.8907699896364574,
+    "specificity": 0.9257669539628907,
+    "tp": 77232,
+    "fp": 280520,
+    "fn": 157938,
+    "tn": 3498390
+  },
+  "per_class": [
+    {
+      "class_name": "ALGAL_LEAF_SPOT",
+      "n": 20,
+      "prediction_micro": {
+        "iou": 0.08754454162603248,
+        "dice": 0.1609948618658709,
+        "precision": 0.13090653684969142,
+        "recall": 0.20904238861305288,
+        "f1": 0.1609948145071009,
+        "pixel_accuracy": 0.94386260363511,
+        "specificity": 0.9632961835558062,
+        "tp": 5405,
+        "fp": 35884,
+        "fn": 20451,
+        "tn": 941780
+      },
+      "pseudo_micro": {
+        "iou": 0.09812644758846487,
+        "dice": 0.17871611744522675,
+        "precision": 0.19423513390742517,
+        "recall": 0.16549350247460745,
+        "f1": 0.17871606776405258,
+        "pixel_accuracy": 0.9608099489794961,
+        "specificity": 0.9818434554201667,
+        "tp": 4279,
+        "fp": 17751,
+        "fn": 21577,
+        "tn": 959913
+      },
+      "macro_mean_image": {
+        "pred_iou": 0.08058456444484895,
+        "pred_dice": 0.13896421315348192,
+        "pred_precision": 0.1773757082114264,
+        "pred_recall": 0.2154093589137708,
+        "pseudo_iou": 0.0559821833454753,
+        "pseudo_dice": 0.09838966508734742,
+        "pseudo_precision": 0.11950069083693719,
+        "pseudo_recall": 0.12239735417820759,
+        "gt_area": 0.025765306122448983,
+        "pseudo_area": 0.02195272640306123,
+        "pred_area": 0.04114417251275511
+      }
+    },
+    {
+      "class_name": "ALLOCARIDARA_ATTACK",
+      "n": 20,
+      "prediction_micro": {
+        "iou": 0.2629927510183863,
+        "dice": 0.41645963653604173,
+        "precision": 0.28383271281316946,
+        "recall": 0.7817482989658148,
+        "f1": 0.4164595974530935,
+        "pixel_accuracy": 0.7057846380739092,
+        "specificity": 0.6940002233095297,
+        "tp": 105357,
+        "fp": 265837,
+        "fn": 29414,
+        "tn": 602912
+      },
+      "pseudo_micro": {
+        "iou": 0.2067284417548386,
+        "dice": 0.3426262854204575,
+        "precision": 0.29659554610159283,
+        "recall": 0.4055694474327522,
+        "f1": 0.3426262366246625,
+        "pixel_accuracy": 0.7909946986606354,
+        "specificity": 0.8507865908333879,
+        "tp": 54659,
+        "fp": 129629,
+        "fn": 80112,
+        "tn": 739120
+      },
+      "macro_mean_image": {
+        "pred_iou": 0.26417450854709823,
+        "pred_dice": 0.4052538073169286,
+        "pred_precision": 0.2935602317896891,
+        "pred_recall": 0.8194091285776495,
+        "pseudo_iou": 0.13728895193909801,
+        "pseudo_dice": 0.20722013840977077,
+        "pseudo_precision": 0.1504562009177573,
+        "pseudo_recall": 0.41988325894918405,
+        "gt_area": 0.13429827008928572,
+        "pseudo_area": 0.1836415816326531,
+        "pred_area": 0.36989198022959185
+      }
+    },
+    {
+      "class_name": "LEAF_BLIGHT",
+      "n": 20,
+      "prediction_micro": {
+        "iou": 0.2643462419606777,
+        "dice": 0.41815482687834665,
+        "precision": 0.2984953676645874,
+        "recall": 0.6979430466217903,
+        "f1": 0.4181547849131782,
+        "pixel_accuracy": 0.893765943877462,
+        "specificity": 0.9050960698182643,
+        "tp": 38308,
+        "fp": 90029,
+        "fn": 16579,
+        "tn": 858604
+      },
+      "pseudo_micro": {
+        "iou": 0.12065292545725277,
+        "dice": 0.2153261241129113,
+        "precision": 0.1985027362722153,
+        "recall": 0.2352651811900172,
+        "f1": 0.21532607447188332,
+        "pixel_accuracy": 0.9062171157524607,
+        "specificity": 0.9450377543263891,
+        "tp": 12913,
+        "fp": 52139,
+        "fn": 41974,
+        "tn": 896494
+      },
+      "macro_mean_image": {
+        "pred_iou": 0.24699314489486315,
+        "pred_dice": 0.3886794139699056,
+        "pred_precision": 0.28281051037073046,
+        "pred_recall": 0.7026950477472553,
+        "pseudo_iou": 0.07692519762649908,
+        "pseudo_dice": 0.1313706842609516,
+        "pseudo_precision": 0.09816928841767206,
+        "pseudo_recall": 0.24095790362830316,
+        "gt_area": 0.05469447544642857,
+        "pseudo_area": 0.06482382015306123,
+        "pred_area": 0.12788683832908165
+      }
+    },
+    {
+      "class_name": "PHOMOPSIS_LEAF_SPOT",
+      "n": 20,
+      "prediction_micro": {
+        "iou": 0.07471550516116256,
+        "dice": 0.1390423880596351,
+        "precision": 0.07672399706930949,
+        "recall": 0.740537240533473,
+        "f1": 0.1390423710463586,
+        "pixel_accuracy": 0.8203693000636938,
+        "specificity": 0.8219642145661573,
+        "tp": 14556,
+        "fp": 175163,
+        "fn": 5100,
+        "tn": 808701
+      },
+      "pseudo_micro": {
+        "iou": 0.05345877584266026,
+        "dice": 0.10149191799156765,
+        "precision": 0.06229307031550289,
+        "recall": 0.273758648757256,
+        "f1": 0.1014918877902017,
+        "pixel_accuracy": 0.905058195152971,
+        "specificity": 0.9176705316994099,
+        "tp": 5381,
+        "fp": 81001,
+        "fn": 14275,
+        "tn": 902863
+      },
+      "macro_mean_image": {
+        "pred_iou": 0.07436278243207722,
+        "pred_dice": 0.13040475854999228,
+        "pred_precision": 0.07951940513877945,
+        "pred_recall": 0.7746871613995697,
+        "pseudo_iou": 0.03088294022712622,
+        "pseudo_dice": 0.05494478455005355,
+        "pseudo_precision": 0.03488922802541732,
+        "pseudo_recall": 0.27135371574716644,
+        "gt_area": 0.01958705357142857,
+        "pseudo_area": 0.0860790019132653,
+        "pred_area": 0.18905353156887755
+      }
+    }
+  ],
+  "threshold": 0.5,
+  "best_threshold_by_mean_iou": {
+    "threshold": 0.7,
+    "mean_iou": 0.1703372215256162,
+    "mean_dice": 0.27112596184756754,
+    "mean_precision": 0.2305298387965303,
+    "mean_recall": 0.559303576110795,
+    "mean_pred_area": 0.14672801737882651
+  },
+  "mask_quality": {
+    "mask_files": 3104,
+    "matched_pairs": 3104,
+    "shape_mismatch": 0,
+    "unique_values_seen": [
+      0,
+      255
+    ],
+    "mean_area": 0.13959048427884363,
+    "median_area": 0.09938018176020408,
+    "empty": 683,
+    "too_small_nonempty_lt_1pct": 208,
+    "too_large_gt_30pct": 593,
+    "by_class": [
+      {
+        "class_name": "ALGAL_LEAF_SPOT",
+        "n": 513,
+        "mean_area": 0.037729842028185544,
+        "median_area": 0.016481983418367346,
+        "empty": 0,
+        "too_small": 198,
+        "too_large": 0
+      },
+      {
+        "class_name": "ALLOCARIDARA_ATTACK",
+        "n": 639,
+        "mean_area": 0.3744470481120852,
+        "median_area": 0.3679249043367347,
+        "empty": 0,
+        "too_small": 0,
+        "too_large": 593
+      },
+      {
+        "class_name": "HEALTHY_LEAF",
+        "n": 683,
+        "mean_area": 0.0,
+        "median_area": 0.0,
+        "empty": 683,
+        "too_small": 0,
+        "too_large": 0
+      },
+      {
+        "class_name": "LEAF_BLIGHT",
+        "n": 655,
+        "mean_area": 0.08955654721335099,
+        "median_area": 0.0852798150510204,
+        "empty": 0,
+        "too_small": 10,
+        "too_large": 0
+      },
+      {
+        "class_name": "PHOMOPSIS_LEAF_SPOT",
+        "n": 614,
+        "mean_area": 0.1889287493040783,
+        "median_area": 0.18754982461734693,
+        "empty": 0,
+        "too_small": 0,
+        "too_large": 0
+      }
+    ]
+  },
+  "gt_split_counts": {
+    "test": 40,
+    "train": 40
+  },
+  "pseudo_available_only": {
+    "n_images": 40,
+    "missing_pseudo": 40,
+    "overall": {
+      "iou": 0.18933031314805543,
+      "dice": 0.3183813799329041,
+      "precision": 0.21588139269655632,
+      "recall": 0.6062071239065272,
+      "f1": 0.3183813412044857,
+      "tp": 77232,
+      "fp": 280520,
+      "fn": 50170,
+      "tn": 1599118
+    },
+    "per_class": [
+      {
+        "class_name": "ALGAL_LEAF_SPOT",
+        "n": 10,
+        "iou": 0.11960197892467339,
+        "dice": 0.21365088875520857,
+        "precision": 0.19423513390742517,
+        "recall": 0.2373793409506414,
+        "f1": 0.21365083925428727,
+        "tp": 4279,
+        "fp": 17751,
+        "fn": 13747,
+        "tn": 465983,
+        "mean_area": 0.043905452806122444
+      },
+      {
+        "class_name": "ALLOCARIDARA_ATTACK",
+        "n": 10,
+        "iou": 0.27674322052763595,
+        "dice": 0.43351429806420605,
+        "precision": 0.29659554610159283,
+        "recall": 0.805241680047135,
+        "f1": 0.4335142587193606,
+        "tp": 54659,
+        "fp": 129629,
+        "fn": 13220,
+        "tn": 304252,
+        "mean_area": 0.36728316326530613
+      },
+      {
+        "class_name": "LEAF_BLIGHT",
+        "n": 10,
+        "iou": 0.15464115061715789,
+        "dice": 0.26786010620616096,
+        "precision": 0.1985027362722153,
+        "recall": 0.4117140670819675,
+        "f1": 0.2678600623099988,
+        "tp": 12913,
+        "fp": 52139,
+        "fn": 18451,
+        "tn": 418257,
+        "mean_area": 0.12964764030612247
+      },
+      {
+        "class_name": "PHOMOPSIS_LEAF_SPOT",
+        "n": 10,
+        "iou": 0.059044922860777484,
+        "dice": 0.11150598352576127,
+        "precision": 0.06229307031550289,
+        "recall": 0.5310372051659821,
+        "f1": 0.11150596473240876,
+        "tp": 5381,
+        "fp": 81001,
+        "fn": 4752,
+        "tn": 410626,
+        "mean_area": 0.17215800382653063
+      }
+    ]
+  }
+}

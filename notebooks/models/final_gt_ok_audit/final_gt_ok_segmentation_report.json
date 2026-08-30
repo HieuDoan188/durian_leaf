@@ -1,0 +1,395 @@
+{
+  "gt_ok_count": 80,
+  "versions": {
+    "V1": {
+      "version": "V1",
+      "name": "Grad-CAM + U-Net baseline",
+      "model": "EfficientNet encoder U-Net",
+      "checkpoint_note": "baseline checkpoint",
+      "pseudo_dir": "notebooks\\data\\pseudo_labels_train",
+      "metrics_dir": "notebooks\\models\\segmentation\\metrics",
+      "gt_metric_file": "notebooks\\models\\segmentation\\metrics\\manual_gt_metrics.json",
+      "gt_metric_key": "overall",
+      "gt_prediction": {
+        "iou": 0.2168885025365934,
+        "dice": 0.3564640508715321,
+        "precision": 0.24597370483797915,
+        "recall": 0.6471701322444839,
+        "tp": 152195,
+        "fp": 466550,
+        "fn": 82975
+      },
+      "pseudo_vs_gt_ok": {
+        "all_gt_ok": {
+          "iou": 0.1715724189443388,
+          "dice": 0.2928925539215688,
+          "precision": 0.24806729929412222,
+          "recall": 0.3574903261468905,
+          "pixel_accuracy": 0.8988729671555898,
+          "tp": 84071,
+          "fp": 254833,
+          "fn": 151099,
+          "tn": 3524077
+        },
+        "available_only": {
+          "iou": 0.2184541828527801,
+          "dice": 0.3585759496369587,
+          "precision": 0.24806729929412222,
+          "recall": 0.6466403101247218,
+          "pixel_accuracy": 0.8637640958371593,
+          "tp": 84071,
+          "fp": 254833,
+          "fn": 45941,
+          "tn": 1822899
+        },
+        "available": 44,
+        "missing": 36,
+        "per_class_available": {
+          "ALGAL_LEAF_SPOT": {
+            "iou": 0.08649909340813702,
+            "dice": 0.1592253393176908,
+            "precision": 0.09245063334654535,
+            "recall": 0.5733184725694257,
+            "pixel_accuracy": 0.8221332338737897,
+            "tp": 11831,
+            "fp": 116140,
+            "fn": 8805,
+            "tn": 565688
+          },
+          "ALLOCARIDARA_ATTACK": {
+            "iou": 0.4393170007419556,
+            "dice": 0.6104520415106491,
+            "precision": 0.5724641419866726,
+            "recall": 0.6538399210349978,
+            "pixel_accuracy": 0.8871113679845171,
+            "tp": 44382,
+            "fp": 33146,
+            "fn": 23497,
+            "tn": 400735
+          },
+          "LEAF_BLIGHT": {
+            "iou": 0.27916361475382584,
+            "dice": 0.4364783543464855,
+            "precision": 0.33009232780401976,
+            "recall": 0.6440505037602218,
+            "pixel_accuracy": 0.8960479113518622,
+            "tp": 20200,
+            "fp": 40995,
+            "fn": 11164,
+            "tn": 429401
+          },
+          "PHOMOPSIS_LEAF_SPOT": {
+            "iou": 0.10253732342491459,
+            "dice": 0.18600245315304761,
+            "precision": 0.10605179338027136,
+            "recall": 0.7557485443525535,
+            "pixel_accuracy": 0.8664162149232967,
+            "tp": 7658,
+            "fp": 64552,
+            "fn": 2475,
+            "tn": 427075
+          }
+        }
+      },
+      "pseudo_test_metric": {
+        "iou": 0.8126127489293522,
+        "dice": 0.881305718159725,
+        "precision": 0.8850904023182965,
+        "recall": 0.9091187132694114
+      }
+    },
+    "V2": {
+      "version": "V2",
+      "name": "Grad-CAM++ + U-Net++",
+      "model": "segmentation_models_pytorch UnetPlusPlus",
+      "checkpoint_note": "rerun checkpoint, best validation IoU at epoch 22",
+      "pseudo_dir": "notebooks\\data\\pseudo_labels_v2_train",
+      "metrics_dir": "notebooks\\models\\segmentation_v2\\metrics",
+      "gt_metric_file": "notebooks\\models\\segmentation_v2\\metrics\\manual_gt_metrics.json",
+      "gt_metric_key": "prediction_overall",
+      "gt_prediction": {
+        "iou": 0.19715771440288682,
+        "dice": 0.32937634203230154,
+        "precision": 0.245899061234623,
+        "recall": 0.4986605434364508,
+        "pixel_accuracy": 0.8810355050222994,
+        "tp": 117270,
+        "fp": 359633,
+        "fn": 117900,
+        "tn": 3419277
+      },
+      "pseudo_vs_gt_ok": {
+        "all_gt_ok": {
+          "iou": 0.12366816058849034,
+          "dice": 0.22011509256206482,
+          "precision": 0.23610022157820443,
+          "recall": 0.20615724794820506,
+          "pixel_accuracy": 0.9144135144291864,
+          "tp": 48482,
+          "fp": 156863,
+          "fn": 186688,
+          "tn": 3622047
+        },
+        "available_only": {
+          "iou": 0.17055212565733716,
+          "dice": 0.29140458065728875,
+          "precision": 0.23610022157820443,
+          "recall": 0.3805434765542295,
+          "pixel_accuracy": 0.8825220224808235,
+          "tp": 48482,
+          "fp": 156863,
+          "fn": 78920,
+          "tn": 1722775
+        },
+        "available": 40,
+        "missing": 40,
+        "per_class_available": {
+          "ALGAL_LEAF_SPOT": {
+            "iou": 0.09716131593651821,
+            "dice": 0.17711400233535024,
+            "precision": 0.12587968483288706,
+            "recall": 0.2986796848979325,
+            "pixel_accuracy": 0.9002929687498206,
+            "tp": 5384,
+            "fp": 37387,
+            "fn": 12642,
+            "tn": 446347
+          },
+          "ALLOCARIDARA_ATTACK": {
+            "iou": 0.2511567319713931,
+            "dice": 0.4014792480485741,
+            "precision": 0.46186424437457,
+            "recall": 0.35505826544239744,
+            "pixel_accuracy": 0.8567861128824823,
+            "tp": 24101,
+            "fp": 28081,
+            "fn": 43778,
+            "tn": 405800
+          },
+          "LEAF_BLIGHT": {
+            "iou": 0.1766344197253781,
+            "dice": 0.30023670354060167,
+            "precision": 0.21538376235397985,
+            "recall": 0.49540874888249137,
+            "pixel_accuracy": 0.8556501116069724,
+            "tp": 15538,
+            "fp": 56603,
+            "fn": 15826,
+            "tn": 413793
+          },
+          "PHOMOPSIS_LEAF_SPOT": {
+            "iou": 0.07699499165258321,
+            "dice": 0.14298115079335527,
+            "precision": 0.09042900839170105,
+            "recall": 0.3413599131516692,
+            "pixel_accuracy": 0.9173588966834907,
+            "tp": 3459,
+            "fp": 34792,
+            "fn": 6674,
+            "tn": 456835
+          }
+        }
+      },
+      "pseudo_test_metric": {
+        "iou": 0.5088447755132459,
+        "dice": 0.6181469656442156,
+        "precision": 0.6302123651354344,
+        "recall": 0.6951535062839992
+      }
+    },
+    "V3": {
+      "version": "V3",
+      "name": "SAM refinement diagnostic",
+      "model": "U-Net++ trained on SAM-refined pseudo masks",
+      "checkpoint_note": "rerun checkpoint, best validation IoU at epoch 14",
+      "pseudo_dir": "notebooks\\data\\sam_refined_labels_v3_train",
+      "metrics_dir": "notebooks\\models\\segmentation_v3\\metrics",
+      "gt_metric_file": "notebooks\\models\\segmentation_v3\\metrics\\manual_gt_metrics.json",
+      "gt_metric_key": "overall",
+      "gt_prediction": {
+        "iou": 0.1351381060131238,
+        "dice": 0.23809984934390246,
+        "precision": 0.14087384642246636,
+        "recall": 0.7684696177230222,
+        "tp": 180721,
+        "fp": 1102136,
+        "fn": 54449
+      },
+      "pseudo_vs_gt_ok": {
+        "all_gt_ok": {
+          "iou": 0.1312032763530595,
+          "dice": 0.23197117458155184,
+          "precision": 0.16331272035754085,
+          "recall": 0.4002338733680315,
+          "pixel_accuracy": 0.8447315449617137,
+          "tp": 94123,
+          "fp": 482213,
+          "fn": 141047,
+          "tn": 3296697
+        },
+        "available_only": {
+          "iou": 0.15439744756934223,
+          "dice": 0.2674944368500397,
+          "precision": 0.16331272035754085,
+          "recall": 0.7387874601648806,
+          "pixel_accuracy": 0.7431580835458814,
+          "tp": 94123,
+          "fp": 482213,
+          "fn": 33279,
+          "tn": 1397425
+        },
+        "available": 40,
+        "missing": 40,
+        "per_class_available": {
+          "ALGAL_LEAF_SPOT": {
+            "iou": 0.12438211771014344,
+            "dice": 0.221245279075504,
+            "precision": 0.12782013246849747,
+            "recall": 0.8222012648351148,
+            "pixel_accuracy": 0.792059948979434,
+            "tp": 14821,
+            "fp": 101131,
+            "fn": 3205,
+            "tn": 382603
+          },
+          "ALLOCARIDARA_ATTACK": {
+            "iou": 0.364773954943189,
+            "dice": 0.5345558561137302,
+            "precision": 0.3987133604761155,
+            "recall": 0.8107956805480181,
+            "pixel_accuracy": 0.8089903539539204,
+            "tp": 55036,
+            "fp": 82998,
+            "fn": 12843,
+            "tn": 350883
+          },
+          "LEAF_BLIGHT": {
+            "iou": 0.10238406158761792,
+            "dice": 0.18575025738338,
+            "precision": 0.11530406393880584,
+            "recall": 0.477458232366798,
+            "pixel_accuracy": 0.738345025510057,
+            "tp": 14975,
+            "fp": 114899,
+            "fn": 16389,
+            "tn": 355497
+          },
+          "PHOMOPSIS_LEAF_SPOT": {
+            "iou": 0.04806070826304428,
+            "dice": 0.09171359613832963,
+            "precision": 0.04827095326168027,
+            "recall": 0.9169051613449432,
+            "pixel_accuracy": 0.6332370057396697,
+            "tp": 9291,
+            "fp": 183185,
+            "fn": 842,
+            "tn": 308442
+          }
+        }
+      },
+      "pseudo_test_metric": {
+        "iou": 0.6780899325265606,
+        "dice": 0.7566972814596776,
+        "precision": 0.772329657525713,
+        "recall": 0.8664052556786735
+      }
+    },
+    "V5": {
+      "version": "V5",
+      "name": "Color-prior pseudo-labels + segmentation",
+      "model": "U-Net++ trained on color-prior pseudo masks",
+      "checkpoint_note": "rerun checkpoint, best validation IoU at epoch 28",
+      "pseudo_dir": "notebooks\\data\\pseudo_labels_v5_train",
+      "metrics_dir": "notebooks\\models\\segmentation_v5\\metrics",
+      "gt_metric_file": "notebooks\\models\\segmentation_v5\\metrics\\manual_gt_metrics.json",
+      "gt_metric_key": "overall",
+      "gt_prediction": {
+        "iou": 0.2182517798522566,
+        "dice": 0.3583032398749708,
+        "precision": 0.2358214696925359,
+        "recall": 0.7455075052086807,
+        "tp": 175321,
+        "fp": 568127,
+        "fn": 59849
+      },
+      "pseudo_vs_gt_ok": {
+        "all_gt_ok": {
+          "iou": 0.15797184667710326,
+          "dice": 0.2728422925486775,
+          "precision": 0.2227006239242086,
+          "recall": 0.3521239954074278,
+          "pixel_accuracy": 0.8900390624999778,
+          "tp": 82809,
+          "fp": 289031,
+          "fn": 152361,
+          "tn": 3489879
+        },
+        "available_only": {
+          "iou": 0.19885311682786935,
+          "dice": 0.3317389161968881,
+          "precision": 0.2227006239242086,
+          "recall": 0.6499819469077016,
+          "pixel_accuracy": 0.8337731186224074,
+          "tp": 82809,
+          "fp": 289031,
+          "fn": 44593,
+          "tn": 1590607
+        },
+        "available": 40,
+        "missing": 40,
+        "per_class_available": {
+          "ALGAL_LEAF_SPOT": {
+            "iou": 0.10533390477654224,
+            "dice": 0.19059200902343962,
+            "precision": 0.1396688450904356,
+            "recall": 0.2999556196588264,
+            "pixel_accuracy": 0.9084721779334924,
+            "tp": 5407,
+            "fp": 33306,
+            "fn": 12619,
+            "tn": 450428
+          },
+          "ALLOCARIDARA_ATTACK": {
+            "iou": 0.30989745437849603,
+            "dice": 0.47316292331529475,
+            "precision": 0.329940178939772,
+            "recall": 0.8361054228836075,
+            "pixel_accuracy": 0.7481186224488305,
+            "tp": 56754,
+            "fp": 115259,
+            "fn": 11125,
+            "tn": 318622
+          },
+          "LEAF_BLIGHT": {
+            "iou": 0.15930359551988424,
+            "dice": 0.2748263632330844,
+            "precision": 0.1934519165753973,
+            "recall": 0.4743655146012168,
+            "pixel_accuracy": 0.8435188137753421,
+            "tp": 14878,
+            "fp": 62030,
+            "fn": 16486,
+            "tn": 408366
+          },
+          "PHOMOPSIS_LEAF_SPOT": {
+            "iou": 0.06514694757752132,
+            "dice": 0.1223248073435988,
+            "precision": 0.06852243308069672,
+            "recall": 0.5694266258702316,
+            "pixel_accuracy": 0.8349828603314663,
+            "tp": 5770,
+            "fp": 78436,
+            "fn": 4363,
+            "tn": 413191
+          }
+        }
+      },
+      "pseudo_test_metric": {
+        "iou": 0.5083724895811926,
+        "dice": 0.6029893168402302,
+        "precision": 0.666539869881646,
+        "recall": 0.6686940806023927
+      }
+    }
+  }
+}

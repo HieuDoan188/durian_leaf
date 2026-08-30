@@ -126,11 +126,11 @@ Bảng dưới là **tên file thực tế** — luận văn sẽ dùng cách đ
 
 | Lớp | Precision | Recall | F1 | Số mẫu (tổng hàng CM) |
 |---|---|---|---|---|
-| Algal Leaf Spot | 94,70 % | 97,28 % | 95,97 % | 147 |
-| Allocaridara Attack | 98,90 % | 98,36 % | 98,63 % | 183 |
-| Healthy Leaf | 96,95 % | 97,45 % | 97,20 % | 196 |
-| Leaf Blight | 100,00 % | 96,28 % | 98,10 % | 188 |
-| Phomopsis Leaf Spot | 95,53 % | 97,16 % | 96,34 % | 176 |
+| Algal Leaf Spot | 94,67 % | 96,60 % | 95,62 % | 147 |
+| Allocaridara Attack | 95,74 % | 98,36 % | 97,04 % | 183 |
+| Healthy Leaf | 97,99 % | 99,49 % | 98,73 % | 196 |
+| Leaf Blight | 100,00 % | 96,81 % | 98,38 % | 188 |
+| Phomopsis Leaf Spot | 97,08 % | 94,32 % | 95,68 % | 176 |
 
 **Confusion matrix (test, 890 ảnh)** — NB02[c14]:
 
