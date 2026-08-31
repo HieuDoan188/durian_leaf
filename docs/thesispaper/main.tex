@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\graphicspath{{./}{classification/}{eda/}{gradcam/}{pseudo_labeling_v2/}{segmentation_v1/}}
+\graphicspath{{./}{classification/}{eda/}{gradcam/}{pseudo_labeling_v2/}{segmentation_v1/}{segmentation_gtok/}{app_demo/}}
 \usepackage{amsmath}
 \usepackage[round,authoryear]{natbib}
 \usepackage{url}
@@ -88,11 +88,11 @@
 }
 
 \begin{abstract}
-Accurate detection of durian (\textit{Durio zibethinus}) leaf disease is important for orchard management, but pixel-level lesion annotation remains costly and depends on expert judgement. This study develops a weakly supervised workflow that starts from image-level disease labels and produces both class predictions and lesion masks. An EfficientNet-B0 classifier first learns five durian leaf classes and reaches 97.52\% test accuracy. Multi-scale GradCAM++ maps are then converted into pseudo-masks for 3{,}104 training images by class-specific percentile thresholding. The masks are refined with the Segment Anything Model (SAM ViT-B) and used to train a UNet++ lesion segmentation model. When architecture, data split, and random seed are held fixed, SAM-refined labels improve IoU from 0.5135 to 0.6239 (+21.5\%) and Dice from 0.6301 to 0.7053 (+11.9\%). The experiments also show that segmentation scores from different pseudo-label sources should not be compared as absolute measures of disease localization. In particular, a one-sided IoU guard can accept SAM masks that expand from a lesion to a larger leaf region. These results support the use of classifier explanations as a practical source of weak spatial supervision, while also showing where such supervision needs careful checking.
+Accurate detection of durian (\textit{Durio zibethinus}) leaf disease is important for orchard management, but pixel-level lesion annotation remains costly and depends on expert judgement. This study develops a weakly supervised workflow that starts from image-level disease labels and produces both class predictions and lesion masks. An EfficientNet-B0 classifier first learns five durian leaf classes and reaches 97.19\% test accuracy (weighted F1 97.19\%, macro ROC-AUC 99.87\%, $n=890$). Four weakly supervised segmentation experiments (E1--E4) are then trained from different pseudo-label sources -- raw Grad-CAM thresholding (E1), multi-scale GradCAM++ percentile masks (E2), SAM-refined masks under a dual-condition acceptance guard (E3), and GradCAM++ intersected with a disease-color prior (E4) -- and a post-processing fusion configuration (F1) that linearly combines the E2, E3, and E4 probability maps. Because pseudo-label-based test scores are circular (each experiment is flattered by evaluation against its own noisy label source), all localization claims are anchored to GT\_OK, an 80-image hand-labeled ground-truth set independent of any pseudo-label pipeline. On GT\_OK, the fusion configuration F1 reaches the best IoU (0.3083) and Dice (0.4713) of all evaluated configurations, tuned on 40 GT\_OK images and confirmed on the other 40 as a holdout (holdout IoU 0.3076, essentially unchanged from the full-80 figure). No single checkpoint exceeds IoU~0.22 on GT\_OK, and F1's precision (0.41) remains modest, so the result is best read as the strongest available configuration under a disclosed, controlled recipe rather than a solved segmentation problem. We further show that SAM's dual-condition guard (IoU~$\geq$~0.15 and a 0.35--2.0$\times$ coverage-ratio bound) still under-constrains mask expansion, since observed class-wise expansion ratios reach 1.4--2.0$\times$, at the edge of the guard's own tolerance. A Streamlit demonstration application exposes the full pipeline -- classification, GradCAM overlay, and a selectable E1--E4 segmentation checkpoint -- for interactive inspection. These results support the use of classifier explanations as a practical source of weak spatial supervision, while showing precisely where such supervision, and its evaluation, need careful checking.
 \end{abstract}
 
 \begin{keyword}
-Durian leaf disease \sep Deep learning \sep EfficientNet \sep GradCAM++ \sep Pseudo-labeling \sep UNet++ \sep Segment Anything Model \sep Weakly supervised segmentation \sep Agricultural AI
+Durian leaf disease \sep Deep learning \sep EfficientNet \sep GradCAM++ \sep Pseudo-labeling \sep UNet++ \sep Segment Anything Model \sep Weakly supervised segmentation \sep Model fusion \sep Agricultural AI
 \end{keyword}
 
 \end{frontmatter}
@@ -110,15 +110,16 @@ This work addresses three coupled challenges in durian leaf disease analysis:
 \item \textbf{Precise localization.} Classification alone cannot delineate the position and extent of lesions, information that is essential for targeted, resource-efficient treatment.
 \end{enumerate}
 
-To address these issues, we use an image-level classifier as the starting point for lesion segmentation. Class activation maps provide the initial spatial cues, and SAM is used only as a boundary refinement step. The main contributions are:
+To address these issues, we use an image-level classifier as the starting point for lesion segmentation. Class activation maps provide the initial spatial cues, SAM is used as a boundary refinement step under an explicit acceptance guard, and a small hand-labeled evaluation set (GT\_OK) is introduced so that localization quality can be judged independently of the pseudo-labels used for training. The main contributions are:
 \begin{itemize}
-\item A four-stage weakly supervised workflow linking classification, GradCAM++ pseudo-labeling, SAM refinement, and UNet++ segmentation using only image-level labels.
-\item A multi-scale GradCAM++ pseudo-labeling method with \emph{per-class percentile thresholding}, designed to control mask coverage and reduce the over-segmentation observed with Otsu thresholding on smooth heatmaps.
-\item An analysis of SAM ViT-B as a label refiner, including a failure case in which a one-sided Intersection-over-Union (IoU) guard does not reject masks that expand toward the whole leaf.
-\item A comparison protocol that separates the V1/V2/V3 headline scores from the only matched comparison in the study, namely V2 to V3 under the same split, architecture, and seed.
+\item A weakly supervised workflow linking classification, GradCAM/GradCAM++ pseudo-labeling, SAM refinement, a disease-color prior, and UNet++ segmentation using only image-level labels, instantiated as four segmentation experiments (E1--E4) that isolate the effect of the pseudo-label source.
+\item A post-processing fusion configuration (F1) that linearly combines three checkpoints' probability maps under a per-class threshold and coverage cap, tuned and held out on disjoint halves of an 80-image ground-truth set.
+\item GT\_OK, an 80-image hand-labeled evaluation set used as the sole basis for localization claims, together with an explicit contrast against the circular ``pseudo-test'' metric (evaluating a checkpoint against labels of the same kind used to train it) that earlier pseudo-label-only evaluation protocols relied on.
+\item An analysis of SAM ViT-B as a label refiner under a dual-condition guard (a minimum IoU together with a bounded coverage ratio), showing that the guard's own upper bound is still looser than the mask-expansion ratios observed in practice.
+\item A working Streamlit demonstration application exposing classification, GradCAM explanation, and a selectable E1--E4 segmentation checkpoint for interactive use.
 \end{itemize}
 
-The remainder of the paper is organised as follows. Section~\ref{sec:related} reviews related work on plant disease detection, explainable AI, weakly supervised segmentation, and segmentation foundation models. Section~\ref{sec:method} describes the dataset and the four stages of the method. Section~\ref{sec:results} reports and discusses the experimental results, including the comparability caveat and the SAM expansion analysis. Section~\ref{sec:conclusion} concludes and outlines future directions.
+The remainder of the paper is organised as follows. Section~\ref{sec:related} reviews related work on plant disease detection, explainable AI, weakly supervised segmentation, and segmentation foundation models. Section~\ref{sec:method} describes the dataset and the stages of the method, including the four segmentation experiments, the fusion configuration, and the GT\_OK evaluation set. Section~\ref{sec:results} reports and discusses the experimental results, including the pseudo-test versus GT\_OK evaluation-design caveat and the SAM expansion analysis. Section~\ref{sec:conclusion} concludes and outlines future directions.
 
 \section{Related work}
 \label{sec:related}
@@ -129,19 +130,19 @@ Convolutional neural networks (CNNs) have become the standard tool for image-bas
 
 \subsection{Explainable AI in agricultural vision}
 
-Interpretability matters in agricultural decision support because users need to know whether a model is responding to disease symptoms or to background cues. Gradient-weighted Class Activation Mapping (Grad-CAM) and related methods show which image regions influence a prediction \citep{selvaraju2017grad}. GradCAM++ improves localization for multiple and small objects by using second-order gradient information \citep{chattopadhay2018grad}, which is relevant for leaf diseases that often appear as scattered lesions. In this study, class activation maps are used not only for inspection but also as weak spatial supervision for segmentation.
+Interpretability matters in agricultural decision support because users need to know whether a model is responding to disease symptoms or to background cues. Gradient-weighted Class Activation Mapping (Grad-CAM) and related methods show which image regions influence a prediction \citep{selvaraju2017grad}. GradCAM++ improves localization for multiple and small objects by using second-order gradient information \citep{chattopadhay2018grad}, which is relevant for leaf diseases that often appear as scattered lesions. In this study, class activation maps are used not only for inspection but also as weak spatial supervision for segmentation, and are exposed directly to end users through the demonstration application described in Section~\ref{sec:demo}.
 
 \subsection{Weakly supervised segmentation and pseudo-labeling}
 
-Weakly supervised segmentation aims to estimate pixel-level masks from cheaper labels such as image tags. Class activation maps are often used for this purpose because they provide coarse localization cues that can be thresholded and post-processed into pseudo-masks \citep{barbedo2019plant}. The main difficulty is that CAMs are low-resolution and often cover only the most discriminative part of an object. Pseudo-label quality depends heavily on thresholding and post-processing. In Section~\ref{sec:stage2v2}, we use multi-scale fusion together with per-class percentile thresholds as a practical alternative to Otsu thresholding, whose bimodality assumption is poorly matched to smooth fused heatmaps \citep{otsu1979threshold}.
+Weakly supervised segmentation aims to estimate pixel-level masks from cheaper labels such as image tags. Class activation maps are often used for this purpose because they provide coarse localization cues that can be thresholded and post-processed into pseudo-masks \citep{barbedo2019plant}. The main difficulty is that CAMs are low-resolution and often cover only the most discriminative part of an object. Pseudo-label quality depends heavily on thresholding and post-processing, and, critically, on how the resulting models are evaluated: a model scored against pseudo-labels of the same kind used to train it will appear far stronger than it is against independent ground truth, an evaluation-design pitfall we quantify directly in Section~\ref{sec:pseudotest}. In Section~\ref{sec:stage2v2}, we use multi-scale fusion together with per-class percentile thresholds as a practical alternative to Otsu thresholding, whose bimodality assumption is poorly matched to smooth fused heatmaps \citep{otsu1979threshold}.
 
 \subsection{Segmentation foundation models}
 
-The Segment Anything Model (SAM) is a promptable segmentation model trained on eleven million images and over one billion masks \citep{kirillov2023segment}. Given point, box, or mask prompts, SAM can produce sharp object boundaries and has been used in settings where manual annotation is limited. Here, SAM is not treated as a stand-alone disease segmenter. It is used as a refinement step for coarse GradCAM++ pseudo-masks, and its behaviour is checked for both boundary improvement and mask expansion. The segmentation networks used in the experiments build on U-Net \citep{ronneberger2015unet} and the nested UNet++ variant \citep{zhou2018unet++}.
+The Segment Anything Model (SAM) is a promptable segmentation model trained on eleven million images and over one billion masks \citep{kirillov2023segment}. Given point, box, or mask prompts, SAM can produce sharp object boundaries and has been used in settings where manual annotation is limited. Here, SAM is not treated as a stand-alone disease segmenter. It is used as a refinement step for coarse GradCAM++ pseudo-masks, and its behaviour is checked for both boundary improvement and mask expansion under an explicit dual-condition guard (Section~\ref{sec:samguard}). The segmentation networks used in the experiments build on U-Net \citep{ronneberger2015unet} and the nested UNet++ variant \citep{zhou2018unet++}.
 
 \subsection{Positioning of this work}
 
-Compared with previous work, this study focuses on a durian-specific setting with image-level labels only. It combines GradCAM++ pseudo-labeling with SAM refinement, uses class-aware coverage targets instead of a single unsupervised threshold, and reports which segmentation comparisons are matched and which are not. This distinction is important because pseudo-label-based scores can be misleading when each model is evaluated against labels produced by a different procedure.
+Compared with previous work, this study focuses on a durian-specific setting with image-level labels only. It combines GradCAM++ pseudo-labeling, SAM refinement, and a disease-color prior across four segmentation experiments (E1--E4), fuses the strongest three under a disclosed post-processing recipe (F1), and evaluates every configuration against an independent hand-labeled set (GT\_OK) rather than against each experiment's own pseudo-labels. This distinction is important because pseudo-label-based scores can be misleading when each model is evaluated against labels produced by a different, and possibly self-serving, procedure.
 
 \section{Materials and methods}
 \label{sec:method}
@@ -151,38 +152,33 @@ Compared with previous work, this study focuses on a durian-specific setting wit
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[node distance=0.85cm and 0.95cm]
     \node[data] (dataset) {Durian leaf dataset\\4,437 RGB images\\5 disease classes};
-    \node[data, right=of dataset] (split) {Stratified split\\Train 3,104\\Val 665 / Test 668};
+    \node[data, right=of dataset] (split) {Stratified split\\Train 3,104\\Val 443 / Test 890};
     \node[classmodel, right=of split] (classifier) {Stage 1\\EfficientNet-B0\\image-level classification};
-    \node[xai, right=of classifier] (gradcam) {Stage 2\\Multi-scale GradCAM++\\$0.6H_{fine}+0.4H_{coarse}$};
-    \node[xai, right=of gradcam] (post) {Adaptive mask generation\\Per-class percentile\\morphology + top-3 CC};
-    \node[sam, right=of post] (samrefine) {Stage 3\\SAM refinement\\FG/BG point prompts\\IoU guard (min=0.15)};
-    \node[segmodel, right=of samrefine] (segtrain) {Stage 4\\UNet++ segmentation\\EfficientNet-B0 encoder\\FocalDice loss};
+    \node[xai, right=of classifier] (gradcam) {Stage 2\\GradCAM / GradCAM++\\+ color prior (E1--E2, E4)};
+    \node[sam, right=of gradcam] (samrefine) {Stage 3\\SAM refinement (E3)\\dual guard: IoU$\geq$0.15\\\& 0.35--2.0$\times$ coverage};
+    \node[segmodel, right=of samrefine] (segtrain) {Stage 4\\UNet++ / EffNet-UNet\\four checkpoints E1--E4};
 
-    \node[data, below=2.15cm of split] (newimage) {Input leaf image\\$224\times224\times3$};
-    \node[classmodel, right=of newimage] (inferclass) {Disease prediction\\class probability};
-    \node[segmodel, right=of inferclass] (inferseg) {Lesion localization\\binary disease mask};
-    \node[data, right=of inferseg] (decision) {Final output\\disease class +\\localized infected region};
+    \node[data, below=2.15cm of split] (fusion) {Stage 5\\F1 post-processing fusion\\$0.25P_{E2}\!+\!0.15P_{E3}\!+\!0.60P_{E4}$\\tuned on 40 GT\_OK images};
+    \node[classmodel, right=of fusion] (gtok) {GT\_OK evaluation\\80 hand-labeled images\\40 tune / 40 holdout};
+    \node[segmodel, right=of gtok] (decision) {Final output\\disease class +\\localized infected region};
 
     \draw[flow] (dataset) -- (split);
     \draw[flow] (split) -- (classifier);
     \draw[flow] (classifier) -- (gradcam);
-    \draw[flow] (gradcam) -- (post);
-    \draw[flow] (post) -- (samrefine);
+    \draw[flow] (gradcam) -- (samrefine);
     \draw[flow] (samrefine) -- (segtrain);
 
-    \draw[dashedflow] (classifier.south) -- ++(0,-0.7) -| (inferclass.north);
-    \draw[dashedflow] (segtrain.south) -- ++(0,-0.7) -| (inferseg.north);
-    \draw[flow] (newimage) -- (inferclass);
-    \draw[flow] (inferclass) -- (inferseg);
-    \draw[flow] (inferseg) -- (decision);
+    \draw[dashedflow] (segtrain.south) -- ++(0,-0.7) -| (fusion.north);
+    \draw[flow] (fusion) -- (gtok);
+    \draw[flow] (gtok) -- (decision);
 
-    \node[lane, fit=(dataset)(split)(classifier)(gradcam)(post)(samrefine)(segtrain), inner xsep=7pt, inner ysep=12pt,
-        label={[font=\bfseries\small]above:Training and pseudo-label construction}] {};
-    \node[lane, fit=(newimage)(inferclass)(inferseg)(decision), inner xsep=7pt, inner ysep=12pt,
-        label={[font=\bfseries\small]below:Inference}] {};
+    \node[lane, fit=(dataset)(split)(classifier)(gradcam)(samrefine)(segtrain), inner xsep=7pt, inner ysep=12pt,
+        label={[font=\bfseries\small]above:Training and pseudo-label construction (E1--E4)}] {};
+    \node[lane, fit=(fusion)(gtok)(decision), inner xsep=7pt, inner ysep=12pt,
+        label={[font=\bfseries\small]below:Fusion and independent evaluation}] {};
 \end{tikzpicture}%
 }
-\caption{Overview of the proposed weakly supervised durian leaf disease analysis workflow. The classification model learns image-level disease categories, after which multi-scale GradCAM++ maps are converted into pseudo-segmentation masks using per-class percentile thresholding. SAM refines these masks before they are used to train the final UNet++ lesion-segmentation model. At inference time, the system returns both the disease class and the localized infected region.}
+\caption{Overview of the proposed weakly supervised durian leaf disease analysis workflow. The classification model learns image-level disease categories; four pseudo-label sources (raw Grad-CAM, GradCAM++ percentile masks, SAM-refined masks, and GradCAM++ intersected with a disease-color prior) each train a segmentation checkpoint (E1--E4). A post-processing fusion (F1) linearly combines the E2, E3, and E4 probability maps, and every configuration is scored against GT\_OK, an 80-image hand-labeled evaluation set held independent of the pseudo-label pipeline.}
 \label{fig:proposed_pipeline}
 \end{figure*}
 
@@ -197,7 +193,7 @@ The dataset comprises 4{,}437 durian leaf images collected from plantations in S
 \label{fig:dataset_samples}
 \end{figure*}
 
-The data were partitioned into training (70\%, 3{,}104 images), validation (15\%, 665 images), and test (15\%, 668 images) sets by stratified sampling to preserve the class distribution. For the segmentation stages (Stages~2--4), the same 3{,}104 training images were used for pseudo-label generation and then re-split 70/15/15 (2{,}172 train / 465 validation / 467 test) with a fixed seed (42) to ensure reproducibility and a consistent evaluation basis across workflow versions.
+The data were partitioned into training (70\%, 3{,}104 images), validation (10\%, 443 images), and test (20\%, 890 images) sets by stratified sampling to preserve the class distribution. For the segmentation stages, the same 3{,}104 training images were used for pseudo-label generation across all four experiments (E1--E4), with a fixed seed (42) to ensure reproducibility and a consistent comparison basis.
 
 \subsection{Stage 1: Image-level classification}
 
@@ -211,13 +207,38 @@ The classifier was optimised with Adam (learning rate $1\times10^{-4}$) under a 
 
 \subsubsection{Results}
 
-The model reached 97.52\% test accuracy with a mean inference confidence of 0.9822 across the 3{,}104 training images subsequently used for pseudo-label generation. Consistently high-confidence predictions are important because they yield reliable class activation maps to serve as segmentation seeds in Stage~2.
+The model reached 97.19\% test accuracy with a mean confidence of 0.9803 on correctly classified test images. Consistently high-confidence predictions are important because they yield reliable class activation maps to serve as segmentation seeds for the pseudo-label pipeline.
 
-\subsection{Stage 2 (baseline, V1): single-scale GradCAM pseudo-labels}
+\subsection{Segmentation experiments overview}
+\label{sec:seg_overview}
 
-As a baseline, single-layer Grad-CAM was applied to the final convolutional layer (\texttt{features.8}, $7\times7$ resolution) with a fixed threshold of 0.5 and a rectangular $5\times5$ morphological kernel, on a 500-image subset (100 per class). This configuration defines the segmentation baseline referred to as V1 in Section~\ref{sec:seg_results}.
+Rather than a single segmentation checkpoint, we train four segmentation experiments that isolate the effect of the pseudo-label source while holding the surrounding training recipe fixed, plus one post-processing fusion configuration (Table~\ref{tab:exp_overview}). E1 reproduces a simple, low-cost baseline; E2 and E4 test two different ways of sharpening the classifier's spatial signal (multi-scale GradCAM++ and a disease-color prior, respectively); E3 tests whether SAM's boundary refinement helps once it is accepted only under a dual-condition guard; and F1 tests whether combining checkpoints in a controlled, disclosed way is preferable to picking any single one.
 
-\subsection{Stage 2 (improved, V2): multi-scale GradCAM++ with per-class percentile thresholding}
+\begin{table}[!htbp]
+\centering
+\caption{Segmentation experiments: pseudo-label source, model, and role.}
+\label{tab:exp_overview}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lllp{3.1cm}}
+\toprule
+\textbf{Exp.} & \textbf{Pseudo-label source} & \textbf{Model} & \textbf{Role} \\
+\midrule
+E1 & Raw Grad-CAM threshold masks & EfficientNet-U-Net (custom decoder) & Baseline \\
+E2 & GradCAM++ percentile masks & UNet++ (EfficientNet-B0 encoder) & Improves heatmap quality over E1 \\
+E3 & SAM-refined V2 masks, coverage guard & UNet++ (EfficientNet-B0 encoder) & Tests whether SAM boundary refinement helps \\
+E4 & GradCAM++ $\cap$ disease-color prior & UNet++ (EfficientNet-B0 encoder) & Best single checkpoint on GT\_OK \\
+\midrule
+F1 & Post-processing fusion of E2, E3, E4 & --- (no separate training) & Best overall configuration on GT\_OK \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Stage 2 (E1, baseline): single-scale GradCAM pseudo-labels}
+
+As a baseline, single-layer Grad-CAM was applied to the final convolutional layer (\texttt{features.8}, $7\times7$ resolution) with a fixed threshold of 0.5 and a rectangular $5\times5$ morphological kernel, on a 500-image subset (100 per class). This configuration defines the segmentation baseline referred to as E1 in Section~\ref{sec:seg_results}.
+
+\subsection{Stage 2 (E2): multi-scale GradCAM++ with per-class percentile thresholding}
 \label{sec:stage2v2}
 
 \subsubsection{Multi-scale GradCAM++}
@@ -262,7 +283,7 @@ The threshold is the $(1-p)\times100^{\text{th}}$ percentile of each heatmap, wh
 
 \subsubsection{Post-processing}
 
-Two post-processing steps clean the thresholded masks: (i) morphological closing followed by opening with a $5\times5$ elliptical kernel to fill holes and remove noise, and (ii) connected-component filtering that retains the top three components of at least 400 pixels, removing mid-size noise fragments while preserving multiple lesion spots. This procedure produced 3{,}104 pseudo-labeled masks from the full training set.
+Two post-processing steps clean the thresholded masks: (i) morphological closing followed by opening with a $5\times5$ elliptical kernel to fill holes and remove noise, and (ii) connected-component filtering that retains the top three components of at least 400 pixels, removing mid-size noise fragments while preserving multiple lesion spots. This procedure produced 3{,}104 pseudo-labeled masks from the full training set and defines the E2 pseudo-label source.
 
 \begin{figure*}[!t]
 \centering
@@ -274,62 +295,71 @@ Two post-processing steps clean the thresholded masks: (i) morphological closing
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{pseudo_labeling_v2/v1_vs_v2_comparison.png}
-\caption{Pseudo-label quality: single-scale Grad-CAM V1 (fixed threshold 0.5) versus multi-scale GradCAM++ with per-class percentile thresholding (V2). The V2 approach produces coverage-controlled, cleaner masks, with noise fragments removed by top-3 connected-component filtering.}
+\caption{Pseudo-label quality: single-scale Grad-CAM (E1 source, fixed threshold 0.5) versus multi-scale GradCAM++ with per-class percentile thresholding (E2 source). The E2 approach produces coverage-controlled, cleaner masks, with noise fragments removed by top-3 connected-component filtering.}
 \label{fig:pseudolabel_comparison}
 \end{figure*}
 
-\subsection{Stage 3: SAM boundary refinement}
+\subsection{Stage 2 (E4): GradCAM++ intersected with a disease-color prior}
+\label{sec:stage2v5}
+
+E4 tests whether a simple, model-independent visual prior can compensate for the coverage errors of GradCAM++ alone. For each disease class, an empirical color prior (a set of hue/saturation ranges characteristic of the lesion appearance for that class, e.g. brown/necrotic tones for blight and pale chlorotic tones for algal spot) is computed over the training images and intersected pixel-wise with the E2 GradCAM++ percentile mask: a pixel is kept only if it is both activation-salient \emph{and} color-consistent with the disease class. This intersection removes GradCAM++ activation that falls on healthy leaf tissue or background, at the cost of also removing genuine lesion pixels whose color deviates from the class-typical range. The resulting masks train a UNet++ checkpoint with the same architecture and training recipe as E2/E3 (Section~\ref{sec:seg_train}). On GT\_OK (Section~\ref{sec:gtok}), E4 is the strongest single checkpoint, narrowly ahead of the E1 baseline and clearly ahead of E2 and E3, with recall (0.7455) substantially higher than its precision (0.2358), the same over-segmentation pattern observed across all four experiments.
+
+\subsection{Stage 3: SAM boundary refinement (E3)}
+\label{sec:samguard}
 
 \subsubsection{Motivation and prompt generation}
 
-GradCAM++ localises lesions well but yields blurry boundaries because of the low resolution of the activation maps ($7\times7$ or $14\times14$). SAM excels at pixel-accurate boundary delineation given suitable prompts \citep{kirillov2023segment}. For each V2 pseudo-mask we extract foreground prompts (the mask centroid plus five points sampled from the masked region) and background prompts (three points sampled from the dilated complement, using a 30-pixel dilation) so that SAM can distinguish diseased from healthy tissue.
+GradCAM++ localises lesions well but yields blurry boundaries because of the low resolution of the activation maps ($7\times7$ or $14\times14$). SAM excels at pixel-accurate boundary delineation given suitable prompts \citep{kirillov2023segment}. For each E2 pseudo-mask we extract foreground prompts (the mask centroid plus five points sampled from the masked region) and background prompts (three points sampled from the dilated complement, using a 30-pixel dilation) so that SAM can distinguish diseased from healthy tissue.
 
-\subsubsection{IoU guard and fallback}
+\subsubsection{Dual-condition acceptance guard}
 
-To prevent SAM from drifting to an incorrect region, we apply an IoU guard between the SAM output and the GradCAM++ mask:
+An earlier version of this pipeline accepted a SAM-refined mask whenever its IoU against the source GradCAM++ mask exceeded 0.15, with no other constraint. This one-sided rule has a specific failure mode: when SAM segments a much larger region that fully contains the source mask, the IoU reduces to (source coverage)/(SAM coverage), which can still clear the 0.15 threshold even though the refined mask has expanded far beyond the lesion. The pipeline used for E3 therefore applies a \emph{dual-condition} guard, requiring both a minimum IoU against the source mask and a bounded coverage (area) ratio between the SAM mask and the source mask:
 \begin{equation}
 \text{IoU} = \frac{|\text{SAM}_{mask} \cap \text{GradCAM}_{mask}|}{|\text{SAM}_{mask} \cup \text{GradCAM}_{mask}|},
 \end{equation}
 \begin{equation}
+r = \frac{|\text{SAM}_{mask}|}{|\text{GradCAM}_{mask}|},
+\end{equation}
+\begingroup\footnotesize
+\begin{equation}
 \text{refined}_{mask} = \begin{cases}
-\text{SAM}_{mask} & \text{if IoU} \geq 0.15, \\
+\text{SAM}_{mask} & \text{IoU}\geq0.15,\ r\in[0.35,2.0], \\
 \text{GradCAM}_{mask} & \text{otherwise.}
 \end{cases}
 \end{equation}
+\endgroup
+The lower bound on $r$ rejects SAM masks that shrink implausibly relative to the source; the upper bound is intended to reject the whole-leaf over-expansion described above.
 
-\subsubsection{Coverage expansion: a failure mode of the one-sided guard}
+\subsubsection{A known limitation of the guard's coverage bound}
 
-SAM often expands masks beyond the intended lesion area (Table~\ref{tab:sam_expansion}). With point prompts, the model tends to segment a larger semantic unit, often much of the leaf, rather than only the lesion.
+The 2.0$\times$ upper bound on the coverage ratio was set as a conservative cap, but it is still looser than the class-wise mask-expansion ratios observed once SAM refinement is applied at scale (Table~\ref{tab:sam_expansion}): the ratio of SAM-refined coverage to E2 source coverage falls in roughly 1.4--2.0$\times$ across classes, i.e. at or just inside the guard's own tolerance. As a result, the guard reduces but does not eliminate over-expansion, and E3's GT\_OK precision (0.1409) is the lowest of the four experiments even though its recall (0.7685) is the highest -- SAM catches most of the true lesion but at the cost of a large false-positive area around it. We treat this as an explicit, disclosed limitation (Section~\ref{sec:limitations}) rather than tuning the bound post hoc to a value that happens to look better on this dataset.
 
 \begin{table}[!htbp]
 \centering
-\caption{Coverage expansion from V2 pseudo-labels to SAM-refined labels.}
+\caption{Coverage expansion from E2 pseudo-labels to SAM-refined (E3) labels.}
 \label{tab:sam_expansion}
 \begin{adjustbox}{max width=\columnwidth}
 \begin{tabular}{lccc}
 \toprule
-\textbf{Class} & \textbf{V2 coverage} & \textbf{SAM coverage} & \textbf{$\Delta$} \\
+\textbf{Class} & \textbf{E2 coverage} & \textbf{SAM coverage} & \textbf{Ratio $r$} \\
 \midrule
-Algal Leaf Spot     & 17.7\% & 35.0\% & +97\% \\
-Allocaridara Attack & 19.7\% & 32.0\% & +62\% \\
-Leaf Blight         & 21.7\% & 30.7\% & +41\% \\
-Phomopsis Leaf Spot & 17.6\% & 33.6\% & +91\% \\
-\midrule
-\textbf{Overall}    & \textbf{15.0\%} & \textbf{25.5\%} & \textbf{+70\%} \\
+Algal Leaf Spot     & 17.7\% & 35.0\% & 1.97$\times$ \\
+Allocaridara Attack & 19.7\% & 32.0\% & 1.62$\times$ \\
+Leaf Blight         & 21.7\% & 30.7\% & 1.41$\times$ \\
+Phomopsis Leaf Spot & 17.6\% & 33.6\% & 1.91$\times$ \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
 \end{table}
 
-In total, 211 of 3{,}104 masks (6.8\%) exceeded 50\% coverage after refinement. The guard does not catch this expansion. When SAM segments the whole leaf and the V2 lesion is fully contained within it, the IoU equals the V2 coverage divided by the SAM coverage ($\approx0.51 > 0.15$). The guard triggers only when SAM \emph{drifts} to a disjoint region, not when it \emph{expands} to contain the original mask. A two-sided coverage-ratio constraint, for example falling back to the V2 mask if $\text{SAM coverage} > 2\times\text{V2 coverage}$, would address this limitation.
-
 \subsection{Stage 4: Lesion segmentation}
+\label{sec:seg_train}
 
 \subsubsection{Architecture}
 
-The baseline V1 uses a custom EfficientNet-U-Net trained with a combined BCE and Dice loss (Adam with ReduceLROnPlateau, 30 epochs). The improved V2 and V3 configurations use UNet++ \citep{zhou2018unet++} with an ImageNet-pretrained EfficientNet-B0 encoder, nested dense skip connections in the decoder, and a single-channel binary output (disease versus background); the model has 6{,}569{,}581 trainable parameters. The dense skip connections of UNet++ reduce the semantic gap between encoder and decoder and improve small-object segmentation relative to plain U-Net \citep{ronneberger2015unet}.
+E1 uses a custom EfficientNet-U-Net trained with a combined BCE and Dice loss (Adam with ReduceLROnPlateau, 30 epochs). E2, E3, and E4 use UNet++ \citep{zhou2018unet++} with an ImageNet-pretrained EfficientNet-B0 encoder, nested dense skip connections in the decoder, and a single-channel binary output (disease versus background); the model has 6{,}569{,}581 trainable parameters. The dense skip connections of UNet++ reduce the semantic gap between encoder and decoder and improve small-object segmentation relative to plain U-Net \citep{ronneberger2015unet}.
 
-\subsubsection{Training configuration (V2/V3)}
+\subsubsection{Training configuration (E2--E4)}
 
 The segmentation objective is a FocalDice loss:
 \begin{equation}
@@ -341,28 +371,48 @@ The segmentation objective is a FocalDice loss:
 \begin{equation}
 \mathcal{L}_{dice} = 1 - \frac{2|X \cap Y| + \epsilon}{|X| + |Y| + \epsilon},
 \end{equation}
-where the focal term follows \citet{lin2017focal}. Optimisation used AdamW \citep{loshchilov2019decoupled} (learning rate $1\times10^{-4}$, weight decay $1\times10^{-4}$), a CosineAnnealingLR schedule ($T_{max}=50$, $\eta_{min}=1\times10^{-6}$), a batch size of 4, up to 50 epochs with early stopping on validation loss (patience~=~10), and gradient clipping at a maximum norm of 1.0. Augmentation comprised RandomResizedCrop, horizontal/vertical flips, RandomRotate90, ShiftScaleRotate, ElasticTransform, GridDistortion, ColorJitter, and GaussNoise \citep{buslaev2020albumentations}.
+where the focal term follows \citet{lin2017focal}. Optimisation used AdamW \citep{loshchilov2019decoupled} (learning rate $1\times10^{-4}$, weight decay $1\times10^{-4}$), a CosineAnnealingLR schedule ($T_{max}=50$, $\eta_{min}=1\times10^{-6}$), a batch size of 4, up to 50 epochs with early stopping on validation loss (patience~=~10), and gradient clipping at a maximum norm of 1.0. Augmentation comprised RandomResizedCrop, horizontal/vertical flips, RandomRotate90, ShiftScaleRotate, ElasticTransform, GridDistortion, ColorJitter, and GaussNoise \citep{buslaev2020albumentations}. E1, E2, E3, and E4 share this recipe except for the architecture difference noted above and the pseudo-label source described in each experiment's subsection.
+
+\subsection{Stage 5: F1 post-processing fusion}
+\label{sec:fusion}
+
+F1 is not a separately trained model; it is a fixed post-processing rule applied to the probability maps already produced by E2, E3, and E4 at inference time:
+\begin{equation}
+P_{F1} = 0.25\,P_{E2} + 0.15\,P_{E3} + 0.60\,P_{E4},
+\end{equation}
+followed by a per-class probability threshold and a per-class coverage cap. The weights favour E4 (the strongest single checkpoint) while still drawing on E2's higher precision and E3's higher recall. The threshold and coverage cap for each class were tuned by grid search on 40 of the 80 GT\_OK images (Section~\ref{sec:gtok}) to maximise IoU, and the resulting configuration was then evaluated, unchanged, on the other 40 GT\_OK images as a holdout set. E1 is intentionally excluded from the fusion weights: it uses a different architecture (EfficientNet-U-Net rather than UNet++) and a different pseudo-label distribution, and including it would mix probability maps that are not directly comparable in scale.
+
+\subsection{GT\_OK: an independent ground-truth evaluation set}
+\label{sec:gtok}
+
+All of the segmentation experiments above are trained without any pixel-level ground truth. To judge localization quality without relying on the same noisy signal that generated the training labels, we hand-labeled 80 test images with pixel-accurate lesion masks (GT\_OK), independent of any pseudo-label pipeline. GT\_OK is split into 40 images used to tune F1's per-class threshold and coverage cap (Section~\ref{sec:fusion}) and 40 held out purely for evaluation. Every number reported as a segmentation result in Section~\ref{sec:results} unless explicitly marked otherwise is a GT\_OK score; this is a deliberate departure from evaluation protocols in earlier iterations of this pipeline that reported only pseudo-label-based test metrics, which are shown in Section~\ref{sec:pseudotest} to overstate localization quality considerably.
+
+\subsection{Demonstration application}
+\label{sec:demo}
+
+To make the pipeline usable outside a notebook environment, we built a Streamlit web application that accepts an uploaded leaf image and runs the full pipeline live: EfficientNet-B0 classification, a GradCAM overlay, and a selectable UNet++ segmentation checkpoint (E1--E4, labeled by pseudo-label source as Baseline / GradCAM++ / SAM-refined / Color prior). The application exposes an inference-mode selector (model-only, model with color-prior post-processing, or a GradCAM~$\cap$~color-prior preview), a threshold slider (0.1--0.9), and a rule-based advisory panel that summarises disease severity from the predicted mask coverage, with an optional large-language-model-backed advisory mode. The application was re-verified running end to end on 2026-08-30.
 
 \section{Results and discussion}
 \label{sec:results}
 
 \subsection{Classification performance}
 
-EfficientNet-B0 achieved high test performance across all five classes (Table~\ref{tab:classification}), with similar per-class scores (Table~\ref{tab:classification_perclass}).
+EfficientNet-B0 achieved high test performance across all five classes (Table~\ref{tab:classification}), with similar per-class scores (Table~\ref{tab:classification_perclass}) and a macro ROC-AUC of 99.87\%.
 
 \begin{table}[!htbp]
 \centering
-\caption{Classification performance on the test set.}
+\caption{Classification performance on the test set ($n=890$).}
 \label{tab:classification}
 \begin{adjustbox}{max width=\columnwidth}
-\begin{tabular}{lcc}
+\begin{tabular}{lc}
 \toprule
-\textbf{Metric} & \textbf{Best validation} & \textbf{Test} \\
+\textbf{Metric} & \textbf{Test} \\
 \midrule
-Accuracy  & 97.52\% & 97.52\% \\
-Precision & N/A     & 97.34\% \\
-Recall    & N/A     & 97.30\% \\
-F1-score  & N/A     & 97.31\% \\
+Accuracy          & 97.19\% \\
+Weighted precision & 97.22\% \\
+Weighted recall    & 97.19\% \\
+Weighted F1        & 97.19\% \\
+Macro ROC-AUC      & 99.87\% \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -377,13 +427,13 @@ F1-score  & N/A     & 97.31\% \\
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{Samples} \\
 \midrule
-Algal Leaf Spot     & 94.70\% & 97.28\% & 95.97\% & 147 \\
-Allocaridara Attack & 98.90\% & 98.36\% & 98.63\% & 183 \\
-Healthy Leaf        & 96.95\% & 97.45\% & 97.20\% & 196 \\
-Leaf Blight         & 100.00\% & 96.28\% & 98.10\% & 188 \\
-Phomopsis Leaf Spot & 95.53\% & 97.16\% & 96.34\% & 176 \\
+Algal Leaf Spot     & 94.67\% & 96.60\% & 95.62\% & 147 \\
+Allocaridara Attack & 95.74\% & 98.36\% & 97.04\% & 183 \\
+Healthy Leaf        & 97.99\% & 99.49\% & 98.73\% & 196 \\
+Leaf Blight         & 100.00\% & 96.81\% & 98.38\% & 188 \\
+Phomopsis Leaf Spot & 97.08\% & 94.32\% & 95.68\% & 176 \\
 \midrule
-\textbf{Weighted avg.} & \textbf{97.34\%} & \textbf{97.30\%} & \textbf{97.31\%} & \textbf{890} \\
+\textbf{Weighted avg.} & \textbf{97.22\%} & \textbf{97.19\%} & \textbf{97.19\%} & \textbf{890} \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -392,7 +442,7 @@ Phomopsis Leaf Spot & 95.53\% & 97.16\% & 96.34\% & 176 \\
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{classification/training_curves.png}
-\caption{Training and validation curves for the EfficientNet-B0 classifier. A test accuracy of 97.52\% is achieved with balanced per-class F1 scores of 0.96--0.99.}
+\caption{Training and validation curves for the EfficientNet-B0 classifier. A test accuracy of 97.19\% is achieved with balanced per-class F1 scores of 0.96--0.99.}
 \label{fig:classification_training_curves}
 \end{figure*}
 
@@ -403,13 +453,13 @@ Phomopsis Leaf Spot & 95.53\% & 97.16\% & 96.34\% & 176 \\
 \label{fig:confusion_matrix}
 \end{figure}
 
-\subsection{Pseudo-label quality}
+\subsection{Pseudo-label quality (E2 source)}
 
-The V2 coverage targets were met with less than 0.4\% deviation per class (Table~\ref{tab:v2_coverage}). Setting Healthy Leaf coverage to zero removes the $\sim$683 false-positive masks that would otherwise arise for a disease-free class.
+The E2 coverage targets were met with less than 0.4\% deviation per class (Table~\ref{tab:v2_coverage}). Setting Healthy Leaf coverage to zero removes the $\sim$683 false-positive masks that would otherwise arise for a disease-free class.
 
 \begin{table}[!htbp]
 \centering
-\caption{V2 pseudo-label coverage statistics.}
+\caption{E2 (GradCAM++ percentile) pseudo-label coverage statistics.}
 \label{tab:v2_coverage}
 \begin{adjustbox}{max width=\columnwidth}
 \begin{tabular}{lccc}
@@ -426,79 +476,93 @@ Phomopsis Leaf Spot & 17.6\% & 0.009 & 18\% \\
 \end{adjustbox}
 \end{table}
 
-\subsection{Segmentation performance}
+\subsection{Segmentation performance on GT\_OK}
 \label{sec:seg_results}
 
-Three segmentation configurations were evaluated (Table~\ref{tab:segmentation}). V1 differs from V2/V3 in dataset subset, architecture, and pseudo-label distribution, so its score should not be read as a direct comparison; Section~\ref{sec:caveat} discusses this constraint.
+Table~\ref{tab:segmentation} reports every configuration's performance on GT\_OK, the 80-image hand-labeled evaluation set (Section~\ref{sec:gtok}), which we treat as the only trustworthy basis for localization claims in this study.
 
 \begin{table}[!htbp]
 \centering
-\caption{Segmentation performance on the test set.}
+\caption{Segmentation performance on GT\_OK (80 hand-labeled images; F1: 40-image holdout).}
 \label{tab:segmentation}
 \footnotesize
 \begin{adjustbox}{max width=\columnwidth}
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Version} & \textbf{IoU} & \textbf{Dice} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\textbf{Config.} & \textbf{IoU} & \textbf{Dice} & \textbf{Precision} & \textbf{Recall} \\
 \midrule
-V1$^\dagger$ & 0.7671 & 0.8623 & 0.8562 & 0.8877 & 0.8623 \\
-V2           & 0.5135 & 0.6301 & 0.6169 & 0.7419 & 0.6301 \\
-V3           & \textbf{0.6239} & \textbf{0.7053} & \textbf{0.7090} & \textbf{0.8752} & \textbf{0.7053} \\
+E1        & 0.2169 & 0.3565 & 0.2460 & 0.6472 \\
+E2        & 0.1972 & 0.3294 & 0.2459 & 0.4987 \\
+E3 (SAM)  & 0.1351 & 0.2381 & 0.1409 & 0.7685 \\
+E4        & 0.2183 & 0.3583 & 0.2358 & 0.7455 \\
+\textbf{F1 (fusion)} & \textbf{0.3083} & \textbf{0.4713} & \textbf{0.4128} & 0.5492 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
 \par\smallskip
-\raggedright\scriptsize V1: EfficientNet-U-Net with Grad-CAM V1 labels. V2: UNet++ with GradCAM++ percentile labels. V3: UNet++ with SAM-refined labels. $^\dagger$ V1 uses a different dataset subset, architecture, and label distribution from V2/V3, so it is not directly comparable.
+\raggedright\scriptsize E1: EfficientNet-U-Net with raw Grad-CAM labels. E2: UNet++ with GradCAM++ percentile labels. E3: UNet++ with SAM-refined labels under the dual-condition guard. E4: UNet++ with GradCAM++ $\cap$ color-prior labels. F1: fixed-weight fusion of E2/E3/E4 probability maps (Section~\ref{sec:fusion}), 40-image tune / 40-image holdout split of GT\_OK; the holdout IoU (0.3076) essentially matches this full-80 figure.
 \end{table}
 
-The matched comparison is V2~$\to$~V3, where architecture, split, and seed are held constant (Table~\ref{tab:v2v3}).
+F1 clearly leads on both IoU and Dice, the two metrics that best summarise overall mask overlap, and its precision (0.4128) is more than 1.7$\times$ that of any single checkpoint. This does not make F1 production-ready: precision above 0.41 still means more than half of the predicted lesion pixels are false positives, and no configuration in Table~\ref{tab:segmentation} exceeds Dice~0.48. We read this result as identifying the best available configuration under a controlled, fully disclosed fusion recipe, not as evidence that the localization problem is solved.
+
+Because F1's threshold and coverage cap were tuned on 40 GT\_OK images, the relevant question is whether that tuning overfits. Table~\ref{tab:f1_split} shows it largely does not: the holdout IoU (0.3076) and Dice (0.4705) are within 0.001--0.002 of the values obtained by re-scoring F1 on the full 80-image set, and both remain clearly ahead of every single-checkpoint result in Table~\ref{tab:segmentation}.
 
 \begin{table}[!htbp]
 \centering
-\caption{V2 versus V3 segmentation improvement (same architecture, split, and seed).}
-\label{tab:v2v3}
+\caption{F1 fusion: tuning split versus held-out split (GT\_OK).}
+\label{tab:f1_split}
 \begin{adjustbox}{max width=\columnwidth}
-\begin{tabular}{lccc}
+\begin{tabular}{lcc}
 \toprule
-\textbf{Metric} & \textbf{V2} & \textbf{V3} & \textbf{$\Delta$} \\
+\textbf{Metric} & \textbf{Tune (40 img.)} & \textbf{Holdout (40 img.)} \\
 \midrule
-IoU       & 0.5135 & 0.6239 & \textbf{+21.5\%} \\
-Dice      & 0.6301 & 0.7053 & +11.9\% \\
-Precision & 0.6169 & 0.7090 & +14.9\% \\
-Recall    & 0.7419 & 0.8752 & +18.0\% \\
+IoU       & 0.3091 & 0.3076 \\
+Dice      & 0.4722 & 0.4705 \\
+Precision & 0.3964 & 0.4311 \\
+Recall    & 0.5838 & 0.5178 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
 \end{table}
 
-In this matched setting, SAM boundary refinement improves all reported metrics, suggesting that sharper training targets are easier for UNet++ to learn than the coarse GradCAM++ masks.
-
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.92\textwidth]{segmentation_v1/training_curves.png}
-\caption{Training and validation curves for the V1 segmentation model (EfficientNet-U-Net, 30 epochs), reaching a best validation IoU of 0.7715 and Dice of 0.8650.}
-\label{fig:seg_v1_curves}
+\includegraphics[width=\textwidth]{segmentation_gtok/gtok_qualitative_ALL_en.png}
+\caption{Qualitative comparison of all four single checkpoints (E1--E4) and the F1 fusion configuration on GT\_OK, one representative image per disease class (the sample with the highest E4 IoU in that class), overlaid on the input image alongside the hand-labeled GT\_OK mask; IoU is re-computed independently per image. E4 is the strongest single checkpoint on most classes, while F1 is competitive without being uniformly best on every individual image, consistent with its lead on the aggregate metrics in Table~\ref{tab:segmentation}.}
+\label{fig:gtok_qual_all}
 \end{figure*}
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.66\textwidth,height=0.72\textheight,keepaspectratio]{segmentation_v1/test_predictions.png}
-\caption{V1 segmentation test predictions showing the input image, pseudo-label reference, predicted probability map, and binary prediction with IoU/Dice scores.}
-\label{fig:seg_v1_predictions}
-\end{figure*}
 
-\subsection{Cross-version comparability caveat}
-\label{sec:caveat}
+\subsection{Pseudo-test versus GT\_OK: an evaluation-design caveat}
+\label{sec:pseudotest}
 
-The V1 versus V2/V3 comparison must be interpreted with care because each version is evaluated against \emph{its own pseudo-labels}. V1 (IoU~=~0.767) learns simple Grad-CAM blobs generated by a fixed threshold of 0.5. These masks are relatively smooth and easy to reproduce. V3 (IoU~=~0.624) learns SAM-shaped boundaries that are sharper, more varied, and often larger. The higher IoU of V1 does \emph{not} imply better disease localization; it mainly reflects an easier reference mask. Without ground-truth pixel annotation, absolute localization accuracy cannot be established. For this reason, the matched V2~$\to$~V3 comparison is the most informative result in this study, showing a +21.5\% IoU gain after SAM boundary refinement.
-
-\subsection{Training dynamics}
-
-For V3 (22 epochs, early-stopped at epoch~22), validation loss and validation IoU were not monotonically aligned (Table~\ref{tab:v3_dynamics}). Early stopping on validation loss selected epoch~12 rather than epoch~17, with a gap of 0.050 IoU. The reported test IoU of 0.6239 corresponds to the epoch-12 checkpoint; selection by validation IoU would have produced a higher upper bound. V3 also converged faster than V2 (validation loss 0.4478 at epoch~12 versus 0.5957 at epoch~20), consistent with SAM labels providing a cleaner training signal.
+Every experiment can also be scored against a ``pseudo-test'' set: the held-out portion of the same pseudo-labels used to train it. Because this evaluates each model against the very signal that generated its training targets, pseudo-test scores are circular and run much higher than GT\_OK scores (Table~\ref{tab:pseudotest}). E1's pseudo-test IoU (0.8126) is nearly four times its GT\_OK IoU (0.2169); E3's pseudo-test IoU (0.6781) is roughly five times its GT\_OK IoU (0.1351). An earlier iteration of this pipeline reported only pseudo-test numbers and, on that basis, would have ranked E1 as the strongest segmentation configuration by a wide margin -- the opposite of what GT\_OK actually shows once E1 is compared against independent ground truth rather than against its own labels. We report both explicitly so that this evaluation-design point is transparent rather than buried: \emph{every localization claim in this paper is based on GT\_OK, never on pseudo-test scores.}
 
 \begin{table}[!htbp]
 \centering
-\caption{V3 key training checkpoints.}
+\caption{Pseudo-test (circular) versus GT\_OK (independent) IoU/Dice by experiment.}
+\label{tab:pseudotest}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Exp.} & \textbf{Pseudo-test IoU} & \textbf{Pseudo-test Dice} & \textbf{GT\_OK IoU} & \textbf{GT\_OK Dice} \\
+\midrule
+E1 & 0.8126 & 0.8813 & 0.2169 & 0.3565 \\
+E2 & 0.5088 & 0.6181 & 0.1972 & 0.3294 \\
+E3 & 0.6781 & 0.7567 & 0.1351 & 0.2381 \\
+E4 & 0.5084 & 0.6030 & 0.2183 & 0.3583 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Training dynamics}
+
+For E3 (22 epochs, early-stopped at epoch~22), validation loss and validation IoU on the pseudo-label validation split were not monotonically aligned (Table~\ref{tab:v3_dynamics}). Early stopping on validation loss selected epoch~12 rather than epoch~17, with a gap of 0.050 IoU on that pseudo-label split. E3 also converged faster than E2 (validation loss 0.4478 at epoch~12 versus 0.5957 at epoch~20), consistent with SAM labels providing a cleaner (if over-expanded) training signal. As Section~\ref{sec:pseudotest} makes clear, these pseudo-label validation numbers describe training dynamics only and should not be read as GT\_OK localization quality.
+
+\begin{table}[!htbp]
+\centering
+\caption{E3 key training checkpoints (pseudo-label validation split).}
 \label{tab:v3_dynamics}
 \begin{adjustbox}{max width=\columnwidth}
 \begin{tabular}{lccc}
@@ -514,24 +578,35 @@ Best IoU (missed)    & E17 & 0.4537           & \textbf{0.6981} \\
 
 \subsection{Qualitative observations}
 
-Across all versions, recall exceeds precision (V3: 0.875 versus 0.709), indicating a systematic tendency to over-segment that is inherited from the over-coverage of the pseudo-labels. The Healthy Leaf hard-zero masking eliminates false-positive lesion activations for disease-free images. Finally, the sharper boundaries supplied by SAM labels help UNet++ learn precise edge features, visible as a concentration of probability mass around lesion margins.
+Across all four single-checkpoint experiments, recall exceeds precision on GT\_OK (E1: 0.647 vs.\ 0.246; E4: 0.746 vs.\ 0.236; E3: 0.769 vs.\ 0.141), indicating a systematic tendency to over-segment relative to hand-labeled lesion boundaries. E3 shows this most severely, consistent with the coverage-expansion behaviour analysed in Section~\ref{sec:samguard}. F1 is the only configuration where precision and recall are closer together (0.413 vs.\ 0.549), which is the main reason it leads on IoU and Dice: fusing checkpoints with different over- and under-segmentation biases partially cancels their individual errors rather than compounding them.
+
+\subsection{Demonstration application}
+
+Figure~\ref{fig:demo_app} shows the Streamlit application described in Section~\ref{sec:demo}. A user uploads a leaf image and receives the predicted disease class, a GradCAM overlay explaining the classification, and a segmentation overlay from the selected E1--E4 checkpoint, together with a severity advisory generated from the predicted lesion coverage. Because F1 is a post-processing rule over checkpoint outputs rather than a fifth trained network, the application currently exposes E1--E4 individually; adding an F1 mode is a direct extension of the existing checkpoint selector.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\columnwidth]{app_demo/app_demo_screenshot.png}
+\caption{Streamlit demonstration application: classification, GradCAM overlay, selectable E1--E4 segmentation checkpoint, inference-mode selector, threshold slider, and severity advisory panel. Re-verified running end to end on 2026-08-30.}
+\label{fig:demo_app}
+\end{figure}
 
 \subsection{Computational efficiency}
 
-Training required approximately two hours for classification (16 epochs), about seven minutes for GradCAM++ pseudo-label generation and about 40 minutes for SAM refinement over 3{,}104 images, about three hours for V2 segmentation (25 epochs with early stopping), and about 2.5 hours for V3 segmentation (22 epochs with early stopping). At inference, a single image requires 15~ms for classification and 45~ms for segmentation, for a total of 60~ms, corresponding to real-time throughput of roughly 16~frames per second.
+Training required approximately two hours for classification (16 epochs), about seven minutes for GradCAM++ pseudo-label generation and about 40 minutes for SAM refinement over 3{,}104 images, and roughly two-and-a-half to three hours for each of the E2--E4 UNet++ segmentation checkpoints (early-stopped between 20 and 25 epochs). F1 adds negligible cost at inference beyond running the three underlying checkpoints, since it is a fixed linear combination followed by thresholding rather than a trained model. At inference, a single image requires 15~ms for classification and 45~ms for segmentation with one checkpoint, for a total of 60~ms per single-checkpoint configuration; running F1 requires evaluating E2, E3, and E4 (three forward passes) before fusion.
 
 \subsection{Limitations}
 \label{sec:limitations}
 
-Several limitations remain. First, no ground-truth pixel annotation is available, so absolute segmentation accuracy cannot be established and cross-version comparisons are constrained as described in Section~\ref{sec:caveat}. Second, per-class percentile thresholding fixes coverage within each class and cannot adapt to severity in individual images. Third, the one-sided IoU guard does not prevent SAM mask expansion, which increases coverage by 41--97\% per class. Fourth, checkpoint selection based on validation loss can miss the validation-IoU optimum.
+Several limitations remain. First, GT\_OK contains only 80 hand-labeled images, split 40/40 between tuning and holdout for F1; this is enough to show that F1's holdout performance closely tracks its tuning performance, but it is a small set on which to base strong generalisation claims, and a larger hand-labeled set would tighten this evidence considerably. Second, even the best configuration (F1) reaches only IoU~0.3083 and precision~0.4128 on GT\_OK, well short of what would be needed for unsupervised, fully automated treatment decisions; F1 should be read as the strongest disclosed configuration, not as a solved segmentation problem. Third, the SAM dual-condition guard (Section~\ref{sec:samguard}) still under-constrains mask expansion: its 2.0$\times$ coverage-ratio upper bound is close to, and in some classes exceeded by, the expansion ratios actually observed (1.4--2.0$\times$), so E3 remains the lowest-precision configuration despite the guard. Fourth, per-class percentile thresholding (E2) and the disease-color prior (E4) both fix behaviour at the class level and cannot adapt to severity or lesion color variation within a single image. Fifth, checkpoint selection for E3 based on validation loss can miss the validation-IoU optimum on the pseudo-label split by 0.050 IoU, though this affects only the pseudo-label training dynamics, not the GT\_OK scores reported as the primary result.
 
 \FloatBarrier
 \section{Conclusion}
 \label{sec:conclusion}
 
-This paper presented a weakly supervised approach for durian leaf disease analysis using only image-level labels. EfficientNet-B0 achieved 97.52\% test accuracy across five classes and produced class activation maps for pseudo-mask generation. The proposed percentile thresholds kept disease-class coverage within 18--22\%, assigned zero coverage to Healthy Leaf, and met the target values within 0.4\% deviation. In the matched V2~$\to$~V3 comparison, SAM boundary refinement improved IoU by +21.5\%. At the same time, SAM increased mask coverage by 41--97\% per class, showing that point-prompt refinement can expand from lesions to larger leaf regions. The results also show that pseudo-label-based segmentation scores should be interpreted with caution when no ground-truth masks are available, and that checkpoint selection by validation loss can miss the validation-IoU optimum by 0.050 IoU.
+This paper presented a weakly supervised approach for durian leaf disease analysis using only image-level labels. EfficientNet-B0 achieved 97.19\% test accuracy across five classes (weighted F1 97.19\%, macro ROC-AUC 99.87\%) and produced class activation maps for pseudo-mask generation. Four segmentation experiments (E1--E4) were trained from different pseudo-label sources -- raw Grad-CAM, GradCAM++ percentile masks, SAM-refined masks under a dual-condition guard, and GradCAM++ intersected with a disease-color prior -- and evaluated against GT\_OK, an 80-image hand-labeled set held independent of the pseudo-label pipeline. No single checkpoint exceeded GT\_OK IoU~0.22; a disclosed post-processing fusion of the three strongest checkpoints (F1) reached IoU~0.3083 and Dice~0.4713, confirmed on a 40-image holdout split (IoU~0.3076) distinct from the 40 images used to tune its threshold and coverage cap. We further showed that pseudo-label-based (``pseudo-test'') scores are circular and substantially overstate localization quality relative to GT\_OK -- by a factor of roughly four for E1 and five for E3 -- underscoring that segmentation quality claims in weakly supervised pipelines should always be anchored to labels independent of the training signal. SAM's dual-condition guard reduces, but by its own design does not fully prevent, the coverage expansion that produces E3's low precision, since observed expansion ratios (1.4--2.0$\times$) sit at the edge of the guard's 2.0$\times$ tolerance. A Streamlit demonstration application makes the full classification-explanation-segmentation pipeline interactively usable and was re-verified running live.
 
-Future work will pursue five directions: (i) constructing a small manually annotated test set (50--100 images) to enable absolute performance validation and fair cross-version comparison; (ii) replacing the one-sided IoU guard with a two-sided coverage-ratio constraint to suppress mask expansion; (iii) selecting checkpoints on validation IoU rather than validation loss; (iv) integrating SAM2 for improved boundary accuracy and reduced coverage expansion; and (v) extending binary lesion segmentation to per-class multi-class segmentation and edge-device deployment via quantisation and pruning.
+Future work will pursue five directions: (i) expanding GT\_OK beyond 80 images, both to tighten the F1 tune/holdout comparison and to support absolute performance claims with narrower uncertainty; (ii) tightening the SAM guard's coverage-ratio upper bound below 1.4$\times$, or fine-tuning SAM directly on GT\_OK-derived supervision, to close the gap identified in Section~\ref{sec:samguard}; (iii) learning the F1 fusion weights (or a small calibration model) directly on GT\_OK rather than fixing them by inspection, once a larger ground-truth set makes this less prone to overfitting; (iv) extending binary lesion segmentation to per-class multi-class segmentation; and (v) integrating F1 as a selectable mode in the demonstration application and evaluating edge-device deployment via quantisation and pruning.
 
 \section*{CRediT authorship contribution statement}
 \noindent\textbf{Van Lam Ho:} Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Writing -- original draft, Writing -- review \& editing. \textbf{Minh Hieu Doan:} Methodology, Software, Data curation, Validation, Writing -- review \& editing. \textbf{Nguyen Quynh Nhi Tran:} Investigation, Visualization, Data curation, Writing -- review \& editing.
@@ -546,10 +621,10 @@ Future work will pursue five directions: (i) constructing a small manually annot
 \noindent The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 
 \section*{Data availability}
-\noindent The image data and trained model checkpoints are not publicly released with this manuscript because they contain project-specific research assets. Derived experiment summaries and reproducibility metadata are available in the accompanying project repository.
+\noindent The image data and trained model checkpoints are not publicly released with this manuscript because they contain project-specific research assets. Derived experiment summaries, the GT\_OK evaluation set, and reproducibility metadata are available in the accompanying project repository.
 
 \section*{Acknowledgements}
-\noindent The authors thank the research and technical collaborators who supported dataset preparation, model training, and manuscript review.
+\noindent The authors thank the research and technical collaborators who supported dataset preparation, model training, ground-truth annotation, and manuscript review.
 
 \begin{thebibliography}{99}
 
@@ -598,5 +673,3 @@ Zhou, Z., Siddiquee, M. M. R., Tajbakhsh, N., \& Liang, J. (2018). UNet++: A nes
 \end{thebibliography}
 
 \end{document}
-
-
